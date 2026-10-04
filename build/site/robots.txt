@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://arcanazen.pages.dev/sitemap.xml

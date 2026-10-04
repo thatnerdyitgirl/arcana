@@ -1,0 +1,112 @@
+{
+  "_note": "Реестр источников по Таро Манара. Тексты источников не копируются — только пересказ. Изображения защищены авторским правом (© Milo Manara / Lo Scarabeo) и используются только как исследовательский референс.",
+  "sources": [
+    {
+      "id": "src.manara.card_print",
+      "type": "primary_visual",
+      "title": "Сами карты: надписи, номера, символы стихий и астрологические знаки, напечатанные на картах",
+      "how_accessed": "через сканы (см. src.img.rozamira_via_elvi)",
+      "reliability": "high",
+      "note": "Самый надёжный слой: номер, название на 4–5 языках, знак стихии, астрологические символы внизу карты."
+    },
+    {
+      "id": "src.img.rozamira_via_elvi",
+      "type": "image_scans",
+      "title": "Полные сканы всех 78 карт (водяной знак ©rozamira tarot), размещены на elvitarot.com",
+      "url_pattern": "https://elvitarot.com/_content/TarotCompanionBot.DeckAssets/images/tarot/58.ManaraEroticTarot/T{NN}_{RwsName}.jpg",
+      "reliability": "high (изображения)",
+      "caveat": "Имена файлов даны по Уэйту (T24_ThreeOfWands = Тройка Огня, T10_WheelOfFortune = Зеркало). Это слой маппинга, а не название карты.",
+      "copyright": "© Milo Manara / Lo Scarabeo; только для исследования, в приложение не включать"
+    },
+    {
+      "id": "src.img.lunaro_crops",
+      "type": "image_crops",
+      "title": "Круглые кропы карт на обложках статей lunaro.ru (второй независимый источник изображения)",
+      "url_example": "https://seo.content.lunaro.ru/otshelnik_manara_f282ed5b82.jpg",
+      "reliability": "medium (кроп, не вся карта)",
+      "copyright": "© Milo Manara / Lo Scarabeo; только для исследования"
+    },
+    {
+      "id": "src.text.ru_base",
+      "type": "interpretive_text",
+      "title": "«Эротическое Таро Манара — Manara The Erotic Tarot», русский базовый текст значений всех 78 карт (анонимный, PDF)",
+      "url": "https://tarotcards.com.ua/wp-content/uploads/Znacheniya-kart-Taro-Manara-MANARA.pdf",
+      "reliability": "medium-high",
+      "note": "Астрологические соответствия («АС») в нём совпадают с напечатанными на картах. Скорее всего, текст восходит к буклету Lo Scarabeo с русскоязычными дополнениями. На него опирается большинство русских сайтов, поэтому как «независимый» источник для них он не считается.",
+      "independence": "base"
+    },
+    {
+      "id": "src.text.elvi",
+      "type": "interpretive_text",
+      "title": "elvitarot.com — английские описания карт",
+      "reliability": "low as independent",
+      "independence": "derivative of src.text.ru_base (практически перевод)"
+    },
+    {
+      "id": "src.text.lunaro",
+      "type": "interpretive_text",
+      "title": "lunaro.ru — гид по картам Таро Манара, автор Таша Кей",
+      "url": "https://lunaro.ru/articles/gid-po-kartam-taro/manara",
+      "reliability": "medium",
+      "independence": "partly independent (современная авторская трактовка + отдельные описания сюжета)",
+      "known_issues": "в визуальных описаниях есть неточности (см. SOURCE_DISAGREEMENT в картах)"
+    },
+    {
+      "id": "src.text.tarotman",
+      "type": "interpretive_text",
+      "title": "tarotman.ru — статьи Виктории Котляровой (Русская Школа Таро)",
+      "url": "https://tarotman.ru/manara/",
+      "reliability": "medium",
+      "independence": "partly independent; в ключевых формулировках опирается на базовый текст"
+    },
+    {
+      "id": "src.book.zobova",
+      "type": "book",
+      "title": "Юлия Зобова. «Таро Манара: любовь, страсть и энергия денег» (Ridero), ознакомительный фрагмент",
+      "url": "https://www.ridero.ru/books/taro_manara_lyubov_strast_i_energiya_deneg/freeText/",
+      "reliability": "medium",
+      "independence": "independent",
+      "note": "Прямо пишет, что значения Уэйта на Манару переносить нельзя. Добавляет финансовый и рабочий слой."
+    },
+    {
+      "id": "src.blog.eli",
+      "type": "interpretive_text",
+      "title": "The Tarot of Eli — сравнение Манары и Тота (англ. блог)",
+      "url": "https://www.elitarotstrickingly.com/blog/the-tarot-of-eli-llc-the-erotic-tarot-key-9-the-hermit-the-thoth",
+      "reliability": "low-medium",
+      "independence": "independent; эзотерическая (каббалистическая) оптика, на буклет не ссылается"
+    },
+    {
+      "id": "src.review.aeclectic",
+      "type": "deck_review",
+      "title": "Aeclectic Tarot — обзор колоды Manara: The Erotic Tarot",
+      "url": "https://www.aeclectic.net/tarot/cards/manara-erotic/",
+      "reliability": "medium (структура колоды)",
+      "note": "Масти по стихиям; X = Зеркало, XII = Наказание; VIII = Справедливость, XI = Сила; буклет даёт краткие значения без перевёрнутых."
+    },
+    {
+      "id": "src.text.magicpeace",
+      "type": "interpretive_text",
+      "title": "magicpeace.ru — значения карт Манары, включая перевёрнутые",
+      "url": "https://magicpeace.ru/taro/znacheniya-kart-taro/taro-manara/",
+      "reliability": "low",
+      "note": "Даёт перевёрнутые значения без методологии и без источников."
+    },
+    {
+      "id": "src.text.tarotman_reversals",
+      "type": "methodology",
+      "title": "В. Котлярова. «Почему я отказалась от перевёрнутых карт»",
+      "url": "https://tarotman.ru/gadanie/pochemu-ya-otkazalas-ot-perevyornutyih-kart.html",
+      "note": "Перечисляет подходы: ослабление, усиление, противоположность. Для Манары считает перевёрнутые карты избыточными."
+    }
+  ],
+  "found_not_yet_consulted": [
+    "https://v-kosmose.com/galereya-kolody-kart-taro-manara/ (внимание: slug Тройки Огня = trojka-pentaklej — пример путаницы мастей)",
+    "http://taro.org.ua/ (расшифровки Манары)",
+    "https://magya-online.ru/znachenie_kart_taro_manara/",
+    "https://astro7.com/online-journal/taro-i-gadania/",
+    "https://eso3.com/tarot/tarot-manara/interpretation/",
+    "https://dobromagiya.ru/taro/znachenie-kart-taro-manara/",
+    "https://protaro.info/karta-otshelnik-taro-manara/"
+  ]
+}

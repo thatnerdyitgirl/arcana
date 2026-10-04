@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Туз Кубков"><title>Туз Кубков</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path class="mist" d="M78 138q4-12 16-8q8-8 16 2q4 8-4 12H80q-6 0-2-6z" stroke="none"/>
+<path d="M80 144q-4-8 4-12q6-8 14-2q8-4 12 6" stroke-width="1"/>
+<path d="M82 134Q72 128 66 114" stroke-width="1.6"/><path d="M92 128Q82 126 74 118" stroke-width="1.6"/>
+<path class="wash" d="M54 112q2-10 12-10t12 8q0 8-10 8z" stroke="none"/>
+<path d="M54 112q2-8 6-12M60 110l2-12M66 110l5-11M72 112l7-8M54 112q4 4 10 4"/>
+<path d="M60 98V88M54 98h12M44 56h32q0 22-16 24q-16-2-16-24z"/>
+<path class="rose" d="M44 56h32q0 22-16 24q-16-2-16-24z" stroke="none"/>
+<path d="M46 56Q34 70 36 150M53 58Q44 80 46 150M60 58V150M67 58Q76 80 74 150M74 56Q86 70 84 150" stroke-width="1"/>
+<path d="M54 26q6-6 14 0q-4 4-14 0zM68 24l6-4M52 26l-6-2" stroke-width="1"/>
+<path class="mist" d="M10 150q25-6 50 0t50 0V188H10z" stroke="none"/>
+<path d="M12 152q24-6 48 0t48 0" stroke-width="1"/>
+<path d="M22 172q6-10 12 0q-6 6-12 0zM56 166q6-10 12 0q-6 6-12 0zM84 174q6-10 12 0q-6 6-12 0z"/>
+
+</g></svg>

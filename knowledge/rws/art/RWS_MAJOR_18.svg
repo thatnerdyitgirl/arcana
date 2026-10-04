@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Луна">
+<title>Луна</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<circle class="mist" cx="60" cy="54" r="24" stroke="none"/>
+<circle cx="60" cy="54" r="22"/><path d="M52 50h4M64 50h4M60 54v6M55 66q5 3 10 0"/>
+<path d="M60 22v-6M60 92v-6M36 54h-6M90 54h-6M43 37l-4-4M77 37l4-4M43 71l-4 4M77 71l4 4" stroke-width="0.9"/>
+<path d="M12 130V96h12v34M96 130V96h12v34M12 96h3v-4h3v4h3v-4h3v4M96 96h3v-4h3v4h3v-4h3v4"/>
+<path d="M12 130h96M30 188l22-30 10-14 8-10M90 188L68 158l-8-14" stroke-width="1"/>
+<path d="M26 150l4-12l-2-8l8-4l-2 12l6 12zM28 130l-6-8l8 2"/><path d="M94 150l-4-12l2-8l-8-4l2 12l-6 12zM92 130l6-8l-8 2"/>
+<path class="mist" d="M20 164q20-8 40 0t40 0v22H20z" stroke="none"/>
+<path d="M22 166q19-6 38 0t38 0" stroke-width="0.9"/>
+<ellipse cx="60" cy="172" rx="6" ry="4"/><path d="M54 170l-5-4M66 170l5-4M55 175l-4 3M65 175l4 3"/>
+</g>
+</svg>

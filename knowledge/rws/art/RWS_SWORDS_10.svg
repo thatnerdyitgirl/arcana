@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Десятка Мечей">
+<title>Десятка Мечей</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path class="mist" d="M10 20h100v82H10z" stroke="none"/>
+<path class="sun" d="M10 140a50 22 0 0 1 100 0z" stroke="none"/>
+<path d="M10 140h100M24 150h72M34 158h52" stroke-width=".9"/>
+<path d="M30 132q10-10 24-8q14-2 24 4q10 4 16 2M30 132q-4 4 0 6h66" />
+<circle cx="26" cy="130" r="5"/>
+<path d="M44 124v-34M52 122v-40M60 122v-46M68 124v-42M76 126v-36M84 128v-30M48 124l-6-26M72 126l8-28M56 122l-2-30M64 124l4-34" stroke-width="1"/>
+<path d="M18 40q10-6 20 0M70 30q12-8 26 0M40 56q10-4 18 0" stroke-width=".8"/>
+</g>
+</svg>

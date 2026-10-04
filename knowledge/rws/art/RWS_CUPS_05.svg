@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Пятёрка Кубков">
+<title>Пятёрка Кубков</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path class="mist" d="M56 112q27-8 54 0v14q-27 8-54 0z" stroke="none"/>
+<path d="M56 114q27-8 54 0M56 126q27 6 54 0" stroke-width="1"/>
+<path d="M70 112q8-14 18 0M90 112q8-14 18 0M70 112v14M88 112v14M108 112v14" stroke-width="1"/>
+<path d="M82 100V80h4v-4h4v4h4v-4h4v4h4v20M82 100h20M92 100v-8h4v8" stroke-width="1"/>
+<path class="wash" d="M30 64q-8 20-10 50l-6 70h46l-6-70q-2-30-10-50z" stroke="none"/>
+<path d="M30 64q-8 20-10 50l-6 70h46l-6-70q-2-30-10-50M30 64q8-6 16 0"/>
+<circle cx="38" cy="56" r="7"/><path d="M32 62q-6 8-6 16M34 72q4 10 2 24" stroke-width="1"/>
+<path class="rose" d="M30 64q-8 20-10 50l-6 70h46l-6-70q-2-30-10-50z" stroke="none" opacity=".5"/>
+<path d="M62 150l8 14l12-4l-4-14zM84 168l10 6l8-10l-10-6zM66 182h10M92 184l8-4" stroke-width="1"/>
+<path d="M62 168l14-8" stroke-width="0"/>
+<path d="M86 172l-2 12c0 6 12 6 12 0l-2-12zM96 178v6M90 184h12" stroke-width="0"/>
+<path d="M12 150h8l4 8h-14zM28 160l10 6l-6 8z" stroke-width="0"/>
+<path d="M82 128h-6l-2 12c0 5 14 5 14 0l-2-12h-4M84 128v8" stroke-width="0"/>
+<path d="M76 134l-2 14c0 6 12 6 12 0l-2-14zM80 154v8M74 162h12M96 138l-2 14c0 6 12 6 12 0l-2-14zM100 158v8M94 166h12"/>
+<path d="M14 170l8-6l8 8l-10 8zM34 184l12-4l4 8z" stroke-width="1"/>
+</g>
+</svg>

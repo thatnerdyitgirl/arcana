@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Туз Жезлов"><title>Туз Жезлов</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M10 176Q30 160 50 176T90 172T110 176" stroke-width="1"/>
+<path d="M18 168V150h6V168M16 150h10M30 168V156h6V168M28 156h10" stroke-width="1"/>
+<path class="mist" d="M72 140q6-12 16-8q8-8 16 2q4 8-4 12H76q-6 0-4-6z" stroke="none"/>
+<path d="M74 146q-4-8 4-12M104 136q8 6 2 12" stroke-width="1"/>
+<path d="M78 138Q68 134 66 124" stroke-width="1.6"/>
+<path d="M50 120q0-8 8-8h8q8 0 8 8v10q-4 6-12 6t-12-6z"/>
+<path class="wash" d="M50 120q0-8 8-8h8q8 0 8 8v10q-4 6-12 6t-12-6z" stroke="none"/>
+<path d="M50 124h24M52 130h20" stroke-width=".9"/>
+<path d="M53 112L52 40Q60 30 68 40L67 112M60 30V26"/>
+<path class="leaf" d="M52 90Q38 86 34 74Q46 74 52 90zM68 78Q82 74 86 62Q74 62 68 78zM52 64Q42 58 40 48Q50 50 52 64zM67 54Q76 48 78 38Q70 40 67 54z" stroke="none"/>
+<path d="M52 90Q38 86 34 74M68 78Q82 74 86 62M52 64Q42 58 40 48" stroke-width="1"/>
+
+</g></svg>

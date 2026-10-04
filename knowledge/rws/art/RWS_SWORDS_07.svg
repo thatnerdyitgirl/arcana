@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Семёрка Мечей">
+<title>Семёрка Мечей</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M10 110h100" stroke-width=".8"/>
+<path class="wash" d="M10 110h100v10H10z" stroke="none"/>
+<path d="M18 110l12-20l12 20zM30 90v-6M70 110l10-16l10 16zM80 94v-6" /><path class="rose" d="M18 110l12-20l12 20z" stroke="none"/>
+<path d="M92 122v-24M104 128v-22M92 98l-3 4h6zM104 104l-3 4h6z" stroke-width="1"/>
+<circle cx="58" cy="100" r="6"/><path d="M58 106l-4 22l-10 24M54 128l10 24M56 112l-12 8M62 112l6 10"/>
+<path class="rose" d="M54 108q10 0 14 8l-10 10q-4-8-4-18z" stroke="none"/>
+<path d="M30 118v32M38 112v32M46 116v34M22 124v26M52 118l-6 30" stroke-width="1"/>
+<path d="M20 124l-3-4h6zM30 118l-3-4h6zM38 112l-3-4h6z" stroke-width="0"/>
+<path d="M12 164h96M24 172h60" stroke-width=".8"/>
+</g>
+</svg>

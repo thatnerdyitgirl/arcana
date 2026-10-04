@@ -1,0 +1,23 @@
+{
+  "_status": "Сочетания карт Манары. type: source — сочетание названо в источнике; synthesis — авторская связка Arcana (подписывается в интерфейсе).",
+  "pairs": [
+    {
+      "a": "MANARA_MAJOR_09",
+      "b": "MANARA_MAJOR_14",
+      "ordered": false,
+      "type": "source",
+      "source": "src.book.zobova",
+      "claim": "Отшельник и Умеренность в вопросе об отношениях: Зобова связывает это сочетание с возможностью сохранить отношения.",
+      "context": "relationships"
+    },
+    {
+      "a": "MANARA_MAJOR_09",
+      "b": "MANARA_WATER_KNAVE",
+      "ordered": false,
+      "type": "source",
+      "source": "src.book.zobova",
+      "claim": "Отшельник и Слуга Воды в вопросе об отношениях: Зобова связывает это сочетание с возможностью сохранить отношения.",
+      "context": "relationships"
+    }
+  ]
+}

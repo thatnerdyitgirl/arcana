@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Тройка Мечей">
+<title>Тройка Мечей</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path class="mist" d="M16 30q12-18 28-6q10-14 26 0q16-10 30 6q6 10-4 14H20q-10-4-4-14z" stroke="none"/>
+<path d="M20 44q-10-4-4-14q12-18 28-6q10-14 26 0q16-10 30 6q6 10-4 14z"/>
+<path class="rose" d="M60 138c-34-24-30-50-12-52q10 0 12 10q2-10 12-10c18 2 22 28-12 52z" stroke="none"/>
+<path d="M60 138c-34-24-30-50-12-52q10 0 12 10q2-10 12-10c18 2 22 28-12 52z"/>
+<path d="M60 62v100M34 96l52 22M86 96l-52 22M56 60h8M30 94l8 4M90 94l-8 4M56 162h8"/>
+<path d="M24 56v8M36 62v8M48 54v8M72 56v8M84 62v8M96 54v8M30 150v8M92 148v8M18 126v8M102 128v8M44 168v8M76 170v8" stroke-width=".8"/>
+</g>
+</svg>

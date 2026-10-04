@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Умеренность"><title>Умеренность</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M60 70Q30 60 14 96Q34 90 46 108M60 70Q90 60 106 96Q86 90 74 108" stroke-width="1.2"/><path class="wash" d="M60 70Q30 60 14 96Q34 90 46 108L74 108Q86 90 106 96Q90 60 60 70z" stroke="none"/>
+<circle cx="60" cy="54" r="6"/><circle class="sun" cx="60" cy="54" r="2" stroke="none"/>
+<path class="rose" d="M60 62Q46 70 42 138H78Q74 70 60 62z" stroke="none"/>
+<path d="M60 62Q46 70 42 138H78Q74 70 60 62zM60 66V138"/>
+<path d="M48 90L34 100M72 90L86 100M30 98h10l-2 10h-6zM80 98h10l-2 10h-6z" stroke-width="1.2"/>
+<path d="M36 108Q44 124 82 112" stroke-width="1" stroke-dasharray="2 2"/>
+<path class="mist" d="M12 146q14-6 28 0t14 0V176H12z" stroke="none"/><path d="M14 148q12-6 24 0t14 0" stroke-width="1"/>
+<path d="M44 138L42 156M76 138H86"/>
+<path d="M66 188L96 160M104 188L96 160" stroke-width="1"/>
+<circle class="sun" cx="96" cy="146" r="7" stroke="none"/><path d="M92 152l2-8 3 4 3-4 2 8z" stroke-width="1"/>
+
+</g></svg>

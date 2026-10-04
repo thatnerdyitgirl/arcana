@@ -1,0 +1,11 @@
+.DS_Store
+.claude/
+node_modules/
+# сборки: на хостинг уходит только build/site
+build/*.zip
+build/arcana.html
+build/arcana-hosted.html
+build/rws-gallery.html
+build/site 2/
+build/site.zip
+app/data.json

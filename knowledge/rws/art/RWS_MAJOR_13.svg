@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Смерть"><title>Смерть</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<circle class="sun" cx="60" cy="112" r="9" stroke="none"/><path d="M12 120H108"/>
+<path d="M18 120V94h10v26M16 94h14M88 120V94h10v26M86 94h14" stroke-width="1"/>
+<path class="wash" d="M44 138Q48 126 70 128Q84 130 84 140Q80 150 70 148H50Q44 146 44 138zM46 134Q40 124 38 114L30 120Q34 124 38 136z" stroke="none"/>
+<path d="M44 138Q48 126 70 128Q84 130 84 140Q80 150 70 148H50Q44 146 44 138zM46 134Q40 124 38 114L30 120Q34 124 38 136M52 148v18M60 148v18M72 148v18M80 146v20M84 134q8 8 4 24"/>
+<path d="M68 130Q58 110 64 98H76Q82 112 78 130zM70 92a4 4 0 1 0 .1 0"/>
+<path d="M82 40V132M84 44H108V68H84" stroke-width="1.2"/><path d="M84 44H108V68H84z" fill="currentColor"/>
+<circle class="rose" cx="96" cy="56" r="6" stroke="none"/>
+<path d="M18 186q6-16 14-6M46 186q4-12 12-6M78 186q6-14 14-6" stroke-width="1"/>
+
+</g></svg>

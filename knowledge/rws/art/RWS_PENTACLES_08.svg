@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Восьмёрка Пентаклей">
+<title>Восьмёрка Пентаклей</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path d="M10 150h100M10 160h100" stroke-width=".8"/>
+<path d="M10 124q30-12 100-8M80 124l8-6M92 118l8-4" stroke-width=".8"/>
+<path d="M92 112v-10h8v10M88 112h16M94 102l4-4M96 98l8 0" stroke-width=".9"/>
+<path d="M14 130l22 22M26 150h60v8M30 150v26M82 150v26" />
+<path class="wash" d="M26 150h60v6H26z" stroke="none"/>
+<circle cx="50" cy="96" r="6"/><path d="M50 102v22l-8 20M50 124l14 20M50 110l16 14M66 124l-2-4"/>
+<path d="M62 120l8-6M66 112l4 4" stroke-width="1.6"/>
+<circle class="sun" cx="74" cy="144" r="5"/><circle class="sun" cx="38" cy="144" r="5"/>
+<circle cx="60" cy="146" r="5"/><path d="M60 144v4M58 146h4" stroke-width=".8"/>
+<circle class="sun" cx="22" cy="60" r="6"/><circle class="sun" cx="22" cy="78" r="6"/><circle class="sun" cx="22" cy="96" r="6"/><circle class="sun" cx="22" cy="114" r="6"/>
+<path d="M22 54v66" stroke-width=".8"/>
+</g>
+</svg>

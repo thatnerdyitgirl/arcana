@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Пятёрка Пентаклей">
+<title>Пятёрка Пентаклей</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path class="mist" d="M12 28h56v78H12z" stroke="none"/>
+<path d="M12 106V50q0-22 28-22t28 22v56zM40 28v78M12 66h56" stroke-width=".9"/>
+<circle class="sun" cx="26" cy="50" r="5"/><circle class="sun" cx="54" cy="50" r="5"/><circle class="sun" cx="40" cy="42" r="5"/><circle class="sun" cx="26" cy="82" r="5"/><circle class="sun" cx="54" cy="82" r="5"/>
+<path d="M12 106h96M12 112h96" stroke-width=".8"/>
+<circle cx="64" cy="132" r="5"/><path d="M64 137v20l-4 20M64 157l8 20M64 144l-14 6M64 144l12 6M50 140v38M46 140h8" />
+<path class="wash" d="M56 138q-14 4-18 20h50q-4-16-16-20z" stroke="none"/>
+<circle cx="90" cy="140" r="5"/><path d="M90 145v18l-4 18M90 163l8 18M90 150l-6 8" stroke-width="1.2"/>
+<path d="M20 126l2 4M30 120l2 4M14 140l2 4M100 120l2 4M104 134l2 4M40 170l2 4M74 182l2 4" stroke-width=".8"/>
+</g>
+</svg>

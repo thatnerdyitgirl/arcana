@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Шестёрка Кубков">
+<title>Шестёрка Кубков</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path class="wash" d="M12 150h96v30H12z" stroke="none"/>
+<path d="M14 120v-40q0-14 12-14t12 14v40M14 80h24M14 150h92"/>
+<path d="M70 52l-8 6M70 52l8 6" stroke-width="0"/>
+<circle cx="52" cy="92" r="6"/><path d="M52 98v28l-8 24M52 126l8 24M52 106l16 6"/>
+<circle cx="86" cy="116" r="5"/><path d="M86 121v20l-6 9M86 141l6 9M86 128l-14-10"/>
+<path d="M66 108h12l-2 9h-8zM72 117v5M69 122h6"/>
+<circle class="rose" cx="72" cy="104" r="4" stroke="none"/><path d="M72 104v4"/>
+<path d="M22 150v-14h10v14M22 136l5-6 5 6" /><circle class="rose" cx="27" cy="126" r="3" stroke="none"/>
+<path d="M20 168h80M30 176h50" stroke-width=".8"/>
+<circle class="sun" cx="92" cy="40" r="10" stroke="none"/>
+</g>
+</svg>

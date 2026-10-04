@@ -1,0 +1,111 @@
+{
+  "deck_id": "MANARA",
+  "title": "Manara: The Erotic Tarot (Lo Scarabeo, 2000), художник Milo Manara",
+  "hard_rules": [
+    "MANARA MUST NOT BE INTERPRETED BY COPYING RIDER-WAITE MEANINGS.",
+    "Порядок слоёв: визуальный сюжет Манары → контекст колоды Манара → трактовки источников по Манаре → позиция в раскладе. RWS используется только в поле DIFFERENCE_FROM_RWS.",
+    "Визуальная деталь может упоминаться в толковании, только если она есть в VISUAL_CANON.observable.",
+    "Внутри системы карта передаётся только по id (MANARA_AIR_03), никогда по названию «3 мечей».",
+    "Интерфейс и handoff-промпт обязаны сохранять метку слоя: синтез Arcana никогда не подаётся как «значение карты Манары»."
+  ],
+  "id_format": {
+    "major": "MANARA_MAJOR_{NN}",
+    "minor": "MANARA_{FIRE|WATER|AIR|EARTH}_{01..10|KNAVE|KNIGHT|QUEEN|KING}"
+  },
+  "structure_verified_from_card_print": {
+    "major_numbering": {
+      "VIII": "Справедливость / JUSTICE",
+      "XI": "Сила / STRENGTH",
+      "note": "Порядок как в марсельской традиции, а не как у Уэйта (у Уэйта VIII — Сила, XI — Справедливость). Это влияет на квинтэссенцию."
+    },
+    "renamed_majors": {
+      "X": "Зеркало / THE MIRROR / LO SPECCHIO — вместо Колеса Фортуны",
+      "XII": "Наказание / THE PUNISHMENT — вместо Повешенного"
+    },
+    "suits": {
+      "FIRE": {
+        "print": "FIRE / FUOCO",
+        "symbol": "треугольник вершиной вверх",
+        "rws_slot": "Жезлы",
+        "ru": [
+          "огонь",
+          "огня"
+        ]
+      },
+      "WATER": {
+        "print": "WATER / ACQUA",
+        "symbol": "треугольник вершиной вниз",
+        "rws_slot": "Кубки",
+        "ru": [
+          "вода",
+          "воды"
+        ]
+      },
+      "AIR": {
+        "print": "AIR / ARIA",
+        "symbol": "треугольник вершиной вверх с перекладиной",
+        "rws_slot": "Мечи",
+        "ru": [
+          "воздух",
+          "воздуха"
+        ]
+      },
+      "EARTH": {
+        "print": "EARTH / TERRA",
+        "symbol": "треугольник вершиной вниз с перекладиной (проверено)",
+        "rws_slot": "Пентакли",
+        "ru": [
+          "земля",
+          "земли"
+        ]
+      }
+    },
+    "pip_cards": "все иллюстрированы сюжетными сценами; на картах нет изображений мечей, кубков и т.п. по числу",
+    "astrology_printed": "внизу каждой карты; совпадает с «АС» в src.text.ru_base"
+  },
+  "courts": {
+    "names_ru": [
+      "Слуга (Knave)",
+      "Всадница (Knight)",
+      "Королева",
+      "Король"
+    ],
+    "SOURCE_DISAGREEMENT": "Русская традиция называет рыцаря «Всадницей». По изображениям (2026-10-02): Knight of Fire и Knight of Air — женщины, Knight of Water и Knight of Earth — неоднозначно; слуги в основном мужчины, Knave of Earth неоднозначен. См. docs/MANARA-DECK-SPEC.md §3.",
+    "order": "на картах не напечатан; принят ранговый порядок KNAVE → KNIGHT → QUEEN → KING",
+    "printed_astrology": "Knight = мутабельный знак стихии, Queen = кардинальный, King = фиксированный, Knave — без знака"
+  },
+  "reversals": {
+    "status": "researched — выбор за пользователем",
+    "findings": [
+      "Буклет Lo Scarabeo и базовый русский текст дают только прямые значения (src.review.aeclectic, src.text.ru_base).",
+      "Lunaro, tarotman, Зобова перевёрнутых значений для Манары не дают; Котлярова прямо считает их для Манары избыточными.",
+      "magicpeace.ru даёт перевёрнутые значения без методологии и источников."
+    ],
+    "options": [
+      {
+        "id": "upright_only",
+        "label": "Только прямые (рекомендуется по источникам)",
+        "basis": "буклет + большинство школ"
+      },
+      {
+        "id": "blocked",
+        "label": "Перевёрнутая = энергия карты заблокирована / не проявлена",
+        "basis": "общая практика таро; для Манары — авторский синтез"
+      },
+      {
+        "id": "shadow_emphasis",
+        "label": "Перевёрнутая = акцент на SHADOW_LAYER карты",
+        "basis": "авторский синтез Arcana"
+      }
+    ],
+    "default": "upright_only"
+  },
+  "layer_labels": {
+    "VISUAL_FACT": "то, что буквально видно на изображении карты",
+    "SOURCE_INTERPRETATION": "что конкретный источник говорит о карте (с id источника)",
+    "TRADITIONAL_MEANING": "значение из базовой линии традиции колоды (для Манары — базовый русский текст)",
+    "ARCANA_SYNTHESIS": "авторская гипотеза Arcana; НЕ традиционное и НЕ официальное значение",
+    "POSITIONAL_APPLICATION": "ARCANA_SYNTHESIS, применённый к типу позиции (возможные проявления)",
+    "EDITORIAL_NOTE": "правка владельца (author: owner) — отдельная маркировка, не выдаётся за значение карты"
+  }
+}

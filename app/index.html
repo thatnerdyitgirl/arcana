@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arcana Zen — Таро, лунный календарь и пространство для себя</title>
+<meta name="description" content="Интерпретации раскладов Манара и Уэйта. Лунный календарь и медитации с таймером для ежедневного дзена.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#f6f1e6">
+<link rel="canonical" href="https://arcanazen.pages.dev/">
+<!-- Превью ссылки (Telegram, WhatsApp, Instagram DM и др.). Адрес сайта: при смене домена поменяйте https://arcanazen.pages.dev/ здесь и в tools/build_app.mjs (SITE_URL). -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Arcana &amp; Zen">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:url" content="https://arcanazen.pages.dev/">
+<meta property="og:title" content="ARCANA · для жизни, которую хочется проживать осознанно.">
+<meta property="og:description" content="Интерпретации раскладов Манара и Уэйта. Лунный календарь и медитации с таймером для ежедневного дзена.">
+<meta property="og:image" content="https://arcanazen.pages.dev/assets/og-arcana.jpg">
+<meta property="og:image:secure_url" content="https://arcanazen.pages.dev/assets/og-arcana.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Arcana: девушка у пруда с лотосами под луной, две карты таро и надпись «Таро · Луна · Медитации»">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ARCANA · для жизни, которую хочется проживать осознанно.">
+<meta name="twitter:description" content="Интерпретации раскладов Манара и Уэйта. Лунный календарь и медитации с таймером для ежедневного дзена.">
+<meta name="twitter:image" content="https://arcanazen.pages.dev/assets/og-arcana.jpg">
+<meta name="twitter:image:alt" content="Arcana: девушка у пруда с лотосами под луной, две карты таро и надпись «Таро · Луна · Медитации»">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Arcana & Zen","alternateName":"Arcana Zen","url":"https://arcanazen.pages.dev/","inLanguage":"ru","applicationCategory":"LifestyleApplication","description":"Интерпретации раскладов Манара и Уэйта. Лунный календарь и медитации с таймером для ежедневного дзена.","image":"https://arcanazen.pages.dev/assets/og-arcana.jpg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&family=Golos+Text:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,400;1,7..72,400&display=swap&subset=cyrillic">
+<link rel="stylesheet" href="./styles.css">
+</head>
+<body data-world="lotus">
+<!-- Сцена тушью. Каждый «мир» (тема расклада) включает свой набор слоёв: см. styles.css, раздел «Миры». -->
+<div id="scene-stage" aria-hidden="true"></div>
+<!-- Звёзды «Ночной туши»: статичные, без анимации; видны только в тёмной теме -->
+<svg id="night-stars" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><g fill="none" stroke="#e8e4d6" stroke-width="0.5" opacity="0.14" stroke-linecap="round"><polyline points="1381,370 1396,395 1414,346 1284,250"/><polyline points="906,342 920,400 976,337 954,290"/><polyline points="28,143 61,112 7,65 51,14"/><polyline points="322,314 268,342 244,345 125,254"/><polyline points="651,428 604,433 551,398 477,561"/></g><circle cx="651" cy="428" r="1.25" fill="#f4f1e8" opacity="0.39"/><circle cx="846" cy="141" r="0.8" fill="#f4f1e8" opacity="0.39"/><circle cx="268" cy="342" r="0.5" fill="#e8cf95" opacity="0.24"/><circle cx="999" cy="32" r="0.7" fill="#f4f1e8" opacity="0.59"/><circle cx="886" cy="120" r="0.5" fill="#f4f1e8" opacity="0.53"/><circle cx="51" cy="673" r="0.8" fill="#f4f1e8" opacity="0.21"/><circle cx="634" cy="644" r="0.8" fill="#f4f1e8" opacity="0.29"/><circle cx="7" cy="65" r="1.0" fill="#e8cf95" opacity="0.31"/><circle cx="1434" cy="643" r="1.0" fill="#e8cf95" opacity="0.3"/><circle cx="739" cy="23" r="0.8" fill="#f4f1e8" opacity="0.51"/><circle cx="1219" cy="296" r="0.5" fill="#f4f1e8" opacity="0.54"/><circle cx="302" cy="696" r="0.7" fill="#e8cf95" opacity="0.35"/><circle cx="604" cy="433" r="0.5" fill="#f4f1e8" opacity="0.51"/><circle cx="125" cy="254" r="0.7" fill="#f4f1e8" opacity="0.5"/><circle cx="355" cy="77" r="0.5" fill="#f4f1e8" opacity="0.39"/><circle cx="982" cy="144" r="0.8" fill="#e8cf95" opacity="0.28"/><circle cx="189" cy="492" r="0.5" fill="#e8cf95" opacity="0.36"/><circle cx="1" cy="661" r="1.25" fill="#e8cf95" opacity="0.44"/><circle cx="28" cy="143" r="1.25" fill="#f4f1e8" opacity="0.44"/><circle cx="61" cy="112" r="0.7" fill="#e8cf95" opacity="0.3"/><circle cx="474" cy="227" r="0.5" fill="#f4f1e8" opacity="0.23"/><circle cx="917" cy="12" r="0.6" fill="#f4f1e8" opacity="0.35"/><circle cx="1381" cy="370" r="0.8" fill="#f4f1e8" opacity="0.25"/><circle cx="903" cy="238" r="0.5" fill="#f4f1e8" opacity="0.53"/><circle cx="273" cy="566" r="0.8" fill="#e8cf95" opacity="0.28"/><circle cx="1270" cy="462" r="0.7" fill="#f4f1e8" opacity="0.22"/><circle cx="738" cy="195" r="1.0" fill="#f4f1e8" opacity="0.48"/><circle cx="1186" cy="456" r="0.6" fill="#e8cf95" opacity="0.41"/><circle cx="1407" cy="97" r="0.7" fill="#e8cf95" opacity="0.42"/><circle cx="885" cy="214" r="0.5" fill="#f4f1e8" opacity="0.5"/><circle cx="592" cy="191" r="0.5" fill="#f4f1e8" opacity="0.27"/><circle cx="824" cy="101" r="0.6" fill="#f4f1e8" opacity="0.26"/><circle cx="477" cy="561" r="0.8" fill="#f4f1e8" opacity="0.43"/><circle cx="51" cy="14" r="0.6" fill="#e8cf95" opacity="0.48"/><circle cx="31" cy="487" r="0.7" fill="#f4f1e8" opacity="0.23"/><circle cx="197" cy="55" r="0.7" fill="#e8cf95" opacity="0.42"/><circle cx="1296" cy="564" r="1.0" fill="#e8cf95" opacity="0.25"/><circle cx="492" cy="65" r="0.7" fill="#e8cf95" opacity="0.56"/><circle cx="601" cy="605" r="1.25" fill="#f4f1e8" opacity="0.4"/><circle cx="954" cy="290" r="0.5" fill="#f4f1e8" opacity="0.44"/><circle cx="921" cy="760" r="0.7" fill="#f4f1e8" opacity="0.49"/><circle cx="1058" cy="444" r="0.7" fill="#f4f1e8" opacity="0.39"/><circle cx="747" cy="394" r="0.6" fill="#f4f1e8" opacity="0.44"/><circle cx="332" cy="534" r="0.7" fill="#f4f1e8" opacity="0.51"/><circle cx="700" cy="686" r="0.6" fill="#f4f1e8" opacity="0.32"/><circle cx="292" cy="130" r="0.6" fill="#f4f1e8" opacity="0.46"/><circle cx="1284" cy="250" r="1.0" fill="#f4f1e8" opacity="0.3"/><circle cx="1157" cy="577" r="0.5" fill="#f4f1e8" opacity="0.55"/><circle cx="840" cy="242" r="0.5" fill="#f4f1e8" opacity="0.25"/><circle cx="1290" cy="31" r="0.5" fill="#f4f1e8" opacity="0.58"/><circle cx="244" cy="345" r="0.6" fill="#e8cf95" opacity="0.57"/><circle cx="551" cy="398" r="1.0" fill="#e8cf95" opacity="0.33"/><circle cx="1414" cy="346" r="0.5" fill="#f4f1e8" opacity="0.53"/><circle cx="875" cy="519" r="0.6" fill="#f4f1e8" opacity="0.43"/><circle cx="1140" cy="15" r="0.5" fill="#f4f1e8" opacity="0.36"/><circle cx="1108" cy="204" r="1.25" fill="#f4f1e8" opacity="0.26"/><circle cx="906" cy="342" r="1.0" fill="#f4f1e8" opacity="0.41"/><circle cx="531" cy="60" r="0.5" fill="#f4f1e8" opacity="0.28"/><circle cx="257" cy="8" r="0.7" fill="#f4f1e8" opacity="0.41"/><circle cx="326" cy="596" r="0.8" fill="#f4f1e8" opacity="0.48"/><circle cx="885" cy="578" r="0.7" fill="#e8cf95" opacity="0.54"/><circle cx="322" cy="314" r="1.0" fill="#f4f1e8" opacity="0.36"/><circle cx="284" cy="679" r="0.5" fill="#f4f1e8" opacity="0.35"/><circle cx="1266" cy="610" r="0.6" fill="#f4f1e8" opacity="0.39"/><circle cx="295" cy="552" r="1.25" fill="#e8cf95" opacity="0.52"/><circle cx="178" cy="185" r="0.7" fill="#e8cf95" opacity="0.59"/><circle cx="773" cy="605" r="0.6" fill="#e8cf95" opacity="0.3"/><circle cx="23" cy="386" r="0.5" fill="#f4f1e8" opacity="0.38"/><circle cx="1106" cy="373" r="0.5" fill="#e8cf95" opacity="0.29"/><circle cx="618" cy="27" r="0.8" fill="#e8cf95" opacity="0.33"/><circle cx="202" cy="114" r="0.8" fill="#f4f1e8" opacity="0.56"/><circle cx="976" cy="337" r="0.7" fill="#e8cf95" opacity="0.43"/><circle cx="1091" cy="336" r="0.8" fill="#e8cf95" opacity="0.32"/><circle cx="920" cy="400" r="1.25" fill="#f4f1e8" opacity="0.56"/><circle cx="967" cy="730" r="1.25" fill="#f4f1e8" opacity="0.56"/><circle cx="1225" cy="741" r="0.8" fill="#f4f1e8" opacity="0.31"/><circle cx="592" cy="87" r="0.5" fill="#f4f1e8" opacity="0.44"/><circle cx="1396" cy="395" r="0.7" fill="#e8cf95" opacity="0.42"/></svg>
+<!-- Шаблон сцены: сам не рисуется (0×0), из него один раз «запекаются» готовые слои миров -->
+<svg class="scene" id="scene-src" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <filter id="ink" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="7"/>
+      <feGaussianBlur stdDeviation="0.5"/>
+    </filter>
+    <filter id="wash" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="8" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="26"/>
+      <feGaussianBlur stdDeviation="2.4"/>
+    </filter>
+    <filter id="fog"><feGaussianBlur stdDeviation="22"/></filter>
+    <linearGradient id="mtFar" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="st-ink" stop-opacity=".55"/><stop offset="1" class="st-ink" stop-opacity="0"/></linearGradient>
+    <linearGradient id="mtNear" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="st-ink" stop-opacity=".85"/><stop offset=".75" class="st-ink" stop-opacity=".12"/><stop offset="1" class="st-ink" stop-opacity="0"/></linearGradient>
+    <linearGradient id="waterG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" class="st-water" stop-opacity=".0"/><stop offset=".3" class="st-water" stop-opacity=".35"/><stop offset="1" class="st-water" stop-opacity=".55"/></linearGradient>
+    <pattern id="rainP" width="46" height="90" patternUnits="userSpaceOnUse"><line x1="36" y1="0" x2="28" y2="34" class="rain-line"/><line x1="12" y1="46" x2="6" y2="70" class="rain-line"/></pattern>
+  </defs>
+
+  <!-- ensō -->
+  <g class="L enso-big"><circle cx="200" cy="200" r="118" fill="none" class="stroke-ink" stroke-width="11" stroke-linecap="round" stroke-dasharray="610 130" transform="rotate(-65 200 200)" filter="url(#ink)"/></g>
+
+  <!-- дальние горы -->
+  <g class="L mountains-far" filter="url(#wash)">
+    <path fill="url(#mtFar)" d="M0 520 C80 480 140 430 210 440 C260 448 290 400 340 380 C400 356 440 420 500 410 C560 400 600 340 660 330 C720 320 760 380 820 372 C900 360 940 300 1010 290 C1080 280 1120 350 1190 345 C1260 340 1320 300 1440 320 L1440 660 L0 660 Z"/>
+  </g>
+  <g class="L mist drift-a" filter="url(#fog)"><ellipse cx="420" cy="520" rx="520" ry="46" class="fill-paper"/><ellipse cx="1150" cy="470" rx="420" ry="36" class="fill-paper"/></g>
+  <!-- ближние горы и скалы -->
+  <g class="L mountains-near" filter="url(#wash)">
+    <path id="nearRange" fill="url(#mtNear)" d="M0 610 C110 570 170 530 250 536 C330 542 370 500 440 494 C530 488 570 548 650 548 C740 548 790 500 880 506 C980 512 1030 566 1120 560 C1230 552 1300 520 1440 540 L1440 700 L0 700 Z"/>
+  </g>
+  <g class="L peaks" filter="url(#wash)">
+    <path class="fill-ink" opacity=".55" d="M1080 660 C1086 560 1104 490 1134 466 C1160 488 1174 560 1182 660 Z"/>
+    <path class="fill-ink" opacity=".4" d="M1160 660 C1170 540 1196 470 1232 452 C1262 478 1274 570 1280 660 Z"/>
+    <path class="fill-ink" opacity=".3" d="M1250 660 C1262 580 1284 530 1312 520 C1338 540 1350 600 1356 660 Z"/>
+  </g>
+  <g class="L mist drift-b" filter="url(#fog)"><ellipse cx="900" cy="610" rx="560" ry="40" class="fill-paper"/><ellipse cx="200" cy="640" rx="380" ry="30" class="fill-paper"/></g>
+
+  <!-- водопад -->
+  <g class="L waterfall">
+    <path class="fill-ink" opacity=".5" filter="url(#wash)" d="M1240 180 C1270 200 1290 260 1286 330 C1282 420 1300 520 1296 660 L1440 660 L1440 150 C1360 140 1290 150 1240 180 Z"/>
+    <g class="fall" stroke-linecap="round">
+      <path d="M1300 250 C1302 360 1300 480 1304 650"/><path d="M1312 240 C1314 360 1312 480 1316 652"/>
+      <path d="M1324 246 C1326 360 1324 470 1328 650"/><path d="M1290 270 C1292 380 1290 490 1294 648"/>
+      <path d="M1306 236 C1308 350 1306 470 1310 650"/><path d="M1318 250 C1320 370 1318 480 1322 650"/>
+    </g>
+    <ellipse cx="1305" cy="660" rx="90" ry="16" class="fill-paper" filter="url(#fog)"/>
+  </g>
+
+  <!-- вода -->
+  <g class="L water">
+    <rect x="0" y="640" width="1440" height="260" fill="url(#waterG)"/>
+    <use href="#nearRange" class="reflection" transform="translate(0 1290) scale(1 -1)"/>
+    <g class="water-lines" filter="url(#ink)" fill="none" stroke-linecap="round">
+      <path d="M120 690 C300 686 480 694 660 690"/><path d="M820 720 C980 716 1160 724 1320 719"/>
+      <path d="M40 768 C260 763 520 773 760 768"/><path d="M900 806 C1060 802 1240 812 1400 806"/>
+      <path d="M300 846 C520 842 760 850 980 845"/>
+    </g>
+  </g>
+  <g class="L ripples" fill="none">
+    <ellipse class="ripple r1" cx="1235" cy="740" rx="46" ry="8"/>
+    <ellipse class="ripple r2" cx="430" cy="770" rx="40" ry="7"/>
+    <ellipse class="ripple r3" cx="1210" cy="812" rx="52" ry="9"/>
+  </g>
+
+  <!-- два пути на воде (решение) -->
+  <g class="L paths" fill="none" stroke-linecap="round">
+    <path class="path-a" d="M560 900 C760 840 1000 780 1180 742"/>
+    <path class="path-b" d="M640 900 C900 860 1180 830 1440 812"/>
+  </g>
+
+  <!-- лодка с путником -->
+  <g class="L boat" transform="translate(240 14)"><g class="bob fill-ink" filter="url(#ink)">
+    <path d="M930 714 C956 726 1036 726 1064 714 L1054 724 C1026 732 966 732 940 724 Z"/>
+    <path d="M986 714 L990 688 L1002 688 L1006 714 Z"/>
+    <path d="M978 690 L1012 690 L995 676 Z"/>
+    <path d="M1016 712 L1050 676" class="stroke-ink" stroke-width="2.2" fill="none"/>
+  </g></g>
+
+  <!-- бамбук (работа) -->
+  <g class="L bamboo" filter="url(#ink)" stroke-linecap="round" fill="none">
+    <path class="stroke-ink" stroke-width="11" d="M70 900 L76 90"/><path class="stroke-ink" stroke-width="8" d="M128 900 L118 170"/><path class="stroke-ink" stroke-width="6" d="M168 900 L176 300"/>
+    <g class="stroke-paper" stroke-width="2.5"><path d="M64 720 L84 720"/><path d="M66 520 L86 520"/><path d="M68 320 L86 320"/><path d="M110 640 L128 640"/><path d="M112 420 L128 420"/><path d="M168 600 L184 600"/></g>
+    <g class="fill-leaf" stroke="none" opacity=".8">
+      <path d="M84 300 C130 290 170 300 200 318 C160 318 120 316 84 300 Z"/><path d="M84 330 C120 350 150 380 166 410 C130 390 100 370 84 330 Z"/>
+      <path d="M122 420 C170 404 214 410 246 426 C204 430 160 432 122 420 Z"/><path d="M80 520 C40 512 10 520 -10 534 C24 536 56 534 80 520 Z"/>
+      <path d="M176 330 C214 320 246 326 270 340 C238 344 204 344 176 330 Z"/>
+    </g>
+  </g>
+
+  <!-- ветка ивы -->
+  <g class="L willow" fill="none" stroke-linecap="round" transform="translate(0 46)">
+    <path class="stroke-ink" stroke-width="9" filter="url(#ink)" d="M1460 0 C1400 30 1340 18 1276 48 C1226 72 1186 66 1132 92 C1110 102 1096 104 1084 110"/>
+    <path class="stroke-ink" stroke-width="4" filter="url(#ink)" d="M1330 26 C1360 50 1372 74 1376 96"/>
+    <g class="strands">
+      <g class="strand-g s1"><path class="stem" d="M1404 22 C1394 148.0 1412 274.0 1399 382"/><path class="leaves" d="M1404 22 C1394 148.0 1412 274.0 1399 382"/></g><g class="strand-g s2"><path class="stem" d="M1378 28 C1392 178.5 1366 329.0 1385 458"/><path class="leaves" d="M1378 28 C1392 178.5 1366 329.0 1385 458"/></g><g class="strand-g s3"><path class="stem" d="M1350 30 C1334 145.5 1360 261.0 1342 360"/><path class="leaves" d="M1350 30 C1334 145.5 1360 261.0 1342 360"/></g><g class="strand-g s1"><path class="stem" d="M1322 38 C1332 202.5 1308 367.0 1327 508"/><path class="leaves" d="M1322 38 C1332 202.5 1308 367.0 1327 508"/></g><g class="strand-g s2"><path class="stem" d="M1292 48 C1280 181.0 1304 314.0 1286 428"/><path class="leaves" d="M1292 48 C1280 181.0 1304 314.0 1286 428"/></g><g class="strand-g s3"><path class="stem" d="M1262 58 C1278 233.0 1252 408.0 1270 558"/><path class="leaves" d="M1262 58 C1278 233.0 1252 408.0 1270 558"/></g><g class="strand-g s1"><path class="stem" d="M1232 68 C1222 190.5 1246 313.0 1227 418"/><path class="leaves" d="M1232 68 C1222 190.5 1246 313.0 1227 418"/></g><g class="strand-g s2"><path class="stem" d="M1202 74 C1214 221.0 1190 368.0 1208 494"/><path class="leaves" d="M1202 74 C1214 221.0 1190 368.0 1208 494"/></g><g class="strand-g s3"><path class="stem" d="M1172 82 C1158 187.0 1182 292.0 1165 382"/><path class="leaves" d="M1172 82 C1158 187.0 1182 292.0 1165 382"/></g><g class="strand-g s1"><path class="stem" d="M1146 90 C1156 177.5 1138 265.0 1151 340"/><path class="leaves" d="M1146 90 C1156 177.5 1138 265.0 1151 340"/></g><g class="strand-g s2"><path class="stem" d="M1420 16 C1428 114.0 1414 212.0 1424 296"/><path class="leaves" d="M1420 16 C1428 114.0 1414 212.0 1424 296"/></g>
+    </g>
+  </g>
+  <!-- Отношения: два путника у реки в тумане -->
+  <g class="L travelers fill-ink">
+    <g transform="translate(1168 632)"><circle cx="0" cy="-22" r="3.2"/><path d="M-4 -18 L4 -18 L6 0 L-6 0 Z"/><path d="M-7 -24 L7 -24 L0 -31 Z"/></g>
+    <g transform="translate(1184 634)"><circle cx="0" cy="-20" r="3"/><path d="M-3.5 -16 L3.5 -16 L6.5 0 L-6.5 0 Z"/></g>
+    <path class="stroke-ink" stroke-width="1" fill="none" d="M1120 636 C1160 634 1210 636 1260 634"/>
+  </g>
+
+  <!-- Работа: туманная тропа в горах, путник с посохом, меч тушью -->
+  <g class="L trail" fill="none" stroke-linecap="round">
+    <path class="stroke-ink" stroke-width="1.6" stroke-dasharray="2 7" d="M1090 660 C1130 630 1110 600 1150 572 C1190 546 1170 516 1210 492 C1240 474 1236 452 1262 436"/>
+    <g class="fill-ink" transform="translate(1262 436)"><circle cx="0" cy="-14" r="2.6"/><path d="M-3 -11 L3 -11 L4.5 0 L-4.5 0 Z"/><path class="stroke-ink" stroke-width="1.2" d="M5 -12 L9 2"/></g>
+  </g>
+  <g class="L sword" fill="none" stroke-linecap="round" filter="url(#ink)">
+    <path class="stroke-ink" stroke-width="5" d="M1392 150 C1398 260 1400 380 1394 520"/>
+    <path class="stroke-ink" stroke-width="1.2" d="M1386 150 C1392 260 1394 380 1388 520"/>
+    <ellipse class="fill-ink" cx="1394" cy="530" rx="15" ry="4"/>
+    <path class="stroke-ink" stroke-width="7" d="M1394 536 L1394 600"/>
+  </g>
+
+  <!-- Решения: колокольчики фурин на ветке ивы -->
+  <g class="L furin" fill="none" stroke-linecap="round">
+    <g transform="translate(1250 108)">
+      <path class="stroke-ink" stroke-width="1" d="M0 0 L0 40"/>
+      <path class="fill-glass" d="M-13 62 C-13 46 -7 40 0 40 C7 40 13 46 13 62 Z"/>
+      <path class="stroke-ink" stroke-width="1" d="M-13 62 L13 62"/>
+      <path class="stroke-ink" stroke-width="1" d="M0 62 L0 76"/>
+      <path class="fill-lotus-soft" d="M-6 76 L6 76 L8 118 L-4 120 Z"/>
+    </g>
+    <g transform="translate(1196 118) scale(.8)">
+      <path class="stroke-ink" stroke-width="1" d="M0 0 L0 52"/>
+      <path class="fill-glass" d="M-13 74 C-13 58 -7 52 0 52 C7 52 13 58 13 74 Z"/>
+      <path class="stroke-ink" stroke-width="1" d="M0 74 L0 88"/>
+      <path class="fill-lotus-soft" d="M-6 88 L6 88 L7 126 L-5 128 Z"/>
+    </g>
+  </g>
+
+  <!-- Решения: солнце — тёплый восход, отражение в воде (по аналогии с луной в «Психологии») -->
+  <g class="L sun">
+    <circle cx="1170" cy="200" r="92" class="fill-sun"/>
+    <circle cx="1170" cy="200" r="92" class="stroke-sun" stroke-width="1" fill="none" opacity=".35"/>
+    <g class="sun-reflection"><ellipse cx="1150" cy="770" rx="70" ry="11" class="fill-sun"/><path class="stroke-paper" stroke-width="3" d="M1086 770 L1214 770"/></g>
+  </g>
+
+  <!-- Психология: обезьяна ловит отражение луны (энко сокугэцу) -->
+  <g class="L moon">
+    <circle cx="1170" cy="200" r="92" class="fill-moon"/>
+    <circle cx="1170" cy="200" r="92" class="stroke-ink" stroke-width="1" fill="none" opacity=".35"/>
+    <g class="moon-reflection"><ellipse cx="1150" cy="770" rx="70" ry="11" class="fill-moon"/><path class="stroke-paper" stroke-width="3" d="M1086 770 L1214 770"/></g>
+  </g>
+  <g class="L monkey" fill="none" stroke-linecap="round" filter="url(#ink)">
+    <path class="stroke-ink" stroke-width="8" d="M1450 300 C1380 312 1320 330 1262 372 C1230 396 1206 404 1180 410"/>
+    <path class="stroke-ink" stroke-width="3" d="M1330 326 C1350 300 1372 290 1396 286"/>
+    <g class="fill-ink" stroke="none">
+      <ellipse cx="1214" cy="440" rx="13" ry="20" transform="rotate(-20 1214 440)"/>
+      <circle cx="1202" cy="468" r="8"/>
+    </g>
+    <path class="stroke-ink" stroke-width="3" d="M1222 422 C1226 410 1228 404 1230 398"/>
+    <path class="stroke-ink" stroke-width="2.6" d="M1200 476 C1190 560 1170 650 1158 740"/>
+    <path class="stroke-ink" stroke-width="2.4" d="M1222 456 C1236 470 1240 486 1236 500"/>
+  </g>
+
+  <!-- мазки сумиэ -->
+  <g class="L strokes" fill="none" stroke-linecap="round" filter="url(#wash)">
+    <path class="brush b1" d="M40 330 C260 280 520 310 780 262"/>
+    <path class="brush b2" d="M760 150 C960 120 1120 150 1300 118"/>
+  </g>
+
+  <!-- дождь -->
+  <g class="L rain"><rect class="rain-sheet" x="-100" y="-200" width="1700" height="1300" fill="url(#rainP)"/></g>
+</svg>
+
+<!-- Творчество: цветущий сад — сакура над интерфейсом, девушка с флейтой и лотосы у правого края -->
+<div class="creative-art" aria-hidden="true">
+  <svg class="sakura-canopy" viewBox="0 0 1440 400" preserveAspectRatio="xMinYMin slice" aria-hidden="true">
+    <defs><symbol id="bloom" viewBox="-12 -12 24 24">
+      <g class="bloom-petals"><ellipse cx="0" cy="-6" rx="4" ry="6"/><ellipse cx="0" cy="-6" rx="4" ry="6" transform="rotate(72)"/><ellipse cx="0" cy="-6" rx="4" ry="6" transform="rotate(144)"/><ellipse cx="0" cy="-6" rx="4" ry="6" transform="rotate(216)"/><ellipse cx="0" cy="-6" rx="4" ry="6" transform="rotate(288)"/></g>
+      <circle r="1.8" class="bloom-heart"/>
+    </symbol></defs>
+    <g class="branches" fill="none" stroke-linecap="round" filter="url(#ink)"><path class="branch trunk" stroke-width="26" d="M-10 400 C30 330 22 250 60 190 C96 132 92 80 140 40 C170 16 200 8 240 0"/><path class="branch b1" stroke-width="9" d="M70 180 C170 150 260 160 360 120 C450 86 540 96 640 70 C700 54 760 58 820 40"/><path class="branch b2" stroke-width="6" d="M360 122 C400 160 470 176 540 168 C600 160 650 176 700 200"/><path class="branch b3" stroke-width="5" d="M640 70 C700 92 780 96 860 84 C930 74 990 84 1040 104"/><path class="branch b4" stroke-width="4" d="M120 60 C200 70 270 52 340 30"/><path class="branch b5" stroke-width="3" d="M540 168 C560 200 600 214 640 220"/><path class="branch b6" stroke-width="3" d="M860 84 C900 60 950 52 1000 54"/></g>
+    <g class="blooms"><use href="#bloom" x="133" y="140" width="19" height="19"/><use href="#bloom" x="120" y="146" width="36" height="36"/><use href="#bloom" x="197" y="152" width="19" height="19"/><use href="#bloom" x="220" y="132" width="31" height="31"/><use href="#bloom" x="248" y="136" width="24" height="24"/><use href="#bloom" x="293" y="111" width="36" height="36"/><use href="#bloom" x="330" y="110" width="36" height="36"/><use href="#bloom" x="397" y="81" width="24" height="24"/><use href="#bloom" x="436" y="73" width="31" height="31"/><use href="#bloom" x="498" y="87" width="26" height="26"/><use href="#bloom" x="497" y="67" width="36" height="36"/><use href="#bloom" x="569" y="55" width="36" height="36"/><use href="#bloom" x="558" y="78" width="19" height="19"/><use href="#bloom" x="637" y="61" width="36" height="36"/><use href="#bloom" x="638" y="69" width="26" height="26"/><use href="#bloom" x="700" y="44" width="26" height="26"/><use href="#bloom" x="687" y="59" width="24" height="24"/><use href="#bloom" x="681" y="30" width="36" height="36"/><use href="#bloom" x="759" y="38" width="31" height="31"/><use href="#bloom" x="752" y="53" width="19" height="19"/><use href="#bloom" x="814" y="31" width="24" height="24"/><use href="#bloom" x="397" y="151" width="31" height="31"/><use href="#bloom" x="396" y="163" width="19" height="19"/><use href="#bloom" x="472" y="171" width="26" height="26"/><use href="#bloom" x="479" y="164" width="31" height="31"/><use href="#bloom" x="513" y="148" width="31" height="31"/><use href="#bloom" x="574" y="164" width="26" height="26"/><use href="#bloom" x="646" y="176" width="31" height="31"/><use href="#bloom" x="650" y="154" width="31" height="31"/><use href="#bloom" x="648" y="157" width="36" height="36"/><use href="#bloom" x="703" y="177" width="24" height="24"/><use href="#bloom" x="680" y="93" width="24" height="24"/><use href="#bloom" x="693" y="78" width="31" height="31"/><use href="#bloom" x="738" y="84" width="31" height="31"/><use href="#bloom" x="796" y="90" width="31" height="31"/><use href="#bloom" x="805" y="86" width="31" height="31"/><use href="#bloom" x="876" y="65" width="24" height="24"/><use href="#bloom" x="857" y="63" width="24" height="24"/><use href="#bloom" x="922" y="48" width="31" height="31"/><use href="#bloom" x="922" y="59" width="26" height="26"/><use href="#bloom" x="975" y="71" width="36" height="36"/><use href="#bloom" x="1026" y="78" width="36" height="36"/><use href="#bloom" x="1009" y="88" width="36" height="36"/><use href="#bloom" x="153" y="48" width="31" height="31"/><use href="#bloom" x="134" y="51" width="31" height="31"/><use href="#bloom" x="137" y="48" width="19" height="19"/><use href="#bloom" x="222" y="47" width="19" height="19"/><use href="#bloom" x="215" y="61" width="19" height="19"/><use href="#bloom" x="252" y="42" width="24" height="24"/><use href="#bloom" x="327" y="29" width="19" height="19"/><use href="#bloom" x="541" y="189" width="31" height="31"/><use href="#bloom" x="592" y="195" width="36" height="36"/><use href="#bloom" x="607" y="207" width="19" height="19"/><use href="#bloom" x="899" y="48" width="31" height="31"/><use href="#bloom" x="951" y="32" width="24" height="24"/><use href="#bloom" x="937" y="52" width="26" height="26"/><use href="#bloom" x="948" y="45" width="24" height="24"/><use href="#bloom" x="984" y="47" width="26" height="26"/><use href="#bloom" x="67" y="114" width="36" height="36"/><use href="#bloom" x="93" y="118" width="19" height="19"/><use href="#bloom" x="84" y="180" width="26" height="26"/><use href="#bloom" x="70" y="187" width="36" height="36"/></g>
+    <g class="buds"><circle cx="162" cy="163" r="3"/><circle cx="244" cy="175" r="2"/><circle cx="345" cy="141" r="2.5"/><circle cx="454" cy="103" r="3"/><circle cx="591" cy="95" r="3"/><circle cx="681" cy="66" r="2.5"/><circle cx="820" cy="54" r="2"/><circle cx="498" cy="187" r="2.5"/><circle cx="602" cy="179" r="2"/><circle cx="694" cy="209" r="2"/><circle cx="770" cy="109" r="2.5"/><circle cx="873" cy="97" r="3"/><circle cx="1019" cy="109" r="2"/><circle cx="170" cy="86" r="3"/><circle cx="282" cy="68" r="3"/><circle cx="545" cy="219" r="3"/><circle cx="887" cy="84" r="2.5"/><circle cx="992" cy="71" r="2"/><circle cx="97" cy="220" r="3"/></g>
+  </svg>
+  <svg class="flute-girl lotus-edge" viewBox="0 560 420 200" preserveAspectRatio="xMaxYMax meet" aria-hidden="true">
+    <defs>
+      <radialGradient id="lotusPetal" cx=".5" cy=".95" r=".95"><stop offset="0" class="st-lotus-deep"/><stop offset="1" class="st-lotus" stop-opacity=".5"/></radialGradient>
+    </defs>
+    <g class="g-leaves" filter="url(#ink)">
+      <ellipse cx="120" cy="712" rx="150" ry="40" transform="rotate(-4 120 712)"/>
+      <ellipse cx="360" cy="690" rx="120" ry="34" transform="rotate(6 360 690)"/>
+      <ellipse cx="300" cy="744" rx="150" ry="30"/>
+    </g>
+    <g class="g-lotus" transform="translate(150 690)">
+      <path d="M0 -70 C20 -46 20 -14 0 0 C-20 -14 -20 -46 0 -70 Z"/><path transform="rotate(-36)" d="M0 -62 C18 -40 18 -12 0 0 C-18 -12 -18 -40 0 -62 Z"/>
+      <path transform="rotate(36)" d="M0 -62 C18 -40 18 -12 0 0 C-18 -12 -18 -40 0 -62 Z"/><path transform="rotate(-70)" d="M0 -50 C14 -32 14 -10 0 0 C-14 -10 -14 -32 0 -50 Z"/>
+      <path transform="rotate(70)" d="M0 -50 C14 -32 14 -10 0 0 C-14 -10 -14 -32 0 -50 Z"/>
+    </g>
+    <g class="g-lotus" transform="translate(340 676) scale(.8)">
+      <path d="M0 -70 C20 -46 20 -14 0 0 C-20 -14 -20 -46 0 -70 Z"/><path transform="rotate(-36)" d="M0 -62 C18 -40 18 -12 0 0 C-18 -12 -18 -40 0 -62 Z"/>
+      <path transform="rotate(36)" d="M0 -62 C18 -40 18 -12 0 0 C-18 -12 -18 -40 0 -62 Z"/>
+    </g>
+    <path class="g-lotus" transform="translate(52 676) rotate(-8) scale(.55)" d="M0 -70 C22 -44 22 -12 0 0 C-22 -12 -22 -44 0 -70 Z"/>
+    <path class="g-lotus" transform="translate(396 610) rotate(14) scale(.5)" d="M0 -70 C22 -44 22 -12 0 0 C-22 -12 -22 -44 0 -70 Z"/>
+  </svg>
+  </div>
+<svg class="lotus-layer" viewBox="0 640 560 260" preserveAspectRatio="xMinYMax meet" aria-hidden="true">
+  <defs><radialGradient id="petalG" cx=".5" cy=".9" r=".9"><stop offset="0" class="st-lotus-deep"/><stop offset="1" class="st-lotus" stop-opacity=".55"/></radialGradient></defs>
+  <g class="lotus">
+    <g filter="url(#ink)">
+      <ellipse class="fill-leaf" opacity=".75" cx="130" cy="830" rx="150" ry="52" transform="rotate(-6 130 830)"/>
+      <ellipse class="fill-leaf" opacity=".6" cx="360" cy="872" rx="160" ry="44" transform="rotate(4 360 872)"/>
+      <ellipse class="fill-leaf" opacity=".5" cx="40" cy="740" rx="90" ry="34" transform="rotate(-12 40 740)"/>
+      <g class="stroke-ink" stroke-width="1.2" opacity=".5"><path d="M130 830 L40 818"/><path d="M130 830 L210 812"/><path d="M130 830 L150 870"/><path d="M360 872 L470 864"/><path d="M360 872 L260 870"/></g>
+      <path class="stroke-leaf" stroke-width="3" fill="none" d="M232 812 C228 780 226 760 230 742"/>
+      <path class="stroke-leaf" stroke-width="2.4" fill="none" d="M400 860 C404 830 402 812 398 796"/>
+    </g>
+    <g class="flower" transform="translate(230 742)">
+      <path fill="url(#petalG)" d="M0 -58 C16 -38 16 -12 0 0 C-16 -12 -16 -38 0 -58 Z"/>
+      <path fill="url(#petalG)" transform="rotate(-34)" d="M0 -52 C14 -34 14 -10 0 0 C-14 -10 -14 -34 0 -52 Z"/>
+      <path fill="url(#petalG)" transform="rotate(34)" d="M0 -52 C14 -34 14 -10 0 0 C-14 -10 -14 -34 0 -52 Z"/>
+      <path fill="url(#petalG)" opacity=".8" transform="rotate(-66)" d="M0 -44 C12 -28 12 -8 0 0 C-12 -8 -12 -28 0 -44 Z"/>
+      <path fill="url(#petalG)" opacity=".8" transform="rotate(66)" d="M0 -44 C12 -28 12 -8 0 0 C-12 -8 -12 -28 0 -44 Z"/>
+    </g>
+    <g class="flower" transform="translate(398 796) scale(.6)">
+      <path fill="url(#petalG)" d="M0 -58 C16 -38 16 -12 0 0 C-16 -12 -16 -38 0 -58 Z"/>
+      <path fill="url(#petalG)" transform="rotate(-30)" d="M0 -50 C14 -32 14 -10 0 0 C-14 -10 -14 -32 0 -50 Z"/>
+      <path fill="url(#petalG)" transform="rotate(30)" d="M0 -50 C14 -32 14 -10 0 0 C-14 -10 -14 -32 0 -50 Z"/>
+    </g>
+    <path fill="url(#petalG)" transform="translate(70 712) rotate(12) scale(.45)" d="M0 -58 C20 -36 20 -10 0 0 C-20 -10 -20 -36 0 -58 Z"/>
+  </g>
+</svg>
+<svg class="koi-def" width="0" height="0" aria-hidden="true"><defs><symbol id="koiShape" viewBox="0 0 90 40"><path d="M6 20 C20 6 52 6 66 18 C70 21 70 23 66 24 C52 34 20 34 6 20 Z"/><path d="M64 21 C74 12 84 8 88 6 C84 14 84 26 88 34 C84 32 74 28 64 21 Z"/><path d="M30 12 C34 6 40 4 44 4 C42 8 40 11 38 13 Z"/></symbol></defs></svg>
+<div class="koi-orbit o1" aria-hidden="true"><svg class="koi" viewBox="0 0 90 40"><use href="#koiShape"/></svg></div>
+<div class="koi-orbit o2" aria-hidden="true"><svg class="koi k2" viewBox="0 0 90 40"><use href="#koiShape"/></svg></div>
+
+<canvas id="petal-canvas" aria-hidden="true"></canvas>
+
+<div id="scene-probe" hidden data-world="lotus"></div>
+
+<div class="shell">
+  <header class="topbar">
+    <a class="brand" href="#ask">
+      <svg class="enso" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="100 13" transform="rotate(-70 24 24)"/></svg>
+      <span class="wordmark">Arcana<small>рефлексивное таро</small></span>
+    </a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#ask">Расклад</a>
+      <a href="#spreads">Все расклады</a>
+      <a href="#practices">Практики</a>
+      <a href="#about">О проекте</a>
+      <button type="button" class="theme-switch" id="theme-switch" aria-pressed="false">Ночная тушь</button>
+    </nav>
+  </header>
+  <main id="app"></main>
+  <footer class="site-foot">
+    <figure class="candle">
+      <svg viewBox="0 0 24 40" aria-hidden="true"><path d="M12 3c3 4 4.6 6.6 4.6 9.2A4.6 4.6 0 0 1 12 17a4.6 4.6 0 0 1-4.6-4.8C7.4 9.6 9 7 12 3Z"/><path d="M12 17v3M8.5 22h7v14h-7z"/></svg>
+      <blockquote id="candle-q"></blockquote>
+      <figcaption id="candle-by"></figcaption>
+    </figure>
+    <p class="indep" id="indep"></p>
+  </footer>
+</div>
+<script src="../vendor/astronomy.browser.min.js"></script>
+<script type="module" src="./app.mjs"></script>
+</body>
+</html>

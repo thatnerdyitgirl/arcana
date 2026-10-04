@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Двойка Мечей">
+<title>Двойка Мечей</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path class="mist" d="M10 130h100v40H10z" stroke="none"/>
+<path d="M10 130h100M18 140q10-4 20 0t20 0t20 0t20 0" stroke-width=".8"/>
+<path class="sun" d="M88 48a14 14 0 1 0 12 20a11 11 0 1 1-12-20z" stroke="none"/>
+<path d="M88 48a14 14 0 1 0 12 20a11 11 0 1 1-12-20z"/>
+<circle cx="60" cy="68" r="7"/><path d="M52 66h16" stroke-width="2"/>
+<path d="M60 75v8l-14 14v24M60 83l14 14v24M46 121h28M52 150v-26M68 150v-26" />
+<path class="wash" d="M46 97h28l4 28H42z" stroke="none"/>
+<path d="M36 50l48 58M84 50l-48 58M32 46l8 8M88 46l-8 8M80 104l8 8M40 104l-8 8"/>
+<path d="M36 150h48M40 150v18M80 150v18"/>
+</g>
+</svg>

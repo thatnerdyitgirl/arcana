@@ -1,0 +1,17 @@
+{
+  "question": "Мы вместе три года, но я чувствую себя одинокой рядом с ним. Что мне важно увидеть?",
+  "topic": "relationships",
+  "spread": {
+    "name": "Что мне важно увидеть сейчас?",
+    "positions": [
+      { "name": "Что я сейчас не замечаю?", "type": "blind_spot" },
+      { "name": "Что влияет на ситуацию?", "type": "influence" },
+      { "name": "Что мне поможет?", "type": "resource" }
+    ]
+  },
+  "cards": [
+    { "id": "MANARA_MAJOR_09" },
+    { "id": "MANARA_EARTH_KING" },
+    { "id": "MANARA_MAJOR_14" }
+  ]
+}

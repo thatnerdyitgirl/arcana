@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Колесо Фортуны"><title>Колесо Фортуны</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<circle class="wash" cx="60" cy="102" r="26" stroke="none"/>
+<circle cx="60" cy="102" r="26" stroke-width="1.6"/><circle cx="60" cy="102" r="17" stroke-width="1"/><circle class="sun" cx="60" cy="102" r="5" stroke="none"/>
+<path d="M60 76V128M34 102H86M42 84L78 120M42 120L78 84" stroke-width="1"/>
+<path d="M52 56h16M54 56q-2-10 6-14q8 4 6 14M60 42V36M68 54L84 36" stroke-width="1.2"/><path d="M60 46l-6-8M60 46l6-8" stroke-width="1"/>
+<path d="M24 76q-8 10 0 20t0 20q-8 8 0 16" stroke-width="1.2"/><path d="M24 76l-4-2" stroke-width="1.2"/>
+<path d="M92 136V120l6-8 4 6M96 112l-2-8M100 112l4-6M92 136h12" stroke-width="1.2"/>
+<path d="M14 22h12M14 26q6-6 12 0M94 22h12M94 26q6-6 12 0M14 178h12M14 174q6 6 12 0M94 178h12M94 174q6 6 12 0" stroke-width="1"/>
+
+</g></svg>

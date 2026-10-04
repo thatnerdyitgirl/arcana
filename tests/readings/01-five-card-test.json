@@ -1,0 +1,21 @@
+{
+  "question": "Почему я снова застряла в одних и тех же отношениях и что мне с этим делать?",
+  "topic": "relationships",
+  "spread": {
+    "name": "Тестовый расклад «Ситуация» (5 карт)",
+    "positions": [
+      { "name": "Что происходит", "type": "present" },
+      { "name": "Что я не замечаю", "type": "blind_spot" },
+      { "name": "Что мешает", "type": "obstacle" },
+      { "name": "Что помогает", "type": "resource" },
+      { "name": "Возможное развитие", "type": "tendency" }
+    ]
+  },
+  "cards": [
+    { "id": "MANARA_MAJOR_17" },
+    { "id": "MANARA_AIR_06" },
+    { "id": "MANARA_WATER_QUEEN" },
+    { "id": "MANARA_FIRE_06" },
+    { "id": "MANARA_MAJOR_09" }
+  ]
+}

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Мир">
+<title>Мир</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<ellipse class="leaf" cx="60" cy="100" rx="30" ry="48" stroke="none"/>
+<ellipse cx="60" cy="100" rx="30" ry="48"/><ellipse cx="60" cy="100" rx="25" ry="43" stroke-width="0.8"/>
+<path d="M45 62l-4 6M75 62l4 6M38 100h-4M82 100h4M45 138l-4-6M75 138l4-6" stroke-width="0.9"/>
+<circle cx="60" cy="78" r="5"/><path d="M60 83q-2 14 0 24M60 90l-12 6M60 90l12-8M48 96l-6 2M72 82l8-6M60 107l-8 18M60 107l12 8M72 115l-3 10"/>
+<path class="rose" d="M60 83q-6 12 -2 26q4 6 8 2q4-12-6-28z" stroke="none"/>
+<path d="M44 108l-8 6M76 100l8-6M40 98l8 10M80 106l8-10" stroke-width="1.6"/>
+<path d="M14 30q6-8 14-4l2 8-8 4zM92 26q8-6 14 2l-2 8-10-2zM14 168q4-8 14-6l-2 12h-10zM92 162h14q2 8-4 12h-12z"/>
+<path d="M14 36l-2 6M106 30l2 6M20 170v8M100 168v10" stroke-width="1"/>
+</g>
+</svg>

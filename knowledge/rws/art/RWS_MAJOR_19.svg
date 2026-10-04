@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Солнце">
+<title>Солнце</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<circle class="sun" cx="60" cy="40" r="20" stroke="none"/>
+<circle cx="60" cy="40" r="14"/><path d="M52 38h3M65 38h3M54 46q6 4 12 0"/>
+<path d="M60 16v-4M60 68v-4M36 40h-4M88 40h-4M43 23l-3-3M77 23l3-3M43 57l-3 3M77 57l3 3M48 18l-2-3M72 18l2-3M48 62l-2 3M72 62l2 3" stroke-width="1"/>
+<path d="M10 118h100M10 118V108M110 118V108" stroke-width="1"/>
+<path d="M22 118V100M36 118V96M84 118V98M98 118V102"/>
+<circle class="sun" cx="22" cy="96" r="4" stroke="none"/><circle class="sun" cx="36" cy="92" r="4" stroke="none"/><circle class="sun" cx="84" cy="94" r="4" stroke="none"/><circle class="sun" cx="98" cy="98" r="4" stroke="none"/>
+<path d="M30 168q-2-20 6-30q6-6 16-4q10 2 18 12q6 8 6 22M36 138q-6-8-4-14M42 188v-20M72 188v-20M30 168h46" />
+<path class="wash" d="M30 168q-2-20 6-30q10-2 16 2l24 30z" stroke="none"/>
+<circle cx="56" cy="124" r="4"/><path d="M56 128v12M56 134l-8 4M56 134l8-8M64 126V108" />
+<path class="rose" d="M64 108h14l-3 4 3 4H64z" stroke="none"/><path d="M64 108h14l-3 4 3 4H64"/>
+</g>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 200" role="img" aria-label="Отшельник"><title>Отшельник</title>
+<g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+<path class="wash" d="M16 188L60 142 104 188Z" stroke="none"/><path d="M16 188L60 142 104 188"/>
+<path class="mist" d="M60 52C46 70 42 120 38 146H82C78 120 74 70 60 52Z" stroke="none"/>
+<path d="M60 50C46 70 42 120 38 146H82C78 120 74 70 60 50ZM52 66Q60 76 68 66"/>
+<path d="M52 86Q42 80 40 66"/><path d="M68 90L86 100M86 52V148" stroke-width="1.6"/>
+<path d="M34 54h12v12H34zM37 54q3-5 6 0"/>
+<circle class="sun" cx="40" cy="60" r="12" stroke="none"/>
+<path d="M40 56v8M36 60h8" stroke-width=".9"/>
+
+</g></svg>
