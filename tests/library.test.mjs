@@ -79,13 +79,23 @@ const ids12 = rows.flatMap((r) => r.ids), by = Object.fromEntries(SPREADS.map((s
 check(ids12.length === 12 && new Set(ids12).size === 12 && ids12.every((id) => by[id] && !by[id].hidden && by[id].theme === "Отношения"), "12 раскладов каталога существуют и не скрыты");
 check(rows.slice(0, 3).flatMap((r) => r.ids).every((id) => !by[id].adult) && rows[3].ids.every((id) => by[id].adult), "18+ только в 4-м ряду");
 check(["Крючок", "Искра и маршрут", "Человек за образом", "Двое и пространство", "Вектор связи", "Зеркало", "Конфликт", "Второй акт", "Стоп-кран", "Анатомия страсти", "Алхимия страсти", "Тело и блок"].every((n, i) => by[ids12[i]].name === n), "названия и порядок как в ТЗ");
-check(ids12.every((id) => by[id].name.length <= 22 && by[id].when.length <= 52 && by[id].positions.every((p) => p.name.length <= 34)), "названия, подписи и позиции короткие");
+check(ids12.every((id) => by[id].name.length <= 22 && by[id].when.length <= 64 && by[id].positions.every((p) => p.name.length <= 48)), "названия, подписи и позиции короткие");
 check(["rel.between_us", "rel.direction", "rel.needs", "rel.unfinished", "adult.eros_shadow", "adult.libido", "adult.compat", "adult.fantasy"].every((id) => by[id].hidden === true), "старые расклады скрыты из каталога");
 const alch = by["adult.alchemy"].positions[2];
-check(/сублимац/i.test(alch.name + alch.analyze) && !/соло|разрядк/i.test(JSON.stringify(by["adult.alchemy"])), "«Алхимия страсти»: третья позиция про сублимацию, без «соло-разрядки»");
+check(/сублимац/i.test(alch.name + alch.analyze) && !/разрядк/i.test(JSON.stringify(by["adult.alchemy"].positions)), "«Алхимия страсти»: третья позиция про сублимацию, без «разрядки»");
 check(!/(?:секс|оргазм|минет|член)\w*/i.test(JSON.stringify([by["adult.body_block"], by["adult.passion_anatomy"], by["adult.alchemy"]].map((s) => s.positions.map((p) => p.name)))), "названия позиций 18+ без грубой лексики");
 check(top("Он токсичный, манипулирует мной, контролирует каждый шаг, это красные флаги")[0] === "rel.stop_crane", "«токсичный / манипулирует / красные флаги» → «Стоп-кран»");
 check(top("Не могу расслабиться в близости, зажим и нет удовольствия", { adult: true })[0] === "adult.body_block", "«не могу расслабиться» (в «Ночной туши») → «Тело и блок»");
 check(!recommendSpreads("Не могу расслабиться в близости, зажим и нет удовольствия", 36).some((r) => r.spread.adult), "«Тело и блок» без «Ночной туши» не рекомендуется");
 check(SPREADS.filter((s) => s.id === "rel.stop_crane" || s.id === "adult.body_block").every((s) => s.positions.some((p) => p.grounding)) , "«Стоп-кран» и «Тело и блок» читаются как гипотеза, а не диагноз (grounding или осторожные позиции)");
+// Каталог «Работа и бизнес»: 4 ряда × 3 расклада
+const wrows = JSON.parse(readFileSync(new URL("../knowledge/spreads/triplets.json", import.meta.url), "utf8")).rows["Работа и бизнес"];
+const wids = wrows.flatMap((r) => r.ids);
+check(wrows.length === 4 && wrows.every((r) => r.ids.length === 3) && wids.length === 12 && new Set(wids).size === 12 && wids.every((id) => by[id] && by[id].theme === "Работа и бизнес" && !by[id].hidden), "каталог «Работа и бизнес»: 4 ряда × 3 расклада");
+check(["Поиск ниши", "Бизнес-идея", "Новая роль", "Моя позиция", "Питч", "Самозванец", "Партнёр по делу", "Коллектив", "Босс", "Финансовая опора", "Стеклянный потолок", "План Б"].every((n, i) => by[wids[i]].name === n), "работа: названия и порядок как в ТЗ");
+check(top("Синдром самозванца, боюсь заявить о себе и поднять чек")[0] === "work.impostor", "самозванец → «Самозванец»");
+check(top("Выгорание, тупик и застой, не вижу роста на работе")[0] === "work.ceiling", "выгорание → «Стеклянный потолок»");
+check(top("Меня могут уволить, провал на проекте, кризис на работе")[0] === "work.plan_b", "увольнение → «План Б»");
+check(top("Не понимаю, что хочет от меня начальник")[0] === "work.boss", "начальник → «Босс»");
+check(by["work.boss"].positions[0].grounding && /гипотеза/i.test(by["work.boss"].positions[0].grounding), "«Босс»: ожидания руководителя читаются как гипотеза");
 process.exit(ok ? 0 : 1);

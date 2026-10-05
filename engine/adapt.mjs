@@ -41,7 +41,7 @@ const STATE_MARKERS = {
 // Если в тексте нет явного субъекта, берём типичного для расклада
 const SPREAD_SUBJECT = {
   "rel.new_person": "new_person", "rel.true_face": "new_person", "rel.why_this_person": "new_person", "rel.attraction": "crush",
-  "rel.second_act": "ex", "rel.unfinished": "ex", "rel.stop_crane": "partner", "rel.vector": "partner", "work.partner": "business_partner", "work.team_climate": "team", "rel.conflict": "other",
+  "rel.second_act": "ex", "rel.unfinished": "ex", "rel.stop_crane": "partner", "rel.vector": "partner", "work.boss": "boss", "work.impostor": "self", "work.ceiling": "self", "work.plan_b": "self", "work.partner": "business_partner", "work.team_climate": "team", "rel.conflict": "other",
 };
 
 const SUBJECT_LABEL = { self: "внутренний процесс", new_person: "новый человек", partner: "текущий партнёр", ex: "бывший партнёр", future_partner: "возможный будущий партнёр", crush: "человек, который притягивает",
@@ -55,18 +55,18 @@ const BASE_STATE = { self: "inner_process", new_person: "new_relationship", part
 // ---------- намерение позиции ----------
 
 const INTENT_RULES = [
-  [/за (этим )?образ|скрыто|глубже всего|не показываю|приписыва|может оставаться|в тени|стоит за/, "hidden"],
-  [/показывает мне|проявляет|образ/, "shows"],
+  [/за (этим )?образ|за кадром|скрыт|глубже всего|не показываю|не замечаю|приписыва|может оставаться|в тени|стоит за/, "hidden"],
+  [/показывает|проявление|проявляет|образ/, "shows"],
   [/притягива|цепляет|зажигает|запускает притяжени/, "attraction"],
   [/осталось|незаверш|ещё живо/, "remains"],
-  [/зачем|почему|пробудила|пробуждает|отражает|чему меня|что она отражает/, "meaning"],
-  [/куда|вероятн|потенциал|сценарий|маршрут|развити|движется|вынести|дальше/, "trend"],
+  [/зачем|почему|пробудила|пробуждает|отражает|чему меня|урок/, "meaning"],
+  [/куда|вероятн|потенциал|сценарий|маршрут|развити|движется|вынести|дальше|итог|если ничего не менять/, "trend"],
   [/получить|получу|выгод|дала/, "gain"],
-  [/мешает|тормозит|переступить|риск|напряжени|граница/, "obstacle"],
+  [/мешает|тормозит|переступить|риск|напряжени|граница|границ|манипуляц|обман|блокирует|уязвим/, "obstacle"],
   [/чего я .*хочу|что мне нужно|хочу получить/, "want"],
-  [/шаг|как мне|что делать|как сделать|как я могу|сыграть|как лучше|завершить/, "action"],
+  [/шаг|как мне|что делать|как сделать|как я могу|сыграть|как лучше|завершить|решение|выйти|что поможет|как укрепить/, "action"],
   [/как я сейчас отношусь|что я вношу|моя роль|какую роль/, "self_side"],
-  [/между нами|динамик|происходит|двигател|что сейчас/, "dynamic"],
+  [/между нами|динамик|происходит|двигател|движет|что сейчас/, "dynamic"],
 ];
 const READ_INTENT = { "PA:tendency": "trend", "PA:blind_spot": "hidden", "PA:obstacle": "obstacle", "PA:resource": "gain", "PA:advice": "action", "PA:understand": "meaning", "PA:influence": "dynamic", "PA:present": "dynamic", "PA:shadow": "obstacle" };
 const ROLE_INTENT = { situation: "dynamic", notice: "hidden", influence: "dynamic", action: "trend" };
