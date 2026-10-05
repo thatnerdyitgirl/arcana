@@ -98,6 +98,41 @@ function periodHtml(res) {
   ${interplayHtml(res.interplay)}`;
 }
 
+
+// ---------- «Скопировать для ИИ»: готовый запрос с данными обзора (без даты рождения) ----------
+const AI_INTRO = `Ты помогаешь с рефлексией и не предсказываешь будущее. Ниже фрагмент «Матрицы судьбы» (методика Arcana: по системе Наталии Ладини). Это символический язык самопознания, а не диагноз и не предсказание.
+
+Задача: сделай подробный практический (actionable) разбор.
+Структура ответа:
+1. Главная идея в 3–4 предложениях.
+2. Как это может проявляться в повседневной жизни (3 конкретных примера).
+3. Ресурсы и тени: как отличить одно от другого в реальной жизни.
+4. План на 7 дней: по одному небольшому шагу на каждый день.
+5. Три вопроса для письменной рефлексии.
+6. Что стоит проверить в реальной жизни и с кем это можно обсудить.
+
+Правила: без предсказаний и гарантий; без диагнозов и медицинских советов; не утверждай мысли и намерения других людей; используй формулировки «может проявляться», «одна из гипотез»; тон бережный и честный. Если не хватает данных, задай до пяти уточняющих вопросов в конце.`;
+const aiBlock = (b) => [`— ${b.lead}: энергия ${b.n} · ${b.name} (${b.short})`, b.text && `  Описание: ${b.text}`, b.shadow && `  В тени: ${b.shadow}`, b.shadowQ && `  Вопрос для себя: ${b.shadowQ}`, b.karma && `  Бытовой триггер: ${b.karma.trigger}`, b.karma && `  Практика вывода в плюс: ${b.karma.practice.join(" / ")}`].filter(Boolean).join("\n");
+const aiInsights = (list) => list?.length ? "\nКак энергии могут сочетаться:\n" + list.map((i) => `— ${i.title}: ${i.text}`).join("\n") : "";
+function aiPayload(kind) {
+  const mx = S.birth ? calcMatrix(S.birth) : null;
+  if (kind === "zone" && mx && S.zone) { const z = T.zone(mx, S.zone); return { title: `Раздел «${z.zone.title}»`, body: z.blocks.map(aiBlock).join("\n") + aiInsights(z.insights) + (z.note ? `\nПримечание: ${z.note}` : "") }; }
+  if (kind === "ask" && mx && S.ask) { const r = T.ask(mx, S.ask); if (r.period) return aiPayload("period"); return { title: r.topic.title_out, body: r.blocks.map(aiBlock).join("\n") + aiInsights(r.insights) + `\nЧто проверить: ${r.check.question}` }; }
+  if (kind === "period" && mx) { const r = T.period(mx, new Date()); return { title: "Что сейчас активировано (возрастной период)", body: `Текущая энергия: ${r.main.n} · ${r.main.name} (${r.main.short}). Тема: ${r.main.theme}. Потенциал: ${r.main.potential} Тень: ${r.main.shadow} Что замечать: ${r.main.notice}\nПочему: ${r.why.n} · ${r.why.name}. Итог: ${r.result.n} · ${r.result.name}.\n` + r.directions.map((d) => `— ${d.title}: ${d.n} · ${d.name}. ${d.text}`).join("\n") }; }
+  if (kind === "other" && S.other.res) { const o = S.other.res.text; return { title: "Матрица другого человека (имя не указано)", body: o.sections.map((x) => `${x.title}:\n` + x.items.map((i) => `— ${i.pos}: энергия ${i.n} · ${i.name}. ${i.text}`).join("\n")).join("\n\n") }; }
+  if (kind === "together" && S.tog.res) { const r = S.tog.res.r; return { title: "Совместимость двух матриц", body: r.sections.map((x) => `${x.title}:\n` + x.items.map((i) => `— ${i.lead}. ${i.text}`).join("\n")).join("\n\n") }; }
+  if (kind === "guide" && S.guide) { const e = T.en(S.guide); return { title: `Энергия ${e.n} · ${e.name}`, body: `${e.short}. Архетип: ${e.archetype}.\nВ силе: ${e.strength}\nВ тени: ${e.shadow}\nТаланты: ${e.talents}\nОтношения: ${e.relations}\nДеньги: ${e.money}\nРост: ${e.growth}\nБытовой триггер: ${e.trigger}\nПрактика: ${e.practice.join(" / ")}` }; }
+  return null;
+}
+function aiText(kind) { const d = aiPayload(kind); return d ? `${AI_INTRO}\n\nТема: ${d.title}\n\nДанные:\n${d.body}\n\nМоя ситуация (допиши свою, если хочешь): ` : ""; }
+const aiButton = (kind) => `<div class="mx-ai mx-glass"><div><b>Разобрать глубже с помощью ИИ</b><p>Скопируй этот обзор вместе с готовым запросом и вставь в любой ИИ-чат: ChatGPT, Claude или Gemini. Он вернёт подробный практический разбор с планом на неделю. Дата рождения в запрос не попадает.</p></div>
+  <div class="mx-ai-row"><button type="button" class="btn" data-mx-copy="${kind}">Скопировать для ИИ-анализа</button><span class="mx-status" aria-live="polite"></span></div>
+  <p class="mx-small">Открыть чат: <a class="ext" href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer">ChatGPT</a> · <a class="ext" href="https://claude.ai/new" target="_blank" rel="noopener noreferrer">Claude</a> · <a class="ext" href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer">Gemini</a></p></div>`;
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch {}
+  try { const ta = document.createElement("textarea"); ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0"; document.body.appendChild(ta); ta.select(); const ok = document.execCommand("copy"); ta.remove(); return ok; } catch { return false; }
+}
+
 // ---------- экраны ----------
 function viewMe() {
   if (!S.birth) return needBirth();
@@ -109,7 +144,7 @@ function viewMe() {
     <div class="mx-split"><div class="mx-diag">${diagramSvg(mx, S.sel, hi)}<p class="mx-small">Цифры по краям схемы — возраст в годах: энергия течёт по кругу от 0 до 80 лет.</p></div><div class="mx-side">${detail}<div class="mx-chips">${pur}</div></div></div>
     <h2 class="mx-h2">Зоны Матрицы</h2>
     <div class="mx-zones">${KB.config.zones.map((z) => `<button type="button" class="mx-zone${S.zone === z.id ? " is-on" : ""}" data-mx-zone="${z.id}">${ico(z.icon)}<span><b>${mxEsc(z.title)}</b><i>${mxEsc(z.blurb)}</i></span></button>`).join("")}</div>
-    ${zone ? `<div class="mx-card mx-zoneview" id="mx-zoneview"><h3>${mxEsc(zone.zone.title)}</h3>${zone.note ? `<p class="mx-caveat">${mxEsc(zone.note)}</p>` : ""}${zone.blocks.map(blockHtml).join("")}${insightsHtml(zone.insights)}${indHtml(zone.indicator)}${caveat}${tarotLink(ZONE_THEME[zone.zone.id], zone.zone.id)}</div>` : ""}
+    ${zone ? `<div class="mx-card mx-zoneview" id="mx-zoneview"><h3>${mxEsc(zone.zone.title)}</h3>${zone.note ? `<p class="mx-caveat">${mxEsc(zone.note)}</p>` : ""}${zone.blocks.map(blockHtml).join("")}${insightsHtml(zone.insights)}${indHtml(zone.indicator)}${caveat}${aiButton("zone")}${tarotLink(ZONE_THEME[zone.zone.id], zone.zone.id)}</div>` : ""}
   </div>`;
 }
 function pointDetail(mx, key) {
@@ -122,7 +157,7 @@ function viewNow() {
   if (!S.birth) return needBirth();
   const mx = calcMatrix(S.birth), res = T.period(mx, new Date());
   return `<div class="mx-now"><h2 class="mx-h2">Что сейчас активировано</h2>${caveat}${periodHtml(res)}
-    ${tarotLink("Саморазвитие", "period")}
+    ${aiButton("period")}${tarotLink("Саморазвитие", "period")}
     <p class="mx-small"><button type="button" class="mx-link" data-mx-lunar>Лунный ритм на сегодня</button> — отдельная подсказка дня, она не связана с расчётом Матрицы.</p>
     <details class="mx-method"><summary>Как это считается</summary><p>Энергия возраста берётся из «круга лет»: основные точки A, Е, Б, Ж, В, З, Г, И стоят на возрасте 0, 10, 20 … 70, а между ними суммы соседних точек делят каждые десять лет на отрезки по 1,25 года. Вторая энергия — точка напротив (на 40 лет дальше по кругу), итог — их сумма. Это одна из школ расчёта.</p></details></div>`;
 }
@@ -132,7 +167,7 @@ function otherHtml(res, name, birth) {
     <div class="mx-split"><div class="mx-diag">${diagramSvg(mx, null)}</div><div class="mx-side">
     <div class="mx-card"><h3>Что можно увидеть</h3><p class="mx-caveat">Это одна из возможных интерпретаций в рамках этой системы, а не оценка человека. Эзотерический язык здесь описывает символы, а не установленные факты.</p>
     ${res.sections.map((s) => `<div class="mx-sec"><span class="l-label">${mxEsc(s.title)}</span>${s.items.map((i) => `<p class="mx-en"><b>${i.n} · ${mxEsc(i.name)}</b><i>${mxEsc(i.pos)}</i></p><p class="mx-text">${mxEsc(i.text)}</p>`).join("")}</div>`).join("")}</div></div></div>
-    <div class="mx-actions"><button type="button" class="btn" data-mx-together>Посмотреть нас вместе</button></div>`;
+    ${aiButton("other")}<div class="mx-actions"><button type="button" class="btn" data-mx-together>Посмотреть нас вместе</button></div>`;
 }
 function viewOther() {
   return `<div class="mx-other"><h2 class="mx-h2">Матрица другого человека</h2><p class="prose">Введи дату рождения и, если хочешь, имя или псевдоним. Данные не сохраняются и никуда не отправляются.</p>
@@ -145,7 +180,7 @@ function togetherHtml(r, a, b) {
   const alt = KB.config.spread_suggest.map((s) => `<button type="button" class="mx-chip${s.id === r.spread ? " is-on" : ""}" data-mx-tarot="Отношения" data-mx-spread="${s.id}">${mxEsc(s.label)}</button>`).join("");
   return `<div class="mx-card"><h3>Что можно увидеть о вашей связи</h3><p class="mx-caveat">Здесь нет процента совместимости: он ничего не говорит о живых отношениях. Это набор тем, которые можно обсудить вдвоём. Метод сопоставления матриц у разных авторов отличается; Arcana складывает одноимённые точки двух матриц.</p>
     ${r.sections.map((s) => `<div class="mx-sec"><span class="l-label">${mxEsc(s.title)}</span>${s.items.map((i) => `<p class="mx-en"><b>${mxEsc(i.lead)}</b></p><p class="mx-text">${mxEsc(i.text)}</p>`).join("")}</div>`).join("")}</div>
-    <details class="mx-method"><summary>Точки пары</summary><div class="mx-pairpts">${pts}</div><p class="mx-small">Каждая точка пары — сумма одноимённых точек двух матриц, сведённая к числу от 1 до 22.</p></details>
+    ${aiButton("together")}<details class="mx-method"><summary>Точки пары</summary><div class="mx-pairpts">${pts}</div><p class="mx-small">Каждая точка пары — сумма одноимённых точек двух матриц, сведённая к числу от 1 до 22.</p></details>
     <div class="mx-tarot"><p>Хочешь посмотреть эту связь через Таро? Arcana предложит подходящий расклад.</p><button type="button" class="btn soft" data-mx-tarot="Отношения" data-mx-spread="${r.spread}">Посмотреть эту связь через Таро</button><div class="mx-chips">${alt}</div></div>`;
 }
 const dateField = (id, label, value) => `<div class="mx-form"><label for="mx-d-${id}">${label}</label><div class="mx-row"><input id="mx-d-${id}" data-mx-date="${id}" type="text" inputmode="numeric" autocomplete="off" placeholder="ДД.ММ.ГГГГ" maxlength="10" value="${ctx.esc(value)}"></div></div>`;
@@ -167,7 +202,7 @@ function viewGuide() {
       <div class="mx-sec"><span class="l-label">Вопросы для размышления</span><ul class="l-list">${e.questions.map((q) => `<li>${mxEsc(q)}</li>`).join("")}</ul></div>
       <div class="mx-sec"><span class="l-label">Рекомендации</span><ul class="l-list">${e.recommendations.map((q) => `<li>${mxEsc(q)}</li>`).join("")}</ul></div>
       ${e.note ? `<p class="mx-small">${mxEsc(e.note)}</p>` : ""}${caveat}</div>
-      ${tarotLink("Саморазвитие", "guide")}</div>`;
+      ${aiButton("guide")}${tarotLink("Саморазвитие", "guide")}</div>`;
   }
   const mine = S.birth ? [...coreEnergies(calcMatrix(S.birth))].sort((a, b) => a - b) : [], scope = S.q.trim() ? "all" : (S.gscope ?? (S.birth ? "mine" : "all"));
   const list = scope === "mine" ? mine.map((n) => T.en(n)) : T.search(S.q), mset = new Set(mine);
@@ -182,9 +217,9 @@ function viewAsk() {
   if (!S.birth) return needBirth();
   const mx = calcMatrix(S.birth), res = S.ask ? T.ask(mx, S.ask) : null;
   const body = !res ? "" : res.period
-    ? `<div class="mx-card"><h3>${mxEsc(res.topic.title_out)}</h3>${caveat}</div>${periodHtml(res.period)}${tarotLink(TOPIC_THEME.period, "period")}`
+    ? `<div class="mx-card"><h3>${mxEsc(res.topic.title_out)}</h3>${caveat}</div>${periodHtml(res.period)}${aiButton("period")}${tarotLink(TOPIC_THEME.period, "period")}`
     : `<div class="mx-card mx-answer"><h3>${mxEsc(res.topic.title_out)}</h3>${caveat}${res.blocks.map(blockHtml).join("")}${insightsHtml(res.insights)}
-        <div class="mx-check"><span class="l-label">${mxEsc(res.check.lead)}</span><p class="mx-text">${mxEsc(res.check.question)}</p><p class="mx-text">Небольшой шаг: ${mxEsc(res.check.action.charAt(0).toLowerCase() + res.check.action.slice(1))}</p></div></div>${indHtml(res.indicator)}${tarotLink(TOPIC_THEME[res.topic.id], res.topic.id)}`;
+        <div class="mx-check"><span class="l-label">${mxEsc(res.check.lead)}</span><p class="mx-text">${mxEsc(res.check.question)}</p><p class="mx-text">Небольшой шаг: ${mxEsc(res.check.action.charAt(0).toLowerCase() + res.check.action.slice(1))}</p></div></div>${indHtml(res.indicator)}${aiButton("ask")}${tarotLink(TOPIC_THEME[res.topic.id], res.topic.id)}`;
   return `<div class="mx-ask"><h2 class="mx-h2">Что тебя сейчас интересует?</h2><p class="prose">Это не ИИ: Arcana собирает обзор из уже рассчитанных данных твоей Матрицы.</p>
     <div class="mx-zones">${KB.config.topics.map((t) => `<button type="button" class="mx-zone${S.ask === t.id ? " is-on" : ""}" data-mx-ask="${t.id}">${ico(t.icon)}<span><b>${mxEsc(t.title)}</b><i>${mxEsc(t.ask)}</i></span></button>`).join("")}</div>${body}</div>`;
 }
@@ -230,6 +265,7 @@ function bind(app, sub) {
     const t = (s) => e.target.closest(s);
     let el;
     if ((el = t("[data-mx-calc]"))) return calc(el.dataset.mxCalc);
+    if ((el = t("[data-mx-copy]"))) { const kind = el.dataset.mxCopy, st = el.closest(".mx-ai")?.querySelector(".mx-status"); copyText(aiText(kind)).then((ok) => { if (st) st.textContent = ok ? "Скопировано. Теперь вставь в чат ИИ." : "Не получилось скопировать: попробуй ещё раз."; }); return; }
     if ((el = t("[data-mx-scope]"))) { S.gscope = el.dataset.mxScope; S.q = ""; rerender(); return; }
     if (t("[data-mx-clear]")) { S.q = ""; rerender(); document.querySelector("[data-mx-search]")?.focus(); return; }
     if ((el = t("[data-mx-ans]"))) { const [n, i, v] = el.dataset.mxAns.split("|"); const a = S.ind[n] ?? []; a[Number(i)] = v; S.ind[n] = a; saveInd(); const box = document.querySelector(`[data-ind="${n}"]`); if (box) { const z = S.zone ? T.zone(calcMatrix(S.birth), S.zone).indicator : S.ask ? T.ask(calcMatrix(S.birth), S.ask).indicator : null; if (z && String(z.n) === n) box.outerHTML = indHtml(z); } return; }

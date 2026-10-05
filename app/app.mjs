@@ -356,7 +356,8 @@ const mxCtx = {
 };
 // подвал на всех экранах: свеча и авторская пометка
 { const q = document.getElementById("candle-q"), by = document.getElementById("candle-by"), ind = document.getElementById("indep");
-  if (q && ABOUT.candle) { q.textContent = "«" + ABOUT.candle.text + "»"; by.textContent = "— " + ABOUT.candle.by; } if (ind) ind.textContent = ABOUT.indep; }
+  if (q && ABOUT.candle) { q.textContent = "«" + ABOUT.candle.text + "»"; by.textContent = "— " + ABOUT.candle.by; } if (ind) ind.textContent = ABOUT.indep;
+  const made = document.getElementById("made"); if (made && ABOUT.created) made.innerHTML = `${esc(ABOUT.created.t)} · <a class="ext" href="${esc(ABOUT.created.href)}" target="_blank" rel="noopener noreferrer">${esc(ABOUT.created.a)}</a>`; }
 state.pr = { id: null, open: null, min: 10, run: null, done: null, from: null, ac: null };
 let prTimer = 0, prLock = null;
 

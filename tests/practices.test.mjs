@@ -58,8 +58,9 @@ check(/не являются копией/.test(AB.method) && /сверка с �
 check(/без серверов, аккаунтов/.test(txt) && /только на твоём устройстве/.test(txt) && /Google Fonts/.test(txt), "приватность: без сервера и аккаунтов, честно про шрифты");
 check(AB.lead.includes("все ответы внутри тебя") && AB.sections[0].sub === "Пространство сонастройки" && /только одно мгновение/.test(AB.sections[0].quote) && /локус контроля/.test(JSON.stringify(AB.sections[0].p)), "новый вводный текст «О проекте»");
 check(/центр тяжести/.test(AB.practices_intro.p.join(" ")) && /буддийская осознанность/.test(AB.practices_intro.p[0]) && /только одно мгновение/.test(AB.practices_intro.quote), "блок о практиках (буддизм, стоицизм, даосизм) и цитата");
-check(/Аружан/.test(JSON.stringify(AB.author)) && AB.author.p.flat().some((x) => x.href === "https://www.behance.net/aruzhantukeyeva") && AB.author.p.flat().some((x) => x.href === "https://www.linkedin.com/in/aruzhan-tukeyeva"), "об авторке: имя, Behance и LinkedIn");
+check(/Аружан/.test(JSON.stringify(AB.author)) && AB.author.p.flat().some((x) => x.href === "https://www.behance.net/aruzhantukeyeva" && x.a === "Behance") && AB.author.p.flat().some((x) => x.href === "https://www.linkedin.com/in/aruzhan-tukeyeva"), "об авторке: имя, Behance и LinkedIn");
 check(AB.sessions.links.some((l) => l.href === "https://t.me/hotandiconic") && AB.sessions.links.some((l) => l.href === "https://www.instagram.com/helloarukai/") && /бесплатный/.test(AB.sessions.p), "личные сессии: Telegram и Instagram, сайт бесплатный");
-check(/приписывается/.test(AB.candle.by) && !/Будда сказал/.test(JSON.stringify(AB)) && !/Будд/.test(AB.practices_intro.quote), "цитата про свечу помечена как приписываемая; цитата про мгновение не приписана никому");
+check(/Сиддхартха Гаутама \(Будда\)/.test(AB.candle.by) && !/Будда сказал/.test(JSON.stringify(AB)) && !/Будд/.test(AB.practices_intro.quote), "цитата про свечу подписана «Сиддхартха Гаутама (Будда)» по вашему решению; цитата про мгновение не приписана никому");
+check(AB.created.a === "@ilovethisearth" && AB.created.href === "https://t.me/ilovethisearth", "подвал: создано, Telegram @ilovethisearth");
 check(/независимый авторский проект/.test(AB.indep) && /Астана/.test(AB.indep), "подвал: независимый проект, Казахстан, Астана");
 process.exit(ok ? 0 : 1);

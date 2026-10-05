@@ -1006,3 +1006,24 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 .mx-bar { height: 4px; border-radius: 999px; background: var(--line); overflow: hidden; } .mx-bar i { display: block; height: 100%; background: var(--lotus); border-radius: 999px; transition: width .5s ease; }
 .mx-ind-res { display: grid; gap: 0.5rem; } .mx-ind-res p { margin: 0; }
 @media (prefers-reduced-motion: reduce) { .mx-bar i, .mx-search { transition: none; } }
+
+/* ---------- v8: стеклянные блоки вместо пунктира, подвал ---------- */
+.mx-glass, .mx-tarot { display: grid; gap: 0.9rem; justify-items: start; padding: var(--space-4); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.55);
+  background: linear-gradient(145deg, color-mix(in srgb, #fff 55%, transparent), color-mix(in srgb, var(--paper-raised) 38%, transparent));
+  -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
+  box-shadow: 0 12px 34px -16px rgba(40, 50, 60, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.7); }
+:root[data-theme="dark"] .mx-glass, :root[data-theme="dark"] .mx-tarot { border-color: rgba(255, 255, 255, 0.12); background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)); box-shadow: 0 14px 34px -16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+.mx-tarot { border-style: solid; }
+.mx-tarot .mx-chips { margin-top: 0.2rem; }
+.mx-karma { border-style: solid; border-color: var(--card-edge); background: color-mix(in srgb, var(--paper) 40%, transparent); }
+.mx-ai b { display: block; font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); margin-bottom: 0.3rem; color: var(--ink); }
+.mx-ai p { margin: 0; font-family: var(--font-read); line-height: 1.6; color: var(--ink-soft); }
+.mx-ai > div:first-child { display: grid; }
+.mx-ai-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.2rem; width: 100%; }
+.mx-ai .btn { padding: 1rem 2rem; }
+.mx-status { font-size: var(--step--1); color: var(--ink-soft); }
+.candle { max-width: 52rem; }
+.candle blockquote { font-size: var(--step-1); line-height: 1.6; hyphens: none; -webkit-hyphens: none; }
+@media (max-width: 640px) { .candle blockquote { font-size: var(--step-0); } }
+.made { margin: 0; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--ink-soft); opacity: 0.85; }
+.made .ext { color: inherit; }
