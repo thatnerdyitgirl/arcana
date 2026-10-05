@@ -1202,3 +1202,44 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 #dc-canvas { width: min(100%, 360px); height: auto; aspect-ratio: 9 / 16; border-radius: 24px; box-shadow: var(--card-shadow, 0 10px 28px rgba(30, 40, 55, .08)); background: var(--paper-raised); }
 .dc-actions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
 @media (max-width: 640px) { .dc-actions { gap: 12px; } .dc-actions .btn { flex: 1 1 100%; } .dc-styles { max-width: 100%; } .dc-styles button { padding-inline: 8px; } }
+
+/* ---------- совет Будды: кнопка в шапке и раскрывающийся лотос ---------- */
+.buddha-btn { display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; color: var(--ink-soft); background: transparent; border: 1px solid var(--line-strong); border-radius: 999px; cursor: pointer; transition: color .3s, border-color .3s, transform .3s; }
+.buddha-btn:hover, .buddha-btn:focus-visible { color: var(--lotus); border-color: var(--lotus); transform: translateY(-1px); }
+.bd { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; overflow-y: auto; background: color-mix(in srgb, var(--paper) 97%, transparent); opacity: 0; transition: opacity .38s ease; outline: none; }
+.bd.is-open { opacity: 1; }
+.bd-x { position: absolute; top: 12px; right: 12px; width: 48px; height: 48px; font-size: 1.8rem; line-height: 1; color: var(--ink-soft); background: transparent; border: 0; cursor: pointer; border-radius: 999px; }
+.bd-x:hover, .bd-x:focus-visible { color: var(--lotus); }
+.bd-stage { width: min(100%, 440px); display: grid; justify-items: center; gap: 20px; padding: 56px 20px 32px; text-align: center; }
+.bd-lotus { width: min(78vw, 300px); height: auto; overflow: visible; }
+.bd-petal { transform: rotate(calc(var(--a) * .25)) scale(0); opacity: 0; transform-origin: 0 0; }
+.bd-glow { opacity: 0; transform: scale(.3); transform-origin: 150px 130px; }
+.bd-core { opacity: 0; transform-origin: 0 -26px; }
+.bd-rip { opacity: 0; transform: scale(.3); transform-origin: 150px 212px; }
+.bd-water { opacity: 0; }
+.bd.is-play .bd-water { animation: bd-fade 1s ease forwards; }
+.bd.is-play .bd-petal { animation: bd-bloom 1.9s cubic-bezier(.2, .8, .2, 1) var(--d) forwards; }
+.bd.is-play .bd-glow { animation: bd-glow 2.4s ease .5s forwards; }
+.bd.is-play .bd-core { animation: bd-fade 1s ease 1.1s forwards; }
+.bd.is-play .bd-rip { animation: bd-rip 3.6s ease-out infinite; }
+.bd.is-play .bd-rip.r2 { animation-delay: 1.2s; } .bd.is-play .bd-rip.r3 { animation-delay: 2.4s; }
+.bd-quote { margin: 0; display: grid; gap: 12px; opacity: 0; transform: translateY(10px); }
+.bd.is-play .bd-quote { animation: bd-rise 1.2s ease 1.2s forwards; }
+.bd-text { margin: 0; font-family: var(--font-display); font-size: 1.45rem; line-height: 1.3; text-wrap: balance; }
+.bd-src { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); line-height: 1.4; }
+.bd-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; opacity: 0; }
+.bd.is-play .bd-actions { animation: bd-fade 1s ease 1.9s forwards; }
+.bd-sound { font: inherit; font-size: .8125rem; color: var(--ink-soft); background: transparent; border: 0; cursor: pointer; padding: 12px; min-height: 48px; }
+.bd-sound:hover { color: var(--lotus); }
+.bd-note { margin: 0; font-size: .75rem; line-height: 1.5; color: var(--ink-soft); max-width: 22rem; }
+@keyframes bd-bloom { from { transform: rotate(calc(var(--a) * .25)) scale(.05); opacity: 0; } 30% { opacity: 1; } to { transform: rotate(var(--a)) scale(1); opacity: 1; } }
+@keyframes bd-glow { from { opacity: 0; transform: scale(.3); } 60% { opacity: 1; } to { opacity: .8; transform: scale(1); } }
+@keyframes bd-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bd-rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes bd-rip { 0% { opacity: .55; transform: scale(.3); } 100% { opacity: 0; transform: scale(2.1); } }
+@media (prefers-reduced-motion: reduce) {
+  .bd, .bd-petal, .bd-glow, .bd-core, .bd-water, .bd-quote, .bd-actions { transition: none; animation: none !important; }
+  .bd-petal { transform: rotate(var(--a)); opacity: 1; } .bd-glow { opacity: .6; transform: none; } .bd-core, .bd-water, .bd-quote, .bd-actions { opacity: 1; transform: none; }
+  .bd-rip { display: none; }
+}
+@media (max-width: 640px) { .buddha-btn { width: 40px; height: 40px; } .bd-actions .btn { flex: 1 1 100%; } }

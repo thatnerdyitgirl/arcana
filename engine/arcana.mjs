@@ -29,6 +29,7 @@ export function loadData() {
     practices: readJson("practices/practices.json"),
     about: readJson("about/about.json"),
     quotes: readJson("quotes/daily.json").quotes,
+    buddha: readJson("quotes/buddha.json").quotes,
     matrix: { energies: readJson("matrix/energies.json").energies, positions: readJson("matrix/positions.json").positions, config: readJson("matrix/config.json") },
     cards: {},
   };

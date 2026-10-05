@@ -984,6 +984,95 @@ function onDayClick(e) {
   }
 }
 
+// ---------- совет Будды: лотос раскрывается на воде, одна случайная цитата ----------
+
+const BD = { last: -1, sound: true, audio: null, timer: 0, fade: 0, opener: null, quote: null };
+try { BD.sound = localStorage.getItem("arcana-bd-sound") !== "0"; } catch {}
+function bdPick() {
+  const q = APP_DATA.buddha ?? []; if (!q.length) return null;
+  let i; do { i = crypto.getRandomValues(new Uint32Array(1))[0] % q.length; } while (q.length > 1 && i === BD.last);
+  BD.last = i; return q[i];
+}
+const bdPetal = (a, L, w, o, d, fill) => `<g class="bd-petal" style="--a:${a}deg;--d:${d}s"><path d="M0 0C${w} ${-L * 0.3} ${w} ${-L * 0.75} 0 ${-L}C${-w} ${-L * 0.75} ${-w} ${-L * 0.3} 0 0Z" fill="${fill}" fill-opacity="${o}" stroke="var(--lotus)" stroke-opacity=".7" stroke-width="1.2"/></g>`;
+function bdLotusSvg() {
+  const back = [-68, -34, 0, 34, 68].map((a, i) => bdPetal(a, 96, 24, 0.45, 0.15 + Math.abs(a) / 900, "var(--lotus)")).join("");
+  const mid = [-52, -18, 18, 52].map((a) => bdPetal(a, 86, 24, 0.7, 0.35 + Math.abs(a) / 900, "var(--lotus)")).join("");
+  const front = [-34, 0, 34].map((a) => bdPetal(a, 72, 21, 0.95, 0.55 + Math.abs(a) / 900, "var(--paper-raised)")).join("");
+  return `<svg class="bd-lotus" viewBox="0 0 300 260" aria-hidden="true">
+    <defs><radialGradient id="bd-g" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#f6dca0" stop-opacity=".85"/><stop offset=".55" stop-color="#f6dca0" stop-opacity=".25"/><stop offset="1" stop-color="#f6dca0" stop-opacity="0"/></radialGradient></defs>
+    <ellipse class="bd-water" cx="150" cy="212" rx="128" ry="16" fill="var(--lotus)" fill-opacity=".1"/>
+    <ellipse class="bd-rip r1" cx="150" cy="212" rx="60" ry="8" fill="none" stroke="var(--lotus)" stroke-opacity=".5"/>
+    <ellipse class="bd-rip r2" cx="150" cy="212" rx="60" ry="8" fill="none" stroke="var(--lotus)" stroke-opacity=".5"/>
+    <ellipse class="bd-rip r3" cx="150" cy="212" rx="60" ry="8" fill="none" stroke="var(--lotus)" stroke-opacity=".5"/>
+    <circle class="bd-glow" cx="150" cy="130" r="120" fill="url(#bd-g)"/>
+    <g transform="translate(150 206)">${back}${mid}${front}<circle class="bd-core" cx="0" cy="-26" r="9" fill="#f2cf80"/></g>
+  </svg>`;
+}
+function bdSoundStop() {
+  clearTimeout(BD.timer); clearInterval(BD.fade);
+  const a = BD.audio; if (!a || a.paused) return;
+  BD.fade = setInterval(() => { try { a.volume = Math.max(0, a.volume - 0.08); if (a.volume <= 0.01) { a.pause(); clearInterval(BD.fade); } } catch { clearInterval(BD.fade); } }, 70);
+}
+function bdSoundPlay() {
+  if (!BD.sound) return;
+  try {
+    clearTimeout(BD.timer); clearInterval(BD.fade);
+    const a = BD.audio || (BD.audio = new Audio(SFX.start));
+    a.currentTime = 0; a.volume = 0.5; a.play().catch(() => {});
+    BD.timer = setTimeout(bdSoundStop, 4200);
+  } catch {}
+}
+function bdPlay() {
+  const box = document.getElementById("bd"); if (!box) return;
+  const q = BD.quote = bdPick(); if (!q) return;
+  box.querySelector(".bd-text").textContent = "«" + q.t + "»";
+  box.querySelector(".bd-src").textContent = q.s;
+  box.classList.remove("is-play"); void box.offsetWidth; box.classList.add("is-play");
+  bdSoundPlay();
+}
+function bdOpen() {
+  if (document.getElementById("bd")) return;
+  BD.opener = document.activeElement;
+  const box = document.createElement("div");
+  box.className = "bd"; box.id = "bd"; box.tabIndex = -1; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true"); box.setAttribute("aria-label", "Совет Будды");
+  box.innerHTML = `<button type="button" class="bd-x" data-bd-close aria-label="Закрыть">×</button>
+    <div class="bd-stage">
+      ${bdLotusSvg()}
+      <figure class="bd-quote"><blockquote class="bd-text"></blockquote><figcaption class="bd-src"></figcaption></figure>
+      <div class="bd-actions">
+        <button type="button" class="btn soft" data-bd-next>Ещё совет</button>
+        <button type="button" class="btn ghost" data-bd-save>Сохранить картинку</button>
+      </div>
+      <button type="button" class="bd-sound" data-bd-sound aria-pressed="${BD.sound}">Звук: ${BD.sound ? "вкл" : "выкл"}</button>
+      <p class="bd-note" id="bd-status" aria-live="polite">Изречения даны в литературном пересказе. Где авторство не подтверждено, так и написано.</p>
+    </div>`;
+  document.body.appendChild(box); document.body.style.overflow = "hidden";
+  box.addEventListener("click", (e) => {
+    const t = (sel) => e.target.closest(sel);
+    if (t("[data-bd-close]") || e.target === box) return bdClose();
+    if (t("[data-bd-next]")) return bdPlay();
+    if (t("[data-bd-sound]")) {
+      BD.sound = !BD.sound; try { localStorage.setItem("arcana-bd-sound", BD.sound ? "1" : "0"); } catch {}
+      const b = t("[data-bd-sound]"); b.setAttribute("aria-pressed", String(BD.sound)); b.textContent = "Звук: " + (BD.sound ? "вкл" : "выкл"); if (!BD.sound) bdSoundStop(); return;
+    }
+    if (t("[data-bd-save]") && BD.quote) {
+      const st = document.getElementById("bd-status"), q = BD.quote, style = dcStyleNow();
+      dcSave((cv) => dcDrawQuote(cv, style, q), "arcana-sovet").then((r) => { if (st && (r === "saved" || r === "error")) st.textContent = r === "saved" ? "Картинка сохранена" : "Не получилось сохранить"; });
+    }
+  });
+  box.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") return bdClose();
+    if (e.key === "Tab") { const f = [...box.querySelectorAll("button")]; const i = f.indexOf(document.activeElement); const n = e.shiftKey ? (i <= 0 ? f.length - 1 : i - 1) : (i === f.length - 1 ? 0 : i + 1); f[n].focus(); e.preventDefault(); }
+  });
+  requestAnimationFrame(() => { box.classList.add("is-open"); bdPlay(); box.focus({ preventScroll: true }); });
+}
+function bdClose() {
+  const box = document.getElementById("bd"); if (!box) return;
+  bdSoundStop(); box.classList.remove("is-open");
+  setTimeout(() => { box.remove(); document.body.style.overflow = ""; try { BD.opener?.focus?.({ preventScroll: true }); } catch {} }, 380);
+}
+document.getElementById("buddha-btn")?.addEventListener("click", bdOpen);
+
 // ---------- маршрутизация ----------
 
 let askDebounce = 0;
