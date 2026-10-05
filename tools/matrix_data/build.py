@@ -160,8 +160,8 @@ CTA = {
 CTX_OF = {"self":"self","talents":"talents","purpose":"talents","relations":"relations","money":"money","family":"self","shadows":"self","karma":"self","realization":"talents"}
 CFG = {"combo": COMBO, "combo_override": COMBO_OVERRIDE, "combo_tail": COMBO_TAIL, "cta": CTA, "ctx_of": CTX_OF, "zones": Z, "topics": TOPICS, "interplay": INTER, "now": NOW_DIRS, "together": TOGETHER,
  "spread_suggest": [
-   {"id":"rel.between_us","label":"Что происходит между нами?"},{"id":"rel.attraction","label":"Сильное притяжение"},
-   {"id":"rel.direction","label":"Потенциал этой связи"},{"id":"rel.diagnostics","label":"Что мне важно понять об этих отношениях"}]}
+   {"id":"rel.vector","label":"Что происходит между нами?"},{"id":"rel.attraction","label":"Сильное притяжение"},
+   {"id":"rel.why_this_person","label":"Чему учит эта связь"},{"id":"rel.diagnostics","label":"Что мне важно понять об этих отношениях"}]}
 json.dump(CFG, open(os.path.join(KB, "config.json"), "w"), ensure_ascii=False, indent=1)
 print("json ok")
 

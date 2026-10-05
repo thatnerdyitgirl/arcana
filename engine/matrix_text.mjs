@@ -182,7 +182,7 @@ export function makeMatrixText(KB) {
     const homework = hw.slice(0, 3).map((x, i) => ({ ...x, hw: `hw${i + 1}` }));
     sec.push({ id: "homework", items: homework });
     // «притяжение / напряжение»: подсказка по выбору расклада Таро
-    const spread = (shared.length >= 2 || [6, 15, 19, 3, 17].includes(pair.D)) ? "rel.attraction" : (shared.length === 0 ? "rel.diagnostics" : "rel.between_us");
+    const spread = (shared.length >= 2 || [6, 15, 19, 3, 17].includes(pair.D)) ? "rel.attraction" : (shared.length === 0 ? "rel.diagnostics" : "rel.vector");
     return { pair, shared, sections: sec.map((x) => ({ ...x, ...cfg.together.find((c) => c.id === x.id) })), spread, keys: ["A", "B", "V", "G", "D", "E", "Zh", "Z", "I"] };
   }
 

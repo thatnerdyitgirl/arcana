@@ -14,7 +14,7 @@ function run(q, wantTop3, wantFirst) {
 run("Хочу научиться медитировать, но не хватает дисциплины", ["self.pattern", "self.resistance", "self.resource"]);
 run("Всё время уставшая, нет мотивации ничего делать, не знаю, как вернуть искру", ["self.resource"], "self.resource");
 // Контроль: старые случаи не сломались, слова из tags не обязательны
-run("Мы расстались, а я всё ещё думаю о нём", ["rel.unfinished"], "rel.unfinished");
+run("Мы расстались, а я всё ещё думаю о нём", ["rel.second_act"], "rel.second_act");
 run("Боюсь показать свои рисунки, вдруг осудят", ["art.show"], "art.show");
 run("Выбираю между двумя оффеками или остаться", ["decision.ab"], "decision.ab");
 run("Меня бесит, когда люди хвастаются", ["psy.shadow"], "psy.shadow");

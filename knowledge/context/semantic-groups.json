@@ -42,7 +42,8 @@
       ],
       "themes": {
         "Отношения": 1
-      }
+      },
+      "spreads": {}
     },
     {
       "id": "th_work",
@@ -72,7 +73,8 @@
       ],
       "themes": {
         "Работа и бизнес": 1
-      }
+      },
+      "spreads": {}
     },
     {
       "id": "th_dec",
@@ -94,7 +96,8 @@
       ],
       "themes": {
         "Решения и перемены": 1
-      }
+      },
+      "spreads": {}
     },
     {
       "id": "th_self",
@@ -122,7 +125,8 @@
       ],
       "themes": {
         "Саморазвитие": 1
-      }
+      },
+      "spreads": {}
     },
     {
       "id": "th_psy",
@@ -147,7 +151,8 @@
       ],
       "themes": {
         "Психология": 1
-      }
+      },
+      "spreads": {}
     },
     {
       "id": "th_art",
@@ -177,7 +182,8 @@
       ],
       "themes": {
         "Творчество": 1
-      }
+      },
+      "spreads": {}
     },
     {
       "id": "in_learn",
@@ -306,7 +312,7 @@
         "закрыть гештальт"
       ],
       "spreads": {
-        "rel.unfinished": 3,
+        "rel.second_act": 3,
         "change.threshold": 2,
         "psy.repression": 1
       }
@@ -325,7 +331,7 @@
       ],
       "spreads": {
         "self.boundaries": 3,
-        "rel.needs": 2,
+        "rel.diagnostics": 2,
         "rel.conflict": 1
       }
     },
@@ -384,8 +390,8 @@
         "что у него в голове"
       ],
       "spreads": {
-        "rel.between_us": 3,
-        "rel.needs": 2,
+        "rel.vector": 3,
+        "rel.diagnostics": 2,
         "psy.projection": 2.5
       }
     },
@@ -574,9 +580,10 @@
       ],
       "spreads": {
         "rel.conflict": 4,
-        "rel.needs": 1.5,
+        "rel.diagnostics": 1.5,
         "work.team_climate": 1.5,
-        "self.boundaries": 1.5
+        "self.boundaries": 1.5,
+        "rel.stop_crane": 2.4
       }
     },
     {
@@ -612,10 +619,10 @@
         "она ушла"
       ],
       "spreads": {
-        "rel.unfinished": 4,
+        "rel.second_act": 4,
         "self.pattern": 1.5,
         "change.threshold": 1.5,
-        "rel.between_us": 0.8
+        "rel.vector": 0.8
       }
     },
     {
@@ -637,7 +644,7 @@
       "spreads": {
         "rel.attraction": 4,
         "psy.projection": 2,
-        "rel.between_us": 1.5,
+        "rel.vector": 1.5,
         "psy.desire_defense": 1.2
       }
     },
@@ -659,9 +666,9 @@
         "остыл"
       ],
       "spreads": {
-        "rel.between_us": 2.5,
-        "rel.unfinished": 1.5,
-        "rel.needs": 1.5,
+        "rel.vector": 2.5,
+        "rel.second_act": 1.5,
+        "rel.diagnostics": 1.5,
         "psy.projection": 1.5
       }
     },
@@ -684,7 +691,7 @@
       ],
       "spreads": {
         "self.boundaries": 4,
-        "rel.needs": 2,
+        "rel.diagnostics": 2,
         "psy.persona": 1
       }
     },
@@ -1122,7 +1129,7 @@
       "spreads": {
         "psy.desire_defense": 2,
         "self.next_step": 1.5,
-        "rel.needs": 1.5,
+        "rel.diagnostics": 1.5,
         "self.confidence": 1
       }
     },
@@ -1161,8 +1168,8 @@
         "девушк"
       ],
       "spreads": {
-        "rel.between_us": 0.8,
-        "rel.needs": 0.6,
+        "rel.vector": 0.8,
+        "rel.diagnostics": 0.6,
         "psy.projection": 0.6
       }
     },
@@ -1202,7 +1209,7 @@
         "self.pattern": 0.8,
         "rel.conflict": 0.8,
         "self.boundaries": 0.8,
-        "rel.needs": 0.8
+        "rel.diagnostics": 0.8
       }
     },
     {
@@ -1217,7 +1224,7 @@
       ],
       "spreads": {
         "rel.conflict": 0.6,
-        "rel.needs": 0.6
+        "rel.diagnostics": 0.6
       }
     },
     {
@@ -1252,7 +1259,7 @@
       "spreads": {
         "rel.attraction": 2,
         "psy.projection": 2,
-        "rel.between_us": 1
+        "rel.vector": 1
       }
     },
     {
@@ -1277,7 +1284,7 @@
         "rel.why_this_person": 1.5,
         "rel.attraction": 1.5,
         "rel.true_face": 1.5,
-        "rel.direction": 1
+        "rel.vector": 1
       }
     },
     {
@@ -1328,7 +1335,7 @@
         "что нас ждёт"
       ],
       "spreads": {
-        "rel.direction": 4,
+        "rel.vector": 4,
         "rel.second_act": 1.5,
         "rel.new_person": 1.5,
         "rel.diagnostics": 1
@@ -1375,8 +1382,7 @@
       ],
       "spreads": {
         "rel.diagnostics": 3,
-        "rel.between_us": 3,
-        "rel.direction": 1.2
+        "rel.vector": 3
       }
     },
     {
@@ -1397,8 +1403,7 @@
       ],
       "spreads": {
         "rel.second_act": 4,
-        "rel.unfinished": 1.5,
-        "rel.direction": 1.2
+        "rel.vector": 1.2
       }
     },
     {
@@ -1545,9 +1550,7 @@
         "близост"
       ],
       "spreads": {
-        "adult.passion_anatomy": 3,
-        "adult.compat": 2,
-        "adult.eros_shadow": 1.5
+        "adult.passion_anatomy": 3
       }
     },
     {
@@ -1568,7 +1571,7 @@
         "зажат"
       ],
       "spreads": {
-        "adult.libido": 5,
+        "adult.alchemy": 5,
         "adult.passion_anatomy": 1.5
       }
     },
@@ -1588,8 +1591,7 @@
         "ролевая"
       ],
       "spreads": {
-        "adult.eros_shadow": 2.5,
-        "adult.passion_anatomy": 1
+        "adult.passion_anatomy": 2.5
       }
     },
     {
@@ -1605,9 +1607,8 @@
         "хочу попробовать"
       ],
       "spreads": {
-        "adult.fantasy": 4,
-        "adult.eros_shadow": 2,
-        "adult.libido": 1
+        "adult.alchemy": 4,
+        "adult.passion_anatomy": 2
       }
     },
     {
@@ -1623,8 +1624,7 @@
         "подходим ли мы"
       ],
       "spreads": {
-        "adult.compat": 4,
-        "adult.passion_anatomy": 1.5
+        "adult.passion_anatomy": 4
       }
     },
     {
@@ -1646,7 +1646,60 @@
       ],
       "spreads": {
         "adult.alchemy": 5,
-        "adult.libido": 1.5,
+        "adult.passion_anatomy": 1
+      }
+    },
+    {
+      "id": "pb_toxic",
+      "level": "problem",
+      "label": "токсичность, контроль, манипуляции",
+      "stems": [
+        "токсич",
+        "манипул",
+        "газлайт",
+        "контролир",
+        "контроль",
+        "красный флаг",
+        "красные флаги",
+        "редфлаг",
+        "унижа",
+        "обесценива",
+        "запугива",
+        "давит на меня",
+        "изолиру",
+        "не уважает границ",
+        "боюсь его",
+        "боюсь её",
+        "психологическое давление",
+        "абьюз",
+        "абьюзив"
+      ],
+      "spreads": {
+        "rel.stop_crane": 5,
+        "rel.conflict": 1,
+        "rel.diagnostics": 1,
+        "self.boundaries": 1.5
+      }
+    },
+    {
+      "id": "pb_body_block",
+      "level": "problem",
+      "label": "телесные и сексуальные блоки (18+)",
+      "stems": [
+        "не могу расслабиться",
+        "зажим",
+        "зажата",
+        "стесняюсь тела",
+        "стыд тела",
+        "не получаю удовольствие",
+        "нет удовольствия",
+        "блок в сексуальности",
+        "сексуальный блок",
+        "не чувствую тело",
+        "не могу получать удовольствие"
+      ],
+      "spreads": {
+        "adult.body_block": 5,
         "adult.passion_anatomy": 1
       }
     }

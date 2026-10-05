@@ -1099,3 +1099,12 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 .mx-ai-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--mx-s3) var(--mx-s5); width: 100%; }
 .mx-ai .btn { padding: var(--mx-s4) var(--mx-s6); }
 .mx-chips { display: flex; flex-wrap: wrap; gap: var(--mx-s2); }
+
+/* каталог раскладов по рядам: 3 расклада в ряду */
+.spread-rows { display: grid; gap: var(--space-4); }
+.spread-row { display: grid; gap: var(--space-2); }
+.row-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.9rem; margin: 0; }
+.row-head b { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); letter-spacing: 0.04em; color: var(--ink); }
+.row-head span { font-size: var(--step--1); color: var(--ink-soft); font-style: italic; }
+@media (min-width: 900px) { .spread-row .spread-list, .spread-row .choice { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.spread-row .spread-item { min-height: 0; }

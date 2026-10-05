@@ -520,7 +520,7 @@
  ],
  "spread_suggest": [
   {
-   "id": "rel.between_us",
+   "id": "rel.vector",
    "label": "Что происходит между нами?"
   },
   {
@@ -528,8 +528,8 @@
    "label": "Сильное притяжение"
   },
   {
-   "id": "rel.direction",
-   "label": "Потенциал этой связи"
+   "id": "rel.why_this_person",
+   "label": "Чему учит эта связь"
   },
   {
    "id": "rel.diagnostics",

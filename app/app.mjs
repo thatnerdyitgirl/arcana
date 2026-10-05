@@ -77,8 +77,11 @@ themeBtn.addEventListener("click", () => {
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 // Расклады 18+ видны только при включённой «Ночной туши» (тёмной теме)
 const adultMode = () => document.documentElement.dataset.theme === "dark";
-const shown = () => SPREADS.filter((s) => !s.adult || adultMode());
+const shown = () => SPREADS.filter((s) => !s.hidden && (!s.adult || adultMode()));
 const spreadById = (id) => shown().find((s) => s.id === id);
+// каталог по рядам (3 расклада в ряду); ряд 18+ виден только в «Ночной туши»
+const rowsFor = (theme) => (APP_DATA.spreadRows?.[theme] ?? []).filter((r) => !r.adult || adultMode()).map((r) => ({ ...r, list: r.ids.map(spreadById).filter(Boolean) })).filter((r) => r.list.length);
+const rowHead = (r) => `<p class="row-head"><b>${esc(r.title)}</b><span>${esc(r.sub)}</span></p>`;
 const currentSpread = () => spreadById(state.spreadId)
   ?? (state.theme ? (recommendSpreads(state.story, 36, { adult: adultMode() }).find((r) => r.spread.theme === state.theme)?.spread ?? shown().find((s) => s.theme === state.theme)) : null)
   ?? recommendSpreads(state.story, 3, { adult: adultMode() })[0]?.spread ?? spreadById("decision.blind");
@@ -565,11 +568,14 @@ function spreadsHtml() {
       ${THEME_TABS.map((th) => `<button type="button" data-theme-pick="${esc(th)}" aria-pressed="${th === state.theme}">${esc(th)}</button>`).join("")}
     </div>
     ${!state.theme && !recs.length ? `<p class="hint">Выбери тему или опиши ситуацию — Arcana предложит подходящие расклады.</p>` : ""}
-    <div class="choice" role="group" aria-label="Расклады">
-      ${list.map((s) => `<button type="button" class="option" data-spread="${s.id}" aria-pressed="${s.id === sel.id}">
+    ${(() => {
+      const opt = (s) => `<button type="button" class="option" data-spread="${s.id}" aria-pressed="${s.id === sel.id}">
         <span class="t">${esc(s.name)}${s.adult ? ' <small class="badge-adult">18+</small>' : ""}</span>
-        <span class="why">${because[s.id]?.length ? "Подходит: " + esc(because[s.id].join(", ")) : esc(s.when)}</span></button>`).join("")}
-    </div>
+        <span class="why">${because[s.id]?.length ? "Подходит: " + esc(because[s.id].join(", ")) : esc(s.when)}</span></button>`;
+      const rows = state.theme ? rowsFor(state.theme) : [];
+      if (rows.length) return rows.map((r) => `<div class="spread-row">${rowHead(r)}<div class="choice" role="group" aria-label="${esc(r.title)}">${r.list.map(opt).join("")}</div></div>`).join("");
+      return `<div class="choice" role="group" aria-label="Расклады">${list.map(opt).join("")}</div>`;
+    })()}
     <ol class="spread-positions">${sel.positions.map((p, i) => `<li><span>${i + 1}</span>${esc(p.name)}</li>`).join("")}</ol>
     <p class="hint"><a href="#spreads" class="link">Все расклады — ${shown().length}</a></p>`;
 }
@@ -800,7 +806,7 @@ function renderSpreads() {
     <div class="tabs" role="group" aria-label="Темы">
       ${THEME_TABS.map((th) => `<button type="button" data-tab="${esc(th)}" aria-pressed="${th === state.themeTab}">${esc(th)}</button>`).join("")}
     </div>
-    <div class="spread-list">
+    <div class="spread-rows">
       ${(() => {
         const card = (s) => `<article class="spread-item">
         <h3>${esc(s.name)}${s.adult ? ' <small class="badge-adult">18+</small>' : ""}</h3>
@@ -808,9 +814,11 @@ function renderSpreads() {
         <ol>${s.positions.map((p) => `<li>${esc(p.name)}</li>`).join("")}</ol>
         <button type="button" class="btn ghost" data-pick="${s.id}">Выбрать</button>
       </article>`;
+        const rows = rowsFor(state.themeTab);
+        if (rows.length) return rows.map((r) => `<div class="spread-row">${rowHead(r)}<div class="spread-list">${r.list.map(card).join("")}</div></div>`).join("");
         const all = shown().filter((s) => s.theme === state.themeTab);
         const adult = all.filter((s) => s.adult);
-        return all.filter((s) => !s.adult).map(card).join("") + (adult.length ? `<p class="eyebrow adult-head">Ночная тушь · 18+</p>${adult.map(card).join("")}` : "");
+        return `<div class="spread-list">${all.filter((s) => !s.adult).map(card).join("") + (adult.length ? `<p class="eyebrow adult-head">Ночная тушь · 18+</p>${adult.map(card).join("")}` : "")}</div>`;
       })()}
     </div>
   </section>`;

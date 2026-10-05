@@ -19,6 +19,7 @@ export function loadData() {
     elements: readJson("manara/elements.json"),
     pairs: readJson("manara/combinations/pairs.json").pairs,
     spreads: readJson("spreads/triplets.json").spreads,
+    spreadRows: readJson("spreads/triplets.json").rows,
     context: readJson("context/context-rules.json").rules,
     semantic: readJson("context/semantic-groups.json"),
     meta: readJson("context/meta-markers.json"),

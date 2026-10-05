@@ -678,7 +678,7 @@ export function recommendSpreads(text, n = 3, opts = {}) {
   const found = analyzeIntent(text);
   const LW = SEMANTIC.level_weights;
   const tags = detectContext(text);
-  const scored = SPREADS.filter((s) => !s.adult || opts.adult).map((s) => {      // расклады 18+ — только в режиме «Ночная тушь»
+  const scored = SPREADS.filter((s) => !s.hidden && (!s.adult || opts.adult)).map((s) => {      // расклады 18+ — только в режиме «Ночная тушь»
     let score = 0;
     const why = [];
     for (const level of ["theme", "intent", "problem", "context"]) {
