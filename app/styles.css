@@ -893,9 +893,6 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 @media (max-width: 640px) { .mx-nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .mx-nav::-webkit-scrollbar { display: none; } .mx-nav a { white-space: nowrap; } }
 #mx-body { display: grid; gap: var(--space-4); }
 .mx h2.mx-h2 { margin: 0; font-size: var(--step-2); font-weight: 400; letter-spacing: 0.04em; }
-.mx-card { padding: var(--space-3); border: 1px solid var(--card-edge); border-radius: var(--radius-card); background: color-mix(in srgb, var(--paper-raised) 86%, transparent); box-shadow: var(--card-shadow); display: grid; gap: 0.7rem; }
-.mx-card h2, .mx-card h3 { margin: 0; font-weight: 400; }
-.mx-card .prose, .mx-card p { margin: 0; }
 .mx-empty { max-width: 34rem; }
 .mx-hint { color: var(--ink-soft); }
 .mx-person { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 1.2rem; font-size: var(--step--1); color: var(--ink-soft); }
@@ -921,15 +918,8 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 .mx-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .mx-chip { font: inherit; font-size: 0.8125rem; padding: 0.2rem 0.75rem; border: 1px solid var(--line-strong); border-radius: 999px; background: none; color: var(--ink); cursor: pointer; transition: background .25s ease; }
 .mx-chip:hover, .mx-chip.is-on { background: color-mix(in srgb, var(--lotus) 14%, transparent); border-color: color-mix(in srgb, var(--lotus) 45%, var(--line)); }
-.mx-en { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1rem 0.7rem; margin: 0; }
-.mx-en b { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); color: var(--ink); }
-.mx-en i { font-style: normal; font-size: var(--step--1); color: var(--ink-soft); }
 .mx-big { margin: 0; font-family: var(--font-display); font-size: var(--step-3); line-height: 1.1; } .mx-big b { font-weight: 400; color: var(--lotus); margin-right: 0.4rem; }
 .mx-short { margin: 0; color: var(--ink-soft); font-size: var(--step--1); letter-spacing: 0.04em; }
-.mx-text { font-family: var(--font-read); line-height: 1.65; color: var(--ink); }
-.mx-shadow { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.55; } .mx-shadow b { font-weight: 500; margin-right: 0.3rem; letter-spacing: 0.04em; }
-.mx-small, .mx-echo { font-size: 0.8125rem; color: var(--ink-soft); line-height: 1.5; margin: 0; }
-.mx-caveat { margin: 0; font-size: 0.8125rem; font-style: italic; color: var(--ink-soft); line-height: 1.55; }
 .mx-h2 + .prose { margin-top: -0.4rem; }
 .mx-zones { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
 @media (max-width: 640px) { .mx-zones { grid-template-columns: 1fr; } }
@@ -939,12 +929,6 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 .mx-zone b { display: block; font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); margin-bottom: 0.15rem; }
 .mx-zone i { display: block; font-style: normal; font-size: 0.8125rem; color: var(--ink-soft); line-height: 1.45; }
 .mx-ico { flex: none; width: 1.3rem; height: 1.3rem; margin-top: 0.15rem; fill: none; stroke: var(--lotus); stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
-.mx-block, .mx-sec { display: grid; gap: 0.3rem; padding-top: var(--space-2); border-top: 1px solid var(--line); } .mx-block:first-of-type, .mx-sec:first-of-type { border-top: 0; padding-top: 0; }
-.mx-inter { display: grid; gap: 0.4rem; padding-top: var(--space-2); border-top: 1px solid var(--line); }
-.mx-inter p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; color: var(--ink-soft); }
-.mx-check { display: grid; gap: 0.3rem; padding-top: var(--space-2); border-top: 1px solid var(--line); }
-.mx-tarot { display: grid; gap: 0.6rem; justify-items: start; padding: var(--space-3); border: 1px dashed var(--line-strong); border-radius: var(--radius-card); }
-.mx-tarot p { margin: 0; font-family: var(--font-read); color: var(--ink-soft); }
 .mx-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
 .mx-form { display: grid; gap: 0.4rem; max-width: 30rem; }
 .mx-form label { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-soft); }
@@ -990,37 +974,15 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 .mx-seg button[aria-pressed="true"] { background: color-mix(in srgb, var(--lotus) 14%, var(--paper-raised)); color: var(--ink); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lotus) 45%, var(--line)); }
 .mx-seg-lg { justify-self: start; } .mx-seg-lg button { padding: 0.4rem 1.1rem; }
 .mx-gcard { position: relative; } .mx-gcard em { font-style: normal; font-size: 0.6875rem; letter-spacing: 0.08em; color: var(--lotus); }
-.mx-pairform { display: grid; gap: var(--space-3); }
-.mx-insight { display: grid; gap: 0.25rem; padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-left-width: 3px; border-radius: 12px; }
-.mx-insight b { font-family: var(--font-display); font-weight: 400; font-size: var(--step-0); letter-spacing: 0.03em; color: var(--ink); }
-.mx-insight p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; color: var(--ink); }
-.mx-insight.is-conflict { border-left-color: var(--danger); }
-.mx-insight.is-synergy { border-left-color: var(--lotus); }
-.mx-insight.is-tone { border-left-color: var(--line-strong); }
-.mx-q { margin: 0; font-size: var(--step--1); font-style: italic; color: var(--ink); line-height: 1.55; } .mx-q b { font-style: normal; font-weight: 500; letter-spacing: 0.04em; margin-right: 0.3rem; color: var(--ink-soft); }
-.mx-karma { display: grid; gap: 0.4rem; padding: 0.7rem 0.9rem; border: 1px dashed var(--line-strong); border-radius: 12px; }
-.mx-karma p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; } .mx-karma b { display: block; font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.1rem; }
-.mx-karma ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.25rem; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.55; }
-.mx-ind { display: grid; gap: 0.7rem; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-card); }
-.mx-sign { display: grid; gap: 0.4rem; } .mx-sign p { margin: 0; font-family: var(--font-read); }
 .mx-bar { height: 4px; border-radius: 999px; background: var(--line); overflow: hidden; } .mx-bar i { display: block; height: 100%; background: var(--lotus); border-radius: 999px; transition: width .5s ease; }
-.mx-ind-res { display: grid; gap: 0.5rem; } .mx-ind-res p { margin: 0; }
 @media (prefers-reduced-motion: reduce) { .mx-bar i, .mx-search { transition: none; } }
 
 /* ---------- v8: стеклянные блоки вместо пунктира, подвал ---------- */
-.mx-glass, .mx-tarot { display: grid; gap: 0.9rem; justify-items: start; padding: var(--space-4); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.55);
+.mx-glass, .mx-tarot { display: grid; justify-items: start; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.55);
   background: linear-gradient(145deg, color-mix(in srgb, #fff 55%, transparent), color-mix(in srgb, var(--paper-raised) 38%, transparent));
   -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
   box-shadow: 0 12px 34px -16px rgba(40, 50, 60, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.7); }
 :root[data-theme="dark"] .mx-glass, :root[data-theme="dark"] .mx-tarot { border-color: rgba(255, 255, 255, 0.12); background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)); box-shadow: 0 14px 34px -16px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
-.mx-tarot { border-style: solid; }
-.mx-tarot .mx-chips { margin-top: 0.2rem; }
-.mx-karma { border-style: solid; border-color: var(--card-edge); background: color-mix(in srgb, var(--paper) 40%, transparent); }
-.mx-ai b { display: block; font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); margin-bottom: 0.3rem; color: var(--ink); }
-.mx-ai p { margin: 0; font-family: var(--font-read); line-height: 1.6; color: var(--ink-soft); }
-.mx-ai > div:first-child { display: grid; }
-.mx-ai-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.2rem; width: 100%; }
-.mx-ai .btn { padding: 1rem 2rem; }
 .mx-status { font-size: var(--step--1); color: var(--ink-soft); }
 .candle { max-width: 52rem; }
 .candle blockquote { font-size: var(--step-1); line-height: 1.6; hyphens: none; -webkit-hyphens: none; }
@@ -1029,24 +991,111 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 .made .ext { color: inherit; }
 
 /* ---------- глубокие карточки: портрет, маркеры, тело, практика; блок → триггер; домашнее задание ---------- */
-.mx-rich { display: grid; gap: 0.8rem; }
-.mx-rich-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
-@media (max-width: 700px) { .mx-rich-grid { grid-template-columns: 1fr; } }
-.mx-rich-col { display: grid; gap: 0.3rem; align-content: start; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: 14px; background: color-mix(in srgb, var(--paper) 45%, transparent); }
-.mx-rich-col b { font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
-.mx-rich-col ul, .mx-bul { margin: 0.2rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.4rem; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; }
-.mx-bul { font-size: var(--step-0); }
-.mx-micro { margin: 0; padding: 0.8rem 1rem; border-left: 2px solid var(--lotus); font-family: var(--font-read); line-height: 1.6; background: color-mix(in srgb, var(--lotus) 6%, transparent); border-radius: 0 12px 12px 0; }
-.mx-micro b { display: block; font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.2rem; }
 .mx-flows { display: grid; gap: var(--space-3); }
-.mx-flow { display: grid; gap: 0.4rem; }
-.mx-flow-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 0.8rem; align-items: stretch; }
-.mx-flow-row > div { display: grid; gap: 0.3rem; align-content: start; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: 14px; }
-.mx-flow-row b { font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
-.mx-flow-row p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; }
-.mx-flow-row i { align-self: center; font-style: normal; color: var(--lotus); }
-@media (max-width: 700px) { .mx-flow-row { grid-template-columns: 1fr; } .mx-flow-row i { transform: rotate(90deg); justify-self: center; } }
-.mx-hw { display: grid; gap: 0.5rem; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-card); background: color-mix(in srgb, var(--paper) 45%, transparent); justify-items: start; }
-.mx-q-big { margin: 0; font-family: var(--font-display); font-size: var(--step-1); line-height: 1.35; color: var(--ink); }
-.mx-hw textarea { font-size: var(--step--1); padding: 0.7rem 1rem; min-height: 4.2rem; }
 .mx-diag-sm .mxd { max-width: 24rem; }
+
+
+/* =====================================================================
+   Матрица: единая шкала отступов (база 4px) и вертикальный ритм.
+   Правило: расстояния между элементами задаёт gap контейнера, а не margin детей.
+   ===================================================================== */
+:root {
+  --mx-s1: 0.25rem;   /*  4 */
+  --mx-s2: 0.5rem;    /*  8 */
+  --mx-s3: 0.75rem;   /* 12 */
+  --mx-s4: 1rem;      /* 16 */
+  --mx-s5: 1.5rem;    /* 24 */
+  --mx-s6: 2rem;      /* 32 */
+  --mx-s7: 3rem;      /* 48 */
+  --mx-pad-y: 1rem;      /* вложенная карточка: 16 по вертикали */
+  --mx-pad-x: 1.25rem;   /* и 20 по горизонтали */
+  --mx-lh-body: 1.5; --mx-lh-sub: 1.45; --mx-lh-head: 1.25;
+}
+@media (max-width: 640px) { :root { --mx-pad-y: 0.875rem; --mx-pad-x: 1rem; } }
+
+/* карточка-контейнер */
+.mx-card { display: grid; gap: var(--mx-s5); padding: var(--mx-s6); border: 1px solid var(--card-edge); border-radius: var(--radius-card); background: color-mix(in srgb, var(--paper-raised) 86%, transparent); box-shadow: var(--card-shadow); }
+.mx-card h2, .mx-card h3 { margin: 0; font-weight: 400; line-height: var(--mx-lh-head); }
+.mx-card p, .mx-card .prose { margin: 0; }
+@media (max-width: 640px) { .mx-card { padding: var(--mx-s5); } }
+
+/* типографика: интерлиньяж 1.5 / 1.45 / 1.25 */
+.mx .l-label { margin: 0; line-height: var(--mx-lh-head); }
+.mx-en { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--mx-s1) var(--mx-s3); margin: 0; line-height: var(--mx-lh-head); }
+.mx-en b { font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); color: var(--ink); }
+.mx-en i { font-style: normal; font-size: var(--step--1); color: var(--ink-soft); line-height: var(--mx-lh-sub); }
+.mx-text { margin: 0; font-family: var(--font-read); line-height: var(--mx-lh-body); color: var(--ink); }
+.mx-shadow, .mx-q { margin: 0; font-size: var(--step--1); line-height: var(--mx-lh-sub); }
+.mx-shadow { color: var(--ink-soft); } .mx-shadow b { font-weight: 500; letter-spacing: 0.04em; margin-right: var(--mx-s1); }
+.mx-q { font-style: italic; color: var(--ink); } .mx-q b { font-style: normal; font-weight: 500; letter-spacing: 0.04em; margin-right: var(--mx-s1); color: var(--ink-soft); }
+.mx-small, .mx-echo { margin: 0; font-size: 0.8125rem; line-height: var(--mx-lh-sub); color: var(--ink-soft); }
+.mx-caveat { margin: 0; font-size: 0.8125rem; font-style: italic; line-height: var(--mx-lh-sub); color: var(--ink-soft); }
+
+/* секция: [лейбл + заголовок] 8 → тезис 12 → мета 4 (между строками); перед вложенной карточкой 16 */
+.mx-head { display: grid; gap: var(--mx-s2); }
+.mx-body { display: grid; gap: var(--mx-s3); }
+.mx-meta { display: grid; gap: var(--mx-s1); }
+.mx-block { display: grid; gap: var(--mx-s4); }
+.mx-sec { display: grid; gap: var(--mx-s2); }
+.mx-stack { display: grid; gap: var(--mx-s4); }
+.mx-it { display: grid; gap: var(--mx-s2); }
+/* разделитель между секциями: сверху отступ 24 (gap карточки) и снизу 24 (padding) */
+.mx-block + .mx-block, .mx-sec + .mx-sec, .mx-inter, .mx-check { padding-top: var(--mx-s5); border-top: 1px solid var(--line); }
+.mx-check { display: grid; gap: var(--mx-s2); }
+.mx-inter { display: grid; gap: var(--mx-s2); }
+.mx-inter .mx-stack { gap: var(--mx-s3); }
+.mx-inter > .mx-stack > p { font-size: var(--step--1); color: var(--ink-soft); }
+
+/* вложенные карточки: 16 / 20 (на мобильных 14 / 16), текст не касается рамки */
+.mx-karma, .mx-insight, .mx-ind, .mx-hw, .mx-rich-col, .mx-flow-row > div, .mx-micro { padding: var(--mx-pad-y) var(--mx-pad-x); }
+.mx-karma { display: grid; gap: var(--mx-s4); border: 1px solid var(--card-edge); border-radius: 12px; background: color-mix(in srgb, var(--paper) 40%, transparent); }
+.mx-kb { display: grid; gap: var(--mx-s2); }
+.mx-kl, .mx-lbl b, .mx-micro b { display: block; font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; line-height: var(--mx-lh-head); color: var(--ink-soft); }
+.mx-karma p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: var(--mx-lh-body); }
+.mx-lbl { display: grid; gap: var(--mx-s1); }
+
+/* списки с висячим отступом: перенос выравнивается по тексту, а не по маркеру */
+.mx-karma ol, .mx-bul, .mx-rich-col ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--mx-s2); font-family: var(--font-read); font-size: var(--step--1); line-height: var(--mx-lh-body); }
+.mx-bul { font-size: var(--step-0); }
+.mx-karma ol { counter-reset: mxn; }
+.mx-karma ol li { counter-increment: mxn; display: grid; grid-template-columns: var(--mx-s5) minmax(0, 1fr); }
+.mx-karma ol li::before { content: counter(mxn) "."; color: var(--ink-soft); }
+.mx-bul li, .mx-rich-col li { display: grid; grid-template-columns: var(--mx-s4) minmax(0, 1fr); }
+.mx-bul li::before, .mx-rich-col li::before { content: "–"; color: var(--lotus); }
+
+/* сочетания энергий */
+.mx-insight { display: grid; gap: var(--mx-s2); border: 1px solid var(--line); border-left-width: 3px; border-radius: 12px; }
+.mx-insight b { font-family: var(--font-display); font-weight: 400; font-size: var(--step-0); letter-spacing: 0.03em; line-height: var(--mx-lh-head); color: var(--ink); }
+.mx-insight p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: var(--mx-lh-body); color: var(--ink); }
+.mx-insight.is-conflict { border-left-color: var(--danger); } .mx-insight.is-synergy { border-left-color: var(--lotus); } .mx-insight.is-tone { border-left-color: var(--line-strong); }
+
+/* индикатор, домашнее задание */
+.mx-ind { display: grid; gap: var(--mx-s4); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.mx-sign { display: grid; gap: var(--mx-s2); }
+.mx-ind-res { display: grid; gap: var(--mx-s3); } .mx-ind-res p { margin: 0; }
+.mx-hw { display: grid; gap: var(--mx-s3); justify-items: start; border: 1px solid var(--line); border-radius: var(--radius-card); background: color-mix(in srgb, var(--paper) 45%, transparent); }
+.mx-hw textarea { width: 100%; font-size: var(--step--1); padding: var(--mx-s3) var(--mx-s4); min-height: 4.5rem; }
+.mx-q-big { margin: 0; font-family: var(--font-display); font-size: var(--step-1); line-height: var(--mx-lh-head); color: var(--ink); }
+.mx-pairform { display: grid; gap: var(--mx-s4); }
+
+/* глубокие карточки, блок → триггер */
+.mx-rich { display: grid; gap: var(--mx-s4); }
+.mx-rich-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--mx-s4); }
+.mx-rich-col { display: grid; gap: var(--mx-s3); align-content: start; border: 1px solid var(--line); border-radius: 14px; background: color-mix(in srgb, var(--paper) 45%, transparent); }
+.mx-micro { display: grid; gap: var(--mx-s2); margin: 0; border-left: 2px solid var(--lotus); font-family: var(--font-read); line-height: var(--mx-lh-body); background: color-mix(in srgb, var(--lotus) 6%, transparent); border-radius: 0 12px 12px 0; }
+.mx-flows { display: grid; gap: var(--mx-s5); }
+.mx-flow { display: grid; gap: var(--mx-s3); }
+.mx-flow-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: var(--mx-s3); align-items: stretch; }
+.mx-flow-row > div { display: grid; gap: var(--mx-s2); align-content: start; border: 1px solid var(--line); border-radius: 14px; }
+.mx-flow-row p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: var(--mx-lh-body); }
+.mx-flow-row i { align-self: center; font-style: normal; color: var(--lotus); }
+@media (max-width: 700px) { .mx-rich-grid { grid-template-columns: 1fr; } .mx-flow-row { grid-template-columns: 1fr; } .mx-flow-row i { transform: rotate(90deg); justify-self: center; } }
+
+/* стеклянные блоки: ИИ и переход к Таро */
+.mx-glass, .mx-tarot { gap: var(--mx-s4); padding: var(--mx-s5); }
+.mx-ai > div:first-child { display: grid; gap: var(--mx-s2); }
+.mx-ai b { display: block; font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); line-height: var(--mx-lh-head); color: var(--ink); }
+.mx-ai p, .mx-tarot p { margin: 0; font-family: var(--font-read); line-height: var(--mx-lh-body); color: var(--ink-soft); }
+.mx-ai-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--mx-s3) var(--mx-s5); width: 100%; }
+.mx-ai .btn { padding: var(--mx-s4) var(--mx-s6); }
+.mx-chips { display: flex; flex-wrap: wrap; gap: var(--mx-s2); }

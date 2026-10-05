@@ -66,36 +66,35 @@ const needBirth = () => `<div class="mx-card mx-empty"><h2>Узнай свою �
 const mxEsc = (s) => ctx.esc(s);
 function energyLine(b) { return `<p class="mx-en"><b>${b.n} · ${mxEsc(b.name)}</b><i>${mxEsc(b.short)}</i></p>`; }
 function blockHtml(b) {
-  const k = b.karma ? `<div class="mx-karma"><p class="mx-trig"><b>Как это может проявляться в жизни</b> ${mxEsc(b.karma.trigger)}</p><p class="mx-prac"><b>Практика вывода в плюс</b></p><ol>${b.karma.practice.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ol></div>` : "";
-  return `<div class="mx-block"><span class="l-label">${mxEsc(b.lead)}</span>${energyLine(b)}
+  const meta = b.shadow || b.shadowQ ? `<div class="mx-meta">${b.shadow ? `<p class="mx-shadow"><b>В тени</b> ${mxEsc(b.shadow)}</p>` : ""}${b.shadowQ ? `<p class="mx-q"><b>Вопрос для себя</b> ${mxEsc(b.shadowQ)}</p>` : ""}</div>` : "";
+  const k = b.karma ? `<div class="mx-karma"><div class="mx-kb"><span class="mx-kl">Как это может проявляться в жизни</span><p>${mxEsc(b.karma.trigger)}</p></div><div class="mx-kb"><span class="mx-kl">Практика вывода в плюс</span><ol>${b.karma.practice.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ol></div></div>` : "";
+  return `<div class="mx-block"><div class="mx-body"><div class="mx-head"><span class="l-label">${mxEsc(b.lead)}</span>${energyLine(b)}</div>
     ${b.echo ? `<p class="mx-echo">Эта энергия уже звучала выше, поэтому здесь её тема раскрывается с другой стороны.</p>` : ""}
-    <p class="mx-text">${mxEsc(b.text)}</p>${b.shadow ? `<p class="mx-shadow"><b>В тени</b> ${mxEsc(b.shadow)}</p>` : ""}${b.shadowQ ? `<p class="mx-q"><b>Вопрос для себя</b> ${mxEsc(b.shadowQ)}</p>` : ""}${k}</div>`;
+    <p class="mx-text">${mxEsc(b.text)}</p>${meta}</div>${k}</div>`;
 }
-const interplayHtml = (list) => list?.length ? `<div class="mx-inter"><span class="l-label">Как энергии могут сочетаться</span>${list.map((x) => `<p>${mxEsc(x)}</p>`).join("")}</div>` : "";
-const insightsHtml = (list) => list?.length ? `<div class="mx-inter"><span class="l-label">Как энергии могут сочетаться</span>${list.map((i) => `<div class="mx-insight is-${i.kind}"><b>${mxEsc(i.title)}</b><p>${mxEsc(i.text)}</p></div>`).join("")}</div>` : "";
+const interplayHtml = (list) => list?.length ? `<div class="mx-inter"><span class="l-label">Как энергии могут сочетаться</span><div class="mx-stack">${list.map((x) => `<p class="mx-text">${mxEsc(x)}</p>`).join("")}</div></div>` : "";
+const insightsHtml = (list) => list?.length ? `<div class="mx-inter"><span class="l-label">Как энергии могут сочетаться</span><div class="mx-stack">${list.map((i) => `<div class="mx-insight is-${i.kind}"><b>${mxEsc(i.title)}</b><p>${mxEsc(i.text)}</p></div>`).join("")}</div></div>` : "";
 // индикатор проживания энергии: три утверждения → процент ресурса, ответы только на устройстве
 function indHtml(ind) {
   const ans = S.ind[ind.n] ?? [], done = ans.filter(Boolean).length === ind.signs.length, r = done ? T.indicatorResult(ind.n, ans) : null;
-  return `<div class="mx-ind" data-ind="${ind.n}"><span class="l-label">Индикатор проживания энергии · ${mxEsc(ind.name)}</span>
-    <p class="mx-small">Отметь, насколько это про тебя сейчас. Ответы остаются только на этом устройстве, к ним можно вернуться позже.</p>
-    ${ind.signs.map((t, i) => `<div class="mx-sign"><p>${mxEsc(t)}</p><div class="mx-seg" role="group" aria-label="${mxEsc(t)}">${[["yes", "Да"], ["some", "Иногда"], ["no", "Пока нет"]].map(([v, l]) => `<button type="button" data-mx-ans="${ind.n}|${i}|${v}" aria-pressed="${ans[i] === v}">${l}</button>`).join("")}</div></div>`).join("")}
+  return `<div class="mx-ind" data-ind="${ind.n}"><div class="mx-head"><span class="l-label">Индикатор проживания энергии · ${mxEsc(ind.name)}</span>
+    <p class="mx-small">Отметь, насколько это про тебя сейчас. Ответы остаются только на этом устройстве, к ним можно вернуться позже.</p></div>
+    ${ind.signs.map((t, i) => `<div class="mx-sign"><p class="mx-text">${mxEsc(t)}</p><div class="mx-seg" role="group" aria-label="${mxEsc(t)}">${[["yes", "Да"], ["some", "Иногда"], ["no", "Пока нет"]].map(([v, l]) => `<button type="button" data-mx-ans="${ind.n}|${i}|${v}" aria-pressed="${ans[i] === v}">${l}</button>`).join("")}</div></div>`).join("")}
     ${r ? `<div class="mx-ind-res"><div class="mx-bar" aria-hidden="true"><i style="width:${r.pct}%"></i></div><p class="mx-text"><b>${r.pct}% в ресурсе.</b> ${mxEsc(r.msg)}</p></div>` : ""}</div>`;
 }
 const tarotLink = (theme, ctaId = "default", spreadId = "") => `<div class="mx-tarot"><p>Хочешь посмотреть, как эта тема проявляется именно сейчас?</p><button type="button" class="btn soft" data-mx-tarot="${mxEsc(theme)}" data-mx-spread="${mxEsc(spreadId)}">${mxEsc(T.cta(ctaId))}</button></div>`;
 const caveat = `<p class="mx-caveat">Формулировки описывают возможные проявления в рамках системы. Это повод проверить, узнаёшь ли ты их в своей жизни, а не факт о тебе.</p>`;
 
 function richHtml(r) {
-  return `<div class="mx-rich"><span class="l-label">${mxEsc(r.title)}</span>${energyLine(r)}
+  const col = (t, hint, list) => `<div class="mx-rich-col"><div class="mx-lbl"><b>${t}</b><span class="mx-small">${hint}</span></div><ul>${list.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ul></div>`;
+  return `<div class="mx-rich"><div class="mx-head"><span class="l-label">${mxEsc(r.title)}</span>${energyLine(r)}</div>
     <p class="mx-text">${mxEsc(r.portrait)}</p>
     ${r.echo ? `<p class="mx-echo">Эта энергия уже разобрана выше: здесь она стоит в другой позиции, и её тема может звучать по-другому.</p>` : `
-    <div class="mx-rich-grid">
-      <div class="mx-rich-col"><b>Бытовые маркеры</b><span class="mx-small">как узнать, что энергия «сливается»</span><ul>${r.markers.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ul></div>
-      <div class="mx-rich-col"><b>Сигналы тела и эмоций</b><span class="mx-small">ориентиры для самонаблюдения, не диагноз</span><ul>${r.body.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ul></div>
-    </div>
+    <div class="mx-rich-grid">${col("Бытовые маркеры", "как узнать, что энергия «сливается»", r.markers)}${col("Сигналы тела и эмоций", "ориентиры для самонаблюдения, не диагноз", r.body)}</div>
     <p class="mx-micro"><b>Микро-практика на день</b> ${mxEsc(r.micro)}</p>`}</div>`;
 }
-const flowHtml = (list) => `<div class="mx-flows">${list.map((f) => `<div class="mx-flow"><span class="l-label">${mxEsc(f.title)}</span>${energyLine(f)}
-  <div class="mx-flow-row"><div><b>Что заземляет и блокирует канал</b><p>${mxEsc(f.block)}</p></div><i aria-hidden="true">→</i><div><b>Что служит триггером раскрытия потока</b><p>${mxEsc(f.open)}</p></div></div></div>`).join("")}</div>`;
+const flowHtml = (list) => `<div class="mx-flows">${list.map((f) => `<div class="mx-flow"><div class="mx-head"><span class="l-label">${mxEsc(f.title)}</span>${energyLine(f)}</div>
+  <div class="mx-flow-row"><div><div class="mx-lbl"><b>Что заземляет и блокирует канал</b></div><p>${mxEsc(f.block)}</p></div><i aria-hidden="true">→</i><div><div class="mx-lbl"><b>Что служит триггером раскрытия потока</b></div><p>${mxEsc(f.open)}</p></div></div></div>`).join("")}</div>`;
 
 function periodHtml(res) {
   const m = res.main, f1 = (x) => (Math.round(x * 10) / 10).toString().replace(".", ","), from = f1(res.p.from), to = f1(res.p.to);
@@ -163,7 +162,7 @@ function viewMe() {
 function pointDetail(mx, key) {
   if (T.richKeys.includes(key)) return `<div class="mx-card mx-point">${richHtml(T.rich(mx, key, new Set()))}<button type="button" class="mx-link" data-mx-guide="${T.value(mx, key)}">Открыть в справочнике</button></div>`;
   const pos = KB.positions[key], n = T.value(mx, key), e = T.en(n), f = pos.fields[0];
-  return `<div class="mx-card mx-point"><span class="l-label">${mxEsc(pos.title)}</span>${energyLine({ n, name: e.name, short: e.short })}
+  return `<div class="mx-card mx-point"><div class="mx-head"><span class="l-label">${mxEsc(pos.title)}</span>${energyLine({ n, name: e.name, short: e.short })}</div>
     <p class="mx-text">${mxEsc(e[f])}</p><p class="mx-shadow"><b>В тени</b> ${mxEsc(e.shadow)}</p>
     <p class="mx-small">${mxEsc(pos.desc)}${pos.age ? ` Период: ${pos.age}.` : ""}</p><button type="button" class="mx-link" data-mx-guide="${n}">Открыть в справочнике</button></div>`;
 }
@@ -179,7 +178,7 @@ function otherHtml(res, name, birth) {
   const mx = calcMatrix(birth);
   const sec = (x) => x.kind === "rich" ? `<div class="mx-sec">${richHtml(x.rich)}</div>`
     : x.kind === "flows" ? `<div class="mx-sec"><span class="l-label">${mxEsc(x.title)}</span>${flowHtml(x.flows)}</div>`
-    : `<div class="mx-sec"><span class="l-label">${mxEsc(x.title)}</span>${x.items.map((i) => `<p class="mx-en"><b>${i.n} · ${mxEsc(i.name)}</b><i>${mxEsc(i.pos)}</i></p><p class="mx-text">${mxEsc(i.text)}</p>`).join("")}</div>`;
+    : `<div class="mx-sec"><span class="l-label">${mxEsc(x.title)}</span><div class="mx-stack">${x.items.map((i) => `<div class="mx-it"><p class="mx-en"><b>${i.n} · ${mxEsc(i.name)}</b><i>${mxEsc(i.pos)}</i></p><p class="mx-text">${mxEsc(i.text)}</p></div>`).join("")}</div></div>`;
   return `<div class="mx-person"><span>${name ? mxEsc(name) + " · " : ""}Матрица · ${fmtBirth(birth)}</span></div>
     <div class="mx-diag mx-diag-sm">${diagramSvg(mx, null)}</div>
     <div class="mx-card"><h3>Что можно увидеть</h3><p class="mx-caveat">Это одна из возможных интерпретаций в рамках этой системы, а не оценка человека. Эзотерический язык здесь описывает символы, а не установленные факты. Бытовые примеры и сигналы тела — ориентиры для самонаблюдения, а не диагноз.</p>
@@ -198,19 +197,19 @@ const loadHw = () => { try { return JSON.parse(localStorage.getItem("arcana-mx-h
 const saveHw = (o) => { try { localStorage.setItem("arcana-mx-hw", JSON.stringify(o)); } catch {} };
 function hwItem(i) {
   const st = (loadHw()[hwKey()] ?? {})[i.hw] ?? {};
-  return `<div class="mx-hw" data-hw="${i.hw}"><span class="l-label">${mxEsc(i.lead)}</span><p class="mx-q-big">${mxEsc(i.text)}</p>
+  return `<div class="mx-hw" data-hw="${i.hw}"><div class="mx-head"><span class="l-label">${mxEsc(i.lead)}</span><p class="mx-q-big">${mxEsc(i.text)}</p></div>
     <textarea data-mx-hwnote="${i.hw}" rows="2" placeholder="Что мы решили или поняли (остаётся только на этом устройстве)">${mxEsc(st.note ?? "")}</textarea>
     <button type="button" class="mx-chip${st.done ? " is-on" : ""}" data-mx-hwdone="${i.hw}" aria-pressed="${!!st.done}">${st.done ? "Обсудили ✓" : "Отметить как обсуждённое"}</button></div>`;
 }
 function togetherItem(i) {
   if (i.hw) return hwItem(i);
-  return `<p class="mx-en"><b>${mxEsc(i.lead)}</b></p>${i.text ? `<p class="mx-text">${mxEsc(i.text)}</p>` : ""}${i.list ? `<ul class="mx-bul">${i.list.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ul>` : ""}`;
+  return `<div class="mx-it"><p class="mx-en"><b>${mxEsc(i.lead)}</b></p>${i.text ? `<p class="mx-text">${mxEsc(i.text)}</p>` : ""}${i.list ? `<ul class="mx-bul">${i.list.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ul>` : ""}</div>`;
 }
 function togetherHtml(r, a, b) {
   const pts = r.keys.map((k) => `<div><span>${mxEsc(KB.positions[k].title.split(":")[0])}</span><b>${T.value(a, k)} + ${T.value(b, k)} = ${r.pair[k]}</b></div>`).join("");
   const alt = KB.config.spread_suggest.map((s) => `<button type="button" class="mx-chip${s.id === r.spread ? " is-on" : ""}" data-mx-tarot="Отношения" data-mx-spread="${s.id}">${mxEsc(s.label)}</button>`).join("");
   return `<div class="mx-card"><h3>Что можно увидеть о вашей связи</h3><p class="mx-caveat">Здесь нет процента совместимости: он ничего не говорит о живых отношениях. Это набор тем, которые можно обсудить вдвоём. Метод сопоставления матриц у разных авторов отличается; Arcana складывает одноимённые точки двух матриц.</p>
-    ${r.sections.map((s) => `<div class="mx-sec"><span class="l-label">${mxEsc(s.title)}</span>${s.items.map(togetherItem).join("")}</div>`).join("")}</div>
+    ${r.sections.map((s) => `<div class="mx-sec"><span class="l-label">${mxEsc(s.title)}</span><div class="mx-stack">${s.items.map(togetherItem).join("")}</div></div>`).join("")}</div>
     ${aiButton("together")}<details class="mx-method"><summary>Точки пары</summary><div class="mx-pairpts">${pts}</div><p class="mx-small">Каждая точка пары — сумма одноимённых точек двух матриц, сведённая к числу от 1 до 22.</p></details>
     <div class="mx-tarot"><p>Хочешь посмотреть эту связь через Таро? Arcana предложит подходящий расклад.</p><button type="button" class="btn soft" data-mx-tarot="Отношения" data-mx-spread="${r.spread}">Посмотреть эту связь через Таро</button><div class="mx-chips">${alt}</div></div>`;
 }
@@ -250,7 +249,7 @@ function viewAsk() {
   const body = !res ? "" : res.period
     ? `<div class="mx-card"><h3>${mxEsc(res.topic.title_out)}</h3>${caveat}</div>${periodHtml(res.period)}${aiButton("period")}${tarotLink(TOPIC_THEME.period, "period")}`
     : `<div class="mx-card mx-answer"><h3>${mxEsc(res.topic.title_out)}</h3>${caveat}${res.blocks.map(blockHtml).join("")}${insightsHtml(res.insights)}
-        <div class="mx-check"><span class="l-label">${mxEsc(res.check.lead)}</span><p class="mx-text">${mxEsc(res.check.question)}</p><p class="mx-text">Небольшой шаг: ${mxEsc(res.check.action.charAt(0).toLowerCase() + res.check.action.slice(1))}</p></div></div>${indHtml(res.indicator)}${aiButton("ask")}${tarotLink(TOPIC_THEME[res.topic.id], res.topic.id)}`;
+        <div class="mx-check"><div class="mx-head"><span class="l-label">${mxEsc(res.check.lead)}</span></div><p class="mx-text">${mxEsc(res.check.question)}</p><p class="mx-text">Небольшой шаг: ${mxEsc(res.check.action.charAt(0).toLowerCase() + res.check.action.slice(1))}</p></div></div>${indHtml(res.indicator)}${aiButton("ask")}${tarotLink(TOPIC_THEME[res.topic.id], res.topic.id)}`;
   return `<div class="mx-ask"><h2 class="mx-h2">Что тебя сейчас интересует?</h2><p class="prose">Это не ИИ: Arcana собирает обзор из уже рассчитанных данных твоей Матрицы.</p>
     <div class="mx-zones">${KB.config.topics.map((t) => `<button type="button" class="mx-zone${S.ask === t.id ? " is-on" : ""}" data-mx-ask="${t.id}">${ico(t.icon)}<span><b>${mxEsc(t.title)}</b><i>${mxEsc(t.ask)}</i></span></button>`).join("")}</div>${body}</div>`;
 }
