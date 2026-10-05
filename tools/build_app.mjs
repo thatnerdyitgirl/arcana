@@ -50,6 +50,8 @@ fs.rmSync(site, { recursive: true, force: true });
 fs.mkdirSync(path.join(site, "assets"), { recursive: true });
 fs.copyFileSync(path.join(ROOT, "build/arcana.html"), path.join(site, "index.html"));
 for (const f of ["og-arcana.jpg", "favicon.svg", "favicon-32.png", "apple-touch-icon.png"]) if (fs.existsSync(path.join(ROOT, "assets", f))) fs.copyFileSync(path.join(ROOT, "assets", f), path.join(site, "assets", f));
+// иконки в корне сайта: Safari и другие браузеры сами ищут /favicon.ico и /apple-touch-icon.png
+for (const [from, to] of [["favicon.ico", "favicon.ico"], ["apple-touch-icon.png", "apple-touch-icon.png"]]) if (fs.existsSync(path.join(ROOT, "assets", from))) fs.copyFileSync(path.join(ROOT, "assets", from), path.join(site, to));
 fs.writeFileSync(path.join(site, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n`);
 fs.writeFileSync(path.join(site, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}</loc></url></urlset>\n`);
 console.log("build/site готова:", fs.readdirSync(site).join(", "));
