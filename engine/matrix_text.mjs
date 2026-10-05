@@ -24,7 +24,7 @@ export function makeMatrixText(KB) {
     const got = pick(s, n, [role.f]);
     s.seenEnergy.add(n);
     const out = { key: role.p, lead: role.lead, n, name: e.name, short: e.short, text: got?.text ?? "", field: got?.field, echo };
-    if (!echo && got?.field !== "shadow") out.shadow = e.shadow;       // тень показываем один раз на энергию
+    if (!echo && got?.field !== "shadow") { out.shadow = e.shadow; out.shadowQ = e.shadow_q; }       // тень показываем один раз на энергию
     return out;
   }
   const interplayLine = (a, b) => {
@@ -34,11 +34,39 @@ export function makeMatrixText(KB) {
   };
   const interplayFor = (ns) => { const out = [], seen = new Set(); for (let i = 0; i < ns.length - 1; i++) { const a = ns[i], b = ns[i + 1]; if (a === b) continue; const k = [a, b].sort().join("-"); if (seen.has(k)) continue; seen.add(k); const l = interplayLine(a, b); if (l) out.push(l); } return out.slice(0, 3); };
 
+  // Мини-инсайты о сочетании энергий: внутренний конфликт / суперсила / тон — с хвостом под конкретный раздел
+  function insights(ns, ctxId) {
+    const uniq = [...new Set(ns)], out = [], tail = cfg.combo_tail[ctxId];
+    const pairs = [];
+    for (let i = 0; i < uniq.length; i++) for (let j = i + 1; j < uniq.length; j++) pairs.push([uniq[i], uniq[j]]);
+    // сначала конфликты и суперсилы, затем «тон»
+    const rank = (x) => (x.kind === "tone" ? 1 : 0);
+    for (const [a, b] of pairs) {
+      const ea = en(a), eb = en(b), ov = cfg.combo_override[[a, b].sort((x, y) => x - y).join("-")];
+      const key = [ea.vector, eb.vector].sort().join("+"), t = ov ?? cfg.combo[key]; if (!t) continue;
+      const [x, y] = ea.vector <= eb.vector ? [ea, eb] : [eb, ea];
+      const fill = (str) => str.replaceAll("{A}", x.name).replaceAll("{B}", y.name).replaceAll("{ua}", x.urge).replaceAll("{ub}", y.urge).replaceAll("{ca}", x.ctx[ctxId] ?? "").replaceAll("{cb}", y.ctx[ctxId] ?? "");
+      out.push({ kind: t.kind, title: t.title, text: fill(t.text) + (tail ? " " + fill(tail) : ""), pair: [a, b] });
+    }
+    return out.sort((p, q) => rank(p) - rank(q)).slice(0, 3);
+  }
+  const ctxOf = (id) => cfg.ctx_of[id] ?? "self";
+
   // Зона «Моей Матрицы»
   function zone(mx, id) {
     const z = cfg.zones.find((x) => x.id === id), s = session();
-    const blocks = z.points.map((p) => { const b = block(s, mx, { p, lead: z.lead[p] ?? positions[p].title, f: positions[p].fields[0] }); b.pos = positions[p]; return b; });
-    return { zone: z, blocks, interplay: interplayFor(blocks.map((b) => b.n)), note: z.note };
+    const blocks = z.points.map((p) => { const b = block(s, mx, { p, lead: z.lead[p] ?? positions[p].title, f: positions[p].fields[0] }); b.pos = positions[p];
+      if (z.karma) { const e = en(b.n); b.karma = { trigger: e.trigger, practice: e.practice, question: e.shadow_q }; } return b; });
+    return { zone: z, blocks, insights: insights(blocks.map((b) => b.n), ctxOf(id)), note: z.note, indicator: indicator(blocks[0].n) };
+  }
+  // Индикатор проживания энергии: три утверждения «признаков плюса»
+  function indicator(n) { const e = en(n); return { n, name: e.name, signs: e.plus_signs, tip: e.recommendations[0], practice: e.practice[0] }; }
+  function indicatorResult(n, answers) {
+    const e = en(n), vals = answers.map((a) => (a === "yes" ? 100 : a === "some" ? 50 : 0)), pct = Math.round(vals.reduce((x, y) => x + y, 0) / (vals.length || 1));
+    const msg = pct >= 70 ? `Сейчас энергия «${e.name}» проявляется в основном в ресурсе. Можно поддержать это: ${e.recommendations[0].charAt(0).toLowerCase() + e.recommendations[0].slice(1)}`
+      : pct >= 40 ? `Энергия «${e.name}» сейчас на стыке: часть проявлений в ресурсе, часть в тени. Попробуйте небольшой шаг: ${e.practice[0].charAt(0).toLowerCase() + e.practice[0].slice(1)}`
+      : `Энергия «${e.name}» сейчас чаще звучит через тень, и это не приговор, а сигнал. Вопрос для себя: ${e.shadow_q} Первый шаг: ${e.practice[0].charAt(0).toLowerCase() + e.practice[0].slice(1)}`;
+    return { pct, msg };
   }
 
   // «Спросить Матрицу»
@@ -50,7 +78,7 @@ export function makeMatrixText(KB) {
     const ns = blocks.map((b) => b.n), first = en(ns[0]), last = en(ns[ns.length - 1]);
     const q = (ns.length > 1 && last.questions[0] === first.questions[0]) ? last.questions[1] : last.questions[0];
     const rec = first.recommendations[0] === q ? first.recommendations[1] : first.recommendations[0];
-    return { topic: t, blocks, interplay: interplayFor(ns), check: { lead: t.check, question: q, action: rec } };
+    return { topic: t, blocks, insights: insights(ns, ctxOf(t.id)), check: { lead: t.check, question: q, action: rec }, indicator: indicator(ns[0]) };
   }
 
   // Что сейчас активировано
@@ -100,8 +128,8 @@ export function makeMatrixText(KB) {
     sec.push({ id: "strength", items: [{ lead: `Центр пары: ${nm(pair.D)}`, text: `Сумма зон комфорта двух матриц связывается с тем, на чём может держаться союз. Потенциал: ${lc(get(pair.D, "potential"))}` }] });
     const modeA = en(a.pts.A).mode, modeB = en(b.pts.A).mode;
     sec.push({ id: "diff", items: [
-      { lead: `Стили: ${nm(a.pts.A)} и ${nm(b.pts.A)}`, text: a.pts.A === b.pts.A ? `Основная энергия характера у вас совпадает (${nm(a.pts.A)}): много общего, и стоит замечать, где вы усиливаете и тень друг друга.` : interplayLine(a.pts.A, b.pts.A) },
-      { lead: `Зоны комфорта: ${nm(a.pts.D)} и ${nm(b.pts.D)}`, text: a.pts.D === b.pts.D ? `Зона комфорта одна и та же: вам может быть легко понять потребности друг друга.` : interplayLine(a.pts.D, b.pts.D) },
+      { lead: `Стили: ${nm(a.pts.A)} и ${nm(b.pts.A)}`, text: a.pts.A === b.pts.A ? `Основная энергия характера у вас совпадает (${nm(a.pts.A)}): много общего, и стоит замечать, где вы усиливаете и тень друг друга.` : (insights([a.pts.A, b.pts.A], "relations")[0]?.text ?? interplayLine(a.pts.A, b.pts.A)) },
+      { lead: `Зоны комфорта: ${nm(a.pts.D)} и ${nm(b.pts.D)}`, text: a.pts.D === b.pts.D ? `Зона комфорта одна и та же: вам может быть легко понять потребности друг друга.` : (insights([a.pts.D, b.pts.D], "relations")[0]?.text ?? interplayLine(a.pts.D, b.pts.D)) },
     ] });
     sec.push({ id: "tension", items: [
       { lead: `Сложности в отношениях: ${nm(a.pts.T)}`, text: get(a.pts.T, "difficulties") },
@@ -129,5 +157,6 @@ export function makeMatrixText(KB) {
     const stem = s.length > 4 ? s.slice(0, s.length - 1) : s;
     return energies.filter((e) => [e.name, e.short, e.archetype, ...e.themes, ...e.keywords, e.money.slice(0, 0)].join(" ").toLowerCase().includes(stem) || (/деньг|доход|финанс|зарабат/.test(s) && /деньги|доход/.test(e.money.toLowerCase())) || (/отношен|любов|партн/.test(s) && e.relations.length > 0 && /отношен|близост|партн/.test(e.relations.toLowerCase())));
   }
-  return { en, value, zone, ask, period, other, together, search, interplayLine };
+  const cta = (id) => cfg.cta[id] ?? cfg.cta.default;
+  return { en, value, zone, ask, period, other, together, search, interplayLine, insights, indicatorResult, cta };
 }

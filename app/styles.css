@@ -970,3 +970,39 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 .mx-pairpts { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 0.5rem; margin-top: 0.6rem; } .mx-pairpts div { display: grid; gap: 0.1rem; padding: 0.5rem 0.7rem; border: 1px solid var(--line); border-radius: 10px; } .mx-pairpts span { font-size: 0.6875rem; color: var(--ink-soft); }
 .mx-readnote { margin: var(--space-3) 0 0; }
 @media (prefers-reduced-motion: reduce) { .mxd-pt circle, .mx-zone, .mx-gcard, .mx-chip { transition: none; } }
+
+/* ---------- Матрица v2: стеклянный поиск, инсайты, индикатор, справочник ---------- */
+.mx-search { position: relative; display: flex; align-items: center; gap: 0.6rem; max-width: 34rem; padding: 0 0.9rem; height: 2.9rem; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.6);
+  background: linear-gradient(145deg, color-mix(in srgb, #fff 62%, transparent), color-mix(in srgb, var(--paper-raised) 38%, transparent));
+  -webkit-backdrop-filter: blur(18px) saturate(1.5); backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow: 0 8px 26px -14px rgba(40, 50, 60, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.75); transition: box-shadow .3s ease, border-color .3s ease; }
+:root[data-theme="dark"] .mx-search { border-color: rgba(255, 255, 255, 0.12); background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03)); box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+.mx-search:focus-within { border-color: color-mix(in srgb, var(--lotus) 60%, transparent); box-shadow: 0 8px 26px -14px rgba(40, 50, 60, 0.3), 0 0 0 4px var(--lotus-soft), inset 0 1px 0 rgba(255, 255, 255, 0.75); }
+.mx-search > svg { flex: none; width: 1.05rem; height: 1.05rem; fill: none; stroke: var(--ink-soft); stroke-width: 1.4; stroke-linecap: round; }
+.mx-search input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; font: inherit; font-family: var(--font-ui); font-size: var(--step-0); color: var(--ink); outline: none; }
+.mx-search input::placeholder { color: var(--ink-soft); opacity: 0.8; }
+.mx-search input:focus { box-shadow: none; border: 0; }
+.mx-search-x { flex: none; display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border: 0; border-radius: 50%; background: color-mix(in srgb, var(--ink) 12%, transparent); cursor: pointer; }
+.mx-search-x[hidden] { display: none; }
+.mx-search-x svg { width: 0.6rem; height: 0.6rem; fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-linecap: round; }
+.mx-seg { display: inline-flex; padding: 2px; border: 1px solid var(--line); border-radius: 999px; background: color-mix(in srgb, var(--paper) 60%, transparent); }
+.mx-seg button { font: inherit; font-size: var(--step--1); padding: 0.28rem 0.85rem; border: 0; border-radius: 999px; background: none; color: var(--ink-soft); cursor: pointer; transition: background .25s ease, color .25s ease; }
+.mx-seg button[aria-pressed="true"] { background: color-mix(in srgb, var(--lotus) 14%, var(--paper-raised)); color: var(--ink); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lotus) 45%, var(--line)); }
+.mx-seg-lg { justify-self: start; } .mx-seg-lg button { padding: 0.4rem 1.1rem; }
+.mx-gcard { position: relative; } .mx-gcard em { font-style: normal; font-size: 0.6875rem; letter-spacing: 0.08em; color: var(--lotus); }
+.mx-pairform { display: grid; gap: var(--space-3); }
+.mx-insight { display: grid; gap: 0.25rem; padding: 0.7rem 0.9rem; border: 1px solid var(--line); border-left-width: 3px; border-radius: 12px; }
+.mx-insight b { font-family: var(--font-display); font-weight: 400; font-size: var(--step-0); letter-spacing: 0.03em; color: var(--ink); }
+.mx-insight p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; color: var(--ink); }
+.mx-insight.is-conflict { border-left-color: var(--danger); }
+.mx-insight.is-synergy { border-left-color: var(--lotus); }
+.mx-insight.is-tone { border-left-color: var(--line-strong); }
+.mx-q { margin: 0; font-size: var(--step--1); font-style: italic; color: var(--ink); line-height: 1.55; } .mx-q b { font-style: normal; font-weight: 500; letter-spacing: 0.04em; margin-right: 0.3rem; color: var(--ink-soft); }
+.mx-karma { display: grid; gap: 0.4rem; padding: 0.7rem 0.9rem; border: 1px dashed var(--line-strong); border-radius: 12px; }
+.mx-karma p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; } .mx-karma b { display: block; font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.1rem; }
+.mx-karma ol { margin: 0; padding-left: 1.2rem; display: grid; gap: 0.25rem; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.55; }
+.mx-ind { display: grid; gap: 0.7rem; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-card); }
+.mx-sign { display: grid; gap: 0.4rem; } .mx-sign p { margin: 0; font-family: var(--font-read); }
+.mx-bar { height: 4px; border-radius: 999px; background: var(--line); overflow: hidden; } .mx-bar i { display: block; height: 100%; background: var(--lotus); border-radius: 999px; transition: width .5s ease; }
+.mx-ind-res { display: grid; gap: 0.5rem; } .mx-ind-res p { margin: 0; }
+@media (prefers-reduced-motion: reduce) { .mx-bar i, .mx-search { transition: none; } }

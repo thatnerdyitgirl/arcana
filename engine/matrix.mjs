@@ -89,3 +89,6 @@ export function pairMatrix(a, b) {
 
 // какие энергии вообще встречаются в матрице (для связи с раскладами Таро)
 export const matrixEnergies = (mx) => new Set([...Object.values(mx.pts), ...Object.values(mx.purposes), mx.kinPower, mx.innerPower]);
+
+// «Мои энергии» для справочника: основные девять точек и три главных предназначения (без вспомогательных троек)
+export const coreEnergies = (mx) => new Set([...["A", "B", "V", "G", "D", "E", "Zh", "Z", "I"].map((k) => mx.pts[k]), mx.purposes.personal, mx.purposes.social, mx.purposes.general]);

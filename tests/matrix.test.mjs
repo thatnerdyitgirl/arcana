@@ -51,7 +51,7 @@ check(pm.pair.A === red(p.A + b.pts.A) && pm.pair.D === red(p.D + b.pts.D), "п�
 check(matrixEnergies(a).has(p.A) && matrixEnergies(a).size <= 22, "множество энергий матрицы");
 
 // 7. База знаний
-const need = "name short archetype mode themes keywords strength shadow talents potential relations money work growth difficulties recommendations questions sources confidence".split(" ");
+const need = "name short archetype mode vector urge ctx themes keywords strength shadow shadow_q trigger practice plus_signs talents potential relations money work growth difficulties recommendations questions sources confidence".split(" ");
 check(KB.energies.length === 22 && KB.energies.every((e, i) => e.n === i + 1 && need.every((k) => e[k] && (!Array.isArray(e[k]) || e[k].length))), "22 энергии со всеми полями и источниками");
 check(KB.energies[2].name === "Императрица" && KB.energies[2].short === "Создание · изобилие · воплощение" && KB.energies[7].name === "Справедливость" && KB.energies[10].name === "Сила" && KB.energies[21].name === "Шут", "номера: 3 Императрица, 8 Справедливость, 11 Сила, 22 Шут");
 const words = JSON.stringify(KB);
@@ -79,4 +79,18 @@ check(o.sections.length === 7 && tg.sections.length === 7 && tg.sections.every((
 check(!/\d+\s?%|процент/.test(JSON.stringify(tg)) && ["rel.attraction", "rel.between_us", "rel.diagnostics"].includes(tg.spread), "«Мы вместе»: без процента совместимости, предложен расклад Таро");
 check(!BANNED.test(JSON.stringify([o, tg, T.period(a, new Date(2026, 9, 5))])), "выводы без приговоров");
 check(T.search("деньги").length >= 3 && T.search("императрица").length === 1 && T.search("").length === 22, "справочник: поиск «деньги» находит энергии, «императрица» — одну");
+// 9. Контент v2: инсайты, карма, тени, индикатор
+const mx29 = calcMatrix({ d: 29, m: 12, y: 2004 }), me = T.zone(mx29, "self"), kz = T.zone(mx29, "karma");
+check([mx29.pts.A, mx29.pts.D, mx29.pts.B].join() === "11,4,12" && me.blocks.map((b) => b.n).join() === "11,4,12", "29.12.2004: «Я и характер» = 11 Сила, 4 Император, 12 Повешенный");
+check(me.insights.length === 3 && me.insights.some((i) => i.kind === "synergy" && /управленческая/.test(i.title)) && me.insights.some((i) => i.kind === "conflict" && /Внутренний конфликт/.test(i.title)), "связка 11+4+12: суперсила (11+4) и внутренние конфликты");
+check(kz.blocks.map((b) => b.n).join() === "11,8,15" && kz.blocks.every((b) => b.karma?.trigger && b.karma.practice.length === 2 && b.karma.question), "карма 11-8-15: бытовой триггер, 2 шага практики и вопрос для каждой точки");
+check(KB.energies.every((e) => e.trigger.length > 40 && e.practice.length === 2 && e.plus_signs.length === 3 && e.shadow_q.endsWith("?")), "22 энергии: триггер, практика, признаки плюса, вопрос тени");
+check(!/Безответственность,|Манипуляци|Зависимости и привязанности,/.test(KB.energies.map((e) => e.shadow).join(" ")) && KB.energies.every((e) => /^Склонность /.test(e.shadow)), "тени написаны поведенческими маркерами («Склонность…»), а не списком существительных");
+const ctxTexts = ["money", "relations", "talents", "self"].map((c) => T.insights([7, 12], c)[0].text);
+check(new Set(ctxTexts).size === 4 && /В деньгах и бизнесе/.test(ctxTexts[0]) && /В паре/.test(ctxTexts[1]), "связки уникальны для разделов: деньги, отношения, таланты, характер");
+const ir = T.indicatorResult(11, ["yes", "yes", "yes"]), ir2 = T.indicatorResult(11, ["no", "no", "no"]);
+check(ir.pct === 100 && ir2.pct === 0 && /ресурсе/.test(ir.msg) && /тень/.test(ir2.msg), "индикатор: 100% / 0% и разные сообщения");
+check(T.cta("money") === "Узнать подсказку для дохода на сегодня" && /гармонизировать союз/.test(T.cta("relations")) && /духовный аспект/.test(T.cta("purpose")), "контекстные кнопки «Вытянуть карту»");
+const banned2 = /у тебя будет|обречен|токсичн|манипулятор|плохая энергия денег/i;
+check(!banned2.test(JSON.stringify(KB.energies)) && !banned2.test(JSON.stringify(KB.config)), "новые тексты без приговоров");
 process.exit(ok ? 0 : 1);
