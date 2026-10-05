@@ -7,7 +7,7 @@ const adult = REL.filter((s) => s.adult), pub = REL.filter((s) => !s.adult);
 const ROLES = new Set(["situation", "influence", "notice", "action"]);
 const READ = /^(PA:(present|blind_spot|influence|obstacle|resource|understand|tendency|advice|shadow)|SYN:(core_reading|shadow|relationships|work_decision|psychology))$/;
 
-check(pub.length === 9 && adult.length === 3, `Отношения: ${pub.length} обычных и ${adult.length} в режиме 18+ (каталог 3 × 4)`);
+check(pub.length === 15 && adult.length === 3, `Отношения: ${pub.length} обычных и ${adult.length} в режиме 18+ (каталог 3 × 6)`);
 check(WORK.length >= 7, `Работа и бизнес: ${WORK.length} раскладов`);
 for (const s of [...REL, ...WORK]) {
   const bad = [];
@@ -74,11 +74,11 @@ check(trend.every((s) => s.positions[2].read.includes("PA:tendency")), "перс
 // Каталог «Отношения»: 4 ряда по 3 расклада, короткие названия и подписи, ряд 18+ только для adult
 import { readFileSync } from "node:fs";
 const rows = JSON.parse(readFileSync(new URL("../knowledge/spreads/triplets.json", import.meta.url), "utf8")).rows["Отношения"];
-check(rows.length === 4 && rows.every((r) => r.ids.length === 3) && rows.filter((r) => r.adult).length === 1 && rows[3].adult, "каталог «Отношения»: 4 ряда × 3 расклада, 4-й ряд 18+");
+check(rows.length === 6 && rows.every((r) => r.ids.length === 3) && rows.filter((r) => r.adult).length === 1 && rows[5].adult, "каталог «Отношения»: 6 рядов × 3 расклада, 6-й ряд 18+");
 const ids12 = rows.flatMap((r) => r.ids), by = Object.fromEntries(SPREADS.map((s) => [s.id, s]));
-check(ids12.length === 12 && new Set(ids12).size === 12 && ids12.every((id) => by[id] && !by[id].hidden && by[id].theme === "Отношения"), "12 раскладов каталога существуют и не скрыты");
-check(rows.slice(0, 3).flatMap((r) => r.ids).every((id) => !by[id].adult) && rows[3].ids.every((id) => by[id].adult), "18+ только в 4-м ряду");
-check(["Крючок", "Искра и маршрут", "Человек за образом", "Двое и пространство", "Вектор связи", "Зеркало", "Конфликт", "Второй акт", "Стоп-кран", "Анатомия страсти", "Алхимия страсти", "Тело и блок"].every((n, i) => by[ids12[i]].name === n), "названия и порядок как в ТЗ");
+check(ids12.length === 18 && new Set(ids12).size === 18 && ids12.every((id) => by[id] && !by[id].hidden && by[id].theme === "Отношения"), "18 раскладов каталога существуют и не скрыты");
+check(rows.slice(0, 5).flatMap((r) => r.ids).every((id) => !by[id].adult) && rows[5].ids.every((id) => by[id].adult), "18+ только в 6-м ряду");
+check(["Крючок", "Искра и маршрут", "Человек за образом", "Двое и пространство", "Вектор связи", "Зеркало", "Конфликт", "Второй акт", "Стоп-кран", "Почему соло", "Мой магнит", "На пороге", "Я в любви", "Сложный контакт", "Кризис дружбы", "Анатомия страсти", "Алхимия страсти", "Тело и блок"].every((n, i) => by[ids12[i]].name === n), "названия и порядок как в ТЗ");
 check(ids12.every((id) => by[id].name.length <= 22 && by[id].when.length <= 64 && by[id].positions.every((p) => p.name.length <= 48)), "названия, подписи и позиции короткие");
 check(["rel.between_us", "rel.direction", "rel.needs", "rel.unfinished", "adult.eros_shadow", "adult.libido", "adult.compat", "adult.fantasy"].every((id) => by[id].hidden === true), "старые расклады скрыты из каталога");
 const alch = by["adult.alchemy"].positions[2];
@@ -91,10 +91,11 @@ check(SPREADS.filter((s) => s.id === "rel.stop_crane" || s.id === "adult.body_bl
 // Каталог «Работа и бизнес»: 4 ряда × 3 расклада
 const wrows = JSON.parse(readFileSync(new URL("../knowledge/spreads/triplets.json", import.meta.url), "utf8")).rows["Работа и бизнес"];
 const wids = wrows.flatMap((r) => r.ids);
-check(wrows.length === 4 && wrows.every((r) => r.ids.length === 3) && wids.length === 12 && new Set(wids).size === 12 && wids.every((id) => by[id] && by[id].theme === "Работа и бизнес" && !by[id].hidden), "каталог «Работа и бизнес»: 4 ряда × 3 расклада");
-check(["Поиск ниши", "Бизнес-идея", "Новая роль", "Моя позиция", "Питч", "Самозванец", "Партнёр по делу", "Коллектив", "Босс", "Финансовая опора", "Стеклянный потолок", "План Б"].every((n, i) => by[wids[i]].name === n), "работа: названия и порядок как в ТЗ");
+check(wrows.length === 5 && wrows.every((r) => r.ids.length === 3) && wids.length === 15 && new Set(wids).size === 15 && wids.every((id) => by[id] && by[id].theme === "Работа и бизнес" && !by[id].hidden), "каталог «Работа и бизнес»: 5 рядов × 3 расклада");
+check(["Поиск ниши", "Бизнес-идея", "Новая роль", "Моя позиция", "Питч", "Самозванец", "Партнёр по делу", "Коллектив", "Босс", "Новая среда", "Под давлением", "Точка выгорания", "Финансовая опора", "Стеклянный потолок", "План Б"].every((n, i) => by[wids[i]].name === n), "работа: названия и порядок как в ТЗ");
 check(top("Синдром самозванца, боюсь заявить о себе и поднять чек")[0] === "work.impostor", "самозванец → «Самозванец»");
-check(top("Выгорание, тупик и застой, не вижу роста на работе")[0] === "work.ceiling", "выгорание → «Стеклянный потолок»");
+check(top("Выгорание, нет сил на работе, всё истощено")[0] === "work.burnout", "выгорание → «Точка выгорания»");
+check(top("Упёрлась в потолок, не вижу роста и застой в доходе")[0] === "work.ceiling", "застой в росте → «Стеклянный потолок»");
 check(top("Меня могут уволить, провал на проекте, кризис на работе")[0] === "work.plan_b", "увольнение → «План Б»");
 check(top("Не понимаю, что хочет от меня начальник")[0] === "work.boss", "начальник → «Босс»");
 check(by["work.boss"].positions[0].grounding && /гипотеза/i.test(by["work.boss"].positions[0].grounding), "«Босс»: ожидания руководителя читаются как гипотеза");
