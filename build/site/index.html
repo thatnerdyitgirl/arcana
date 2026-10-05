@@ -1188,6 +1188,51 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
   body { padding-inline: var(--m-20); }
 }
 
+/* ---------- Мобильная дизайн-система v2: типографика, табы 48px, единые радиусы, чекбокс, разделители позиций ---------- */
+@media (max-width: 640px) {
+  :root { --m-radius: 16px; --radius-card: var(--m-radius); }
+  body { min-height: 100dvh; }
+
+  /* типографика */
+  h1 { font-size: clamp(1.5rem, 1.1rem + 1.9vw, 1.75rem); line-height: 1.2; }
+  .intro { gap: var(--m-16); padding-block: var(--m-8) 0; }
+  .lede { font-size: 1rem; line-height: 1.5; }
+  .conclusion, .layer.in-question p { font-size: 1rem; line-height: 1.5; }
+  .field > label, .field > .label, .l-label, .layer > .label, .eyebrow { font-size: 0.75rem; letter-spacing: 0.05em; line-height: 1.25; }
+  .field { gap: var(--m-8); }
+  #cards-box .toggle + label { margin-top: var(--m-8); }
+  #cards-box .toggle { margin-bottom: var(--m-4); }
+  .field + .field, .field + .toggle { margin-top: 0; }
+
+  /* табы-переключатели: 48px, одинаковые радиусы, воздух между рядами */
+  .toggle { border-radius: var(--m-radius); padding: var(--m-4); gap: var(--m-4); }
+  .toggle button { min-height: 48px; height: 48px; border-radius: 12px; padding: 0 var(--m-16); display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.25; }
+  .toggle-sm button { font-size: var(--step--1); padding: 0 var(--m-16); }
+  .btn, .btn.soft { border-radius: var(--m-radius); }
+  .slot .ask button { border-radius: 12px; }
+  input[type="text"], textarea { border-radius: var(--m-radius); }
+
+  /* карточки: 20px со всех сторон */
+  .option, textarea.story, .conclusion, .lunar-panel, .pr-card, .b-tip, .about-refs { padding: var(--m-20); }
+  textarea.story { padding: var(--m-20); }
+
+  /* чекбокс «Допускать перевёрнутые карты» */
+  .check { display: flex; align-items: center; gap: var(--m-12); min-height: 48px; cursor: pointer; line-height: 1.5; }
+  .check input[type="checkbox"] { width: 20px; height: 20px; flex: none; margin: 0; accent-color: var(--lotus); }
+
+  /* позиции расклада: без тире, с линиями-разделителями */
+  .slots { gap: 0; margin-top: var(--m-16); }
+  .slot { border-top: 0; border-bottom: 1px solid color-mix(in srgb, var(--line-strong) 70%, transparent); padding: 0 0 var(--m-16); margin-bottom: var(--m-16); gap: var(--m-8); }
+  .slot:last-child { margin-bottom: 0; }
+  .slot.is-empty strong { display: none; }
+}
+@media (min-width: 420px) and (max-width: 640px) {
+  body { padding-inline: var(--m-20); }
+}
+@media (min-width: 400px) and (max-width: 419px) {
+  body { padding-inline: var(--m-16); }
+}
+
 </style>
 </head>
 <body data-world="lotus">
