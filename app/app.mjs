@@ -72,7 +72,7 @@ themeBtn.addEventListener("click", () => {
   try { localStorage.setItem("arcana-theme", next); } catch {}
   // при выходе из «Ночной туши» расклад 18+ больше недоступен
   if (!adultMode() && SPREADS.find((x) => x.id === state.spreadId)?.adult) { state.spreadId = null; resetDraw(); }
-  if (typeof route === "function" && /^#?(ask|spreads)?$/.test(location.hash)) route();
+  if (typeof route === "function" && /^#?(ask|spreads|day)?$/.test(location.hash)) route();
 });
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 // Расклады 18+ видны только при включённой «Ночной туши» (тёмной теме)
@@ -849,6 +849,8 @@ function renderReading() {
       ${r.cards.map((c, i) => `<div class="exhibit"><div class="pos">${esc(r.positions[i].name)}</div>${plate(c)}${c.reversed ? '<span class="tag">перевёрнута</span>' : ""}</div>`).join("")}
     </div>
 
+    <div class="actions dc-actions"><button type="button" class="btn soft" id="dc-spread">Сохранить картинку для сторис</button><span class="status" id="dc-status" aria-live="polite"></span></div>
+
     <section class="section overview" aria-labelledby="ov-title">
       <p class="eyebrow" id="ov-title">Общая картина</p>
       <p class="chain-line">${esc(s.comparison.chain)}</p>
@@ -923,7 +925,63 @@ function renderReading() {
     if (!navigator.clipboard) return manual();
     navigator.clipboard.writeText(ta.value).then(() => { st.textContent = "Скопировано"; }).catch(manual);
   });
+  document.getElementById("dc-spread").addEventListener("click", () => {
+    const st = document.getElementById("dc-status"), style = dcStyleNow();
+    const data = { title: r.spread.name, deck: DECKS[r.deck].label, rows: sc.cards.map((d) => ({ pos: d.pos, card: d.name + (d.state === "перевёрнута" ? " · перев." : "") })) };
+    dcSave((cv) => dcDrawSpread(cv, style, data), "arcana-rasklad").then((x) => { if (st) st.textContent = x === "saved" ? "Картинка сохранена" : x === "shared" ? "Готово" : x === "error" ? "Не получилось сохранить" : ""; });
+  });
   document.getElementById("again").addEventListener("click", () => { state.cardsText = ""; state.result = null; location.hash = "ask"; });
+}
+
+
+// ---------- карта дня ----------
+
+const DAY = { shift: 0, style: "auto" };
+try { DAY.style = localStorage.getItem("arcana-dc-style") || "auto"; } catch {}
+const dcStyleNow = () => (DAY.style === "auto" ? dcAutoStyle(adultMode()) : DAY.style);
+const dayQuote = () => dcQuoteOfDay(APP_DATA.quotes ?? [], new Date(), DAY.shift);
+function dayDraw() {
+  const cv = document.getElementById("dc-canvas"); if (!cv) return;
+  dcDrawQuote(cv, dcStyleNow(), dayQuote());
+}
+function renderDay() {
+  $app.innerHTML = `
+  <section class="column day" aria-labelledby="day-title">
+    <div class="intro">
+      <p class="eyebrow">Карта дня</p>
+      <h1 id="day-title">Одна мысль на сегодня</h1>
+      <p class="lede">Короткая фраза из восточных текстов: даосских, буддийских, дзэнских. Она меняется каждый день. Это не предсказание, а повод остановиться и задать себе вопрос.</p>
+    </div>
+    <div class="dc-stage"><canvas id="dc-canvas" width="720" height="1280" role="img" aria-label="Карта дня: ${esc(dayQuote().t)}"></canvas></div>
+    <div class="field">
+      <span class="label">Стиль картинки</span>
+      <div class="toggle dc-styles" role="group" aria-label="Стиль картинки">
+        ${[{ id: "auto", label: "Авто" }, ...DC_STYLES].map((x) => `<button type="button" data-dc-style="${x.id}" aria-pressed="${DAY.style === x.id}">${x.label}</button>`).join("")}
+      </div>
+    </div>
+    <div class="actions dc-actions">
+      <button type="button" class="btn" data-dc-save>Сохранить картинку</button>
+      <button type="button" class="btn ghost" data-dc-next>Другая цитата</button>
+      <span class="status" id="dc-status" aria-live="polite"></span>
+    </div>
+    <p class="hint">Картинка 1080×1920: подходит для сторис. Цитаты даны в вольном пересказе, подписан источник. Стиль «Авто» следует за темой сайта.</p>
+  </section>`;
+  $app.addEventListener("click", onDayClick);
+  dayDraw(); document.fonts?.ready.then(dayDraw);
+}
+function onDayClick(e) {
+  const t = (sel) => e.target.closest(sel);
+  let el;
+  if ((el = t("[data-dc-style]"))) {
+    DAY.style = el.dataset.dcStyle; try { localStorage.setItem("arcana-dc-style", DAY.style); } catch {}
+    document.querySelectorAll("[data-dc-style]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dcStyle === DAY.style)));
+    dayDraw(); return;
+  }
+  if (t("[data-dc-next]")) { DAY.shift += 1; dayDraw(); const cv = document.getElementById("dc-canvas"); cv?.setAttribute("aria-label", "Карта дня: " + dayQuote().t); return; }
+  if (t("[data-dc-save]")) {
+    const st = document.getElementById("dc-status"), q = dayQuote(), style = dcStyleNow();
+    dcSave((cv) => dcDrawQuote(cv, style, q), "arcana-karta-dnya").then((r) => { if (st) st.textContent = r === "saved" ? "Картинка сохранена" : r === "shared" ? "Готово" : r === "error" ? "Не получилось сохранить" : ""; });
+  }
 }
 
 // ---------- маршрутизация ----------
@@ -933,9 +991,10 @@ function route() {
   const [view, mxSub, mxArg] = (location.hash.replace("#", "") || "ask").split("/");
   if ($app._mx) { $app.removeEventListener("click", $app._mx.click); $app.removeEventListener("input", $app._mx.input); $app.removeEventListener("keydown", $app._mx.key); $app._mx = null; }
   document.querySelectorAll(".nav a").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + view ? "page" : "false"));
-  $app.removeEventListener("click", onAskClick); $app.removeEventListener("click", onPracticesClick);
+  $app.removeEventListener("click", onAskClick); $app.removeEventListener("click", onPracticesClick); $app.removeEventListener("click", onDayClick);
   if (view === "matrix") renderMatrixPage(mxCtx, mxSub || "me", mxArg || "");
   else if (view === "practices") renderPractices();
+  else if (view === "day") renderDay();
   else if (view === "about") renderAbout();
   else if (view === "spreads") renderSpreads();
   else if (view === "reading") renderReading();
