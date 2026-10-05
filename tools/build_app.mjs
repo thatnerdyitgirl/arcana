@@ -49,9 +49,28 @@ const site = path.join(ROOT, "build/site");
 fs.rmSync(site, { recursive: true, force: true });
 fs.mkdirSync(path.join(site, "assets"), { recursive: true });
 fs.copyFileSync(path.join(ROOT, "build/arcana.html"), path.join(site, "index.html"));
-for (const f of ["og-arcana.jpg", "favicon.svg", "favicon-32.png", "apple-touch-icon.png"]) if (fs.existsSync(path.join(ROOT, "assets", f))) fs.copyFileSync(path.join(ROOT, "assets", f), path.join(site, "assets", f));
+for (const f of ["og-arcana.jpg", "favicon.svg", "favicon-32.png", "apple-touch-icon.png", "icon-192.png", "icon-512.png"]) if (fs.existsSync(path.join(ROOT, "assets", f))) fs.copyFileSync(path.join(ROOT, "assets", f), path.join(site, "assets", f));
 // иконки в корне сайта: Safari и другие браузеры сами ищут /favicon.ico и /apple-touch-icon.png
 for (const [from, to] of [["favicon.ico", "favicon.ico"], ["apple-touch-icon.png", "apple-touch-icon.png"]]) if (fs.existsSync(path.join(ROOT, "assets", from))) fs.copyFileSync(path.join(ROOT, "assets", from), path.join(site, to));
 fs.writeFileSync(path.join(site, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n`);
 fs.writeFileSync(path.join(site, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}</loc></url></urlset>\n`);
+// PWA: установка на главный экран + офлайн. Версия кэша = время сборки, чтобы обновления доходили сами.
+fs.writeFileSync(path.join(site, "manifest.webmanifest"), JSON.stringify({
+  name: "Arcana Zen", short_name: "Arcana", description: "Рефлексивное таро, лунный календарь и практики с таймером.", lang: "ru",
+  start_url: "/", scope: "/", display: "standalone", orientation: "portrait", background_color: "#f6f1e6", theme_color: "#f6f1e6",
+  icons: [{ src: "/assets/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" }, { src: "/assets/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" }],
+}, null, 2));
+fs.writeFileSync(path.join(site, "sw.js"), `// Arcana Zen service worker (сборка ${Date.now()})
+const CACHE = "arcana-${Date.now()}";
+const SHELL = ["/", "/manifest.webmanifest", "/assets/icon-192.png", "/assets/icon-512.png", "/assets/favicon.svg", "/apple-touch-icon.png"];
+self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
+self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
+self.addEventListener("fetch", (e) => {
+  const r = e.request, u = new URL(r.url);
+  if (r.method !== "GET" || u.origin !== location.origin) return;
+  // страница: сначала сеть (свежая версия), без сети — из кэша
+  if (r.mode === "navigate") { e.respondWith(fetch(r).then((res) => { const cp = res.clone(); caches.open(CACHE).then((c) => c.put("/", cp)); return res; }).catch(() => caches.match("/"))); return; }
+  e.respondWith(caches.match(r).then((hit) => hit || fetch(r).then((res) => { if (res.ok) { const cp = res.clone(); caches.open(CACHE).then((c) => c.put(r, cp)); } return res; })));
+});
+`);
 console.log("build/site готова:", fs.readdirSync(site).join(", "));

@@ -950,3 +950,6 @@ const syncTrail = () => petals.setTrail(location.hash === "#spreads");
 window.addEventListener("hashchange", syncTrail);
 syncTrail();
 
+
+// PWA: офлайн и установка на главный экран (только на http/https, в локальном файле не нужно)
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));

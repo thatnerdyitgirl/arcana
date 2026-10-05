@@ -30,6 +30,11 @@
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Arcana">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Arcana & Zen","alternateName":"Arcana Zen","url":"https://arcanazen.pages.dev/","inLanguage":"ru","applicationCategory":"LifestyleApplication","description":"Интерпретации раскладов Манара и Уэйта. Лунный календарь и медитации с таймером для ежедневного дзена.","image":"https://arcanazen.pages.dev/assets/og-arcana.jpg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -5897,6 +5902,9 @@ const syncTrail = () => petals.setTrail(location.hash === "#spreads");
 window.addEventListener("hashchange", syncTrail);
 syncTrail();
 
+
+// PWA: офлайн и установка на главный экран (только на http/https, в локальном файле не нужно)
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
 
 </script>
 </body>
