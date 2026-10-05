@@ -1108,3 +1108,45 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 .row-head span { font-size: var(--step--1); color: var(--ink-soft); font-style: italic; }
 @media (min-width: 900px) { .spread-row .spread-list, .spread-row .choice { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .spread-row .spread-item { min-height: 0; }
+
+/* ---------- Мобильная вёрстка: поля 16/20px, воздух в карточках, ритм 4/8px, мин. 48px для нажатий ---------- */
+:root { --m-gutter: 16px; --m-4: 4px; --m-8: 8px; --m-12: 12px; --m-16: 16px; --m-20: 20px; --m-24: 24px; --m-32: 32px; --m-touch: 48px; }
+@media (max-width: 640px) {
+  body { padding-inline: var(--m-gutter); }
+  .shell { gap: var(--m-32); }                       /* между логическими блоками 24–32px */
+  .column { gap: var(--m-24); }
+
+  /* форма: группа «подпись + контрол» — 8–12px, между группами — 28px */
+  .field { gap: var(--m-12); }
+  .field > .label, .field > label { line-height: 1.25; }
+  .field.situation { margin-bottom: 0; }
+  #spreads-box, #slots-box { gap: var(--m-12); }
+  .choice { gap: var(--m-12); }
+  .spread-rows { gap: var(--m-32); }
+  .spread-row { gap: var(--m-12); }
+
+  /* поля ввода и переключатель колоды: высота ≥ 48px, текст не ближе 16px к краю */
+  input[type="text"] { min-height: var(--m-touch); padding: 12px var(--m-16); line-height: 1.5; font-size: 1rem; }
+  #cards-box .toggle + label { margin-top: var(--m-8); }
+  textarea { padding: var(--m-16); line-height: 1.5; }
+  textarea.story { padding: var(--m-16) var(--m-20); line-height: 1.5; min-height: 9rem; }
+  .toggle { width: 100%; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; }
+  .toggle button { min-height: var(--m-touch); padding: 8px var(--m-16); line-height: 1.25; }
+  .btn, .btn.soft { min-height: var(--m-touch); }
+  .slot .ask button { min-height: 40px; padding: 8px var(--m-12); }
+  .option { padding: var(--m-16) var(--m-20); }
+
+  /* карточки с текстом: 24px сверху/снизу, 20px по бокам; заголовок отделён 12–16px */
+  .conclusion, .layer.in-question, .lunar-panel, .pr-card, .b-tip, .about-refs { padding: var(--m-24) var(--m-20); }
+  .layer.in-question { padding: var(--m-16) var(--m-20); }
+  .position-reading { gap: var(--m-16); }
+  .position-reading h3, .card-detail h3, .conclusion h3, .lunar-panel h3 { margin-bottom: var(--m-12); line-height: 1.25; }
+  .layer { gap: var(--m-8); }
+
+  /* типографика: абзацы 1.5, заголовки 1.25 */
+  p, li, .lede, .conclusion, .layer p, .hint { line-height: 1.5; }
+  h1, h2, h3, h4 { line-height: 1.25; }
+}
+@media (min-width: 400px) and (max-width: 640px) {
+  body { padding-inline: var(--m-20); }
+}
