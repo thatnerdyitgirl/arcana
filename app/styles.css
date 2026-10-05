@@ -1027,3 +1027,26 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 @media (max-width: 640px) { .candle blockquote { font-size: var(--step-0); } }
 .made { margin: 0; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--ink-soft); opacity: 0.85; }
 .made .ext { color: inherit; }
+
+/* ---------- глубокие карточки: портрет, маркеры, тело, практика; блок → триггер; домашнее задание ---------- */
+.mx-rich { display: grid; gap: 0.8rem; }
+.mx-rich-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+@media (max-width: 700px) { .mx-rich-grid { grid-template-columns: 1fr; } }
+.mx-rich-col { display: grid; gap: 0.3rem; align-content: start; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: 14px; background: color-mix(in srgb, var(--paper) 45%, transparent); }
+.mx-rich-col b { font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+.mx-rich-col ul, .mx-bul { margin: 0.2rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.4rem; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; }
+.mx-bul { font-size: var(--step-0); }
+.mx-micro { margin: 0; padding: 0.8rem 1rem; border-left: 2px solid var(--lotus); font-family: var(--font-read); line-height: 1.6; background: color-mix(in srgb, var(--lotus) 6%, transparent); border-radius: 0 12px 12px 0; }
+.mx-micro b { display: block; font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.2rem; }
+.mx-flows { display: grid; gap: var(--space-3); }
+.mx-flow { display: grid; gap: 0.4rem; }
+.mx-flow-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 0.8rem; align-items: stretch; }
+.mx-flow-row > div { display: grid; gap: 0.3rem; align-content: start; padding: 0.8rem 1rem; border: 1px solid var(--line); border-radius: 14px; }
+.mx-flow-row b { font-family: var(--font-ui); font-weight: 500; font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
+.mx-flow-row p { margin: 0; font-family: var(--font-read); font-size: var(--step--1); line-height: 1.6; }
+.mx-flow-row i { align-self: center; font-style: normal; color: var(--lotus); }
+@media (max-width: 700px) { .mx-flow-row { grid-template-columns: 1fr; } .mx-flow-row i { transform: rotate(90deg); justify-self: center; } }
+.mx-hw { display: grid; gap: 0.5rem; padding: var(--space-3); border: 1px solid var(--line); border-radius: var(--radius-card); background: color-mix(in srgb, var(--paper) 45%, transparent); justify-items: start; }
+.mx-q-big { margin: 0; font-family: var(--font-display); font-size: var(--step-1); line-height: 1.35; color: var(--ink); }
+.mx-hw textarea { font-size: var(--step--1); padding: 0.7rem 1rem; min-height: 4.2rem; }
+.mx-diag-sm .mxd { max-width: 24rem; }

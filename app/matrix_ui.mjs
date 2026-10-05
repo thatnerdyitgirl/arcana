@@ -84,6 +84,19 @@ function indHtml(ind) {
 const tarotLink = (theme, ctaId = "default", spreadId = "") => `<div class="mx-tarot"><p>Хочешь посмотреть, как эта тема проявляется именно сейчас?</p><button type="button" class="btn soft" data-mx-tarot="${mxEsc(theme)}" data-mx-spread="${mxEsc(spreadId)}">${mxEsc(T.cta(ctaId))}</button></div>`;
 const caveat = `<p class="mx-caveat">Формулировки описывают возможные проявления в рамках системы. Это повод проверить, узнаёшь ли ты их в своей жизни, а не факт о тебе.</p>`;
 
+function richHtml(r) {
+  return `<div class="mx-rich"><span class="l-label">${mxEsc(r.title)}</span>${energyLine(r)}
+    <p class="mx-text">${mxEsc(r.portrait)}</p>
+    ${r.echo ? `<p class="mx-echo">Эта энергия уже разобрана выше: здесь она стоит в другой позиции, и её тема может звучать по-другому.</p>` : `
+    <div class="mx-rich-grid">
+      <div class="mx-rich-col"><b>Бытовые маркеры</b><span class="mx-small">как узнать, что энергия «сливается»</span><ul>${r.markers.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ul></div>
+      <div class="mx-rich-col"><b>Сигналы тела и эмоций</b><span class="mx-small">ориентиры для самонаблюдения, не диагноз</span><ul>${r.body.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ul></div>
+    </div>
+    <p class="mx-micro"><b>Микро-практика на день</b> ${mxEsc(r.micro)}</p>`}</div>`;
+}
+const flowHtml = (list) => `<div class="mx-flows">${list.map((f) => `<div class="mx-flow"><span class="l-label">${mxEsc(f.title)}</span>${energyLine(f)}
+  <div class="mx-flow-row"><div><b>Что заземляет и блокирует канал</b><p>${mxEsc(f.block)}</p></div><i aria-hidden="true">→</i><div><b>Что служит триггером раскрытия потока</b><p>${mxEsc(f.open)}</p></div></div></div>`).join("")}</div>`;
+
 function periodHtml(res) {
   const m = res.main, f1 = (x) => (Math.round(x * 10) / 10).toString().replace(".", ","), from = f1(res.p.from), to = f1(res.p.to);
   return `<div class="mx-card mx-period">
@@ -119,8 +132,8 @@ function aiPayload(kind) {
   if (kind === "zone" && mx && S.zone) { const z = T.zone(mx, S.zone); return { title: `Раздел «${z.zone.title}»`, body: z.blocks.map(aiBlock).join("\n") + aiInsights(z.insights) + (z.note ? `\nПримечание: ${z.note}` : "") }; }
   if (kind === "ask" && mx && S.ask) { const r = T.ask(mx, S.ask); if (r.period) return aiPayload("period"); return { title: r.topic.title_out, body: r.blocks.map(aiBlock).join("\n") + aiInsights(r.insights) + `\nЧто проверить: ${r.check.question}` }; }
   if (kind === "period" && mx) { const r = T.period(mx, new Date()); return { title: "Что сейчас активировано (возрастной период)", body: `Текущая энергия: ${r.main.n} · ${r.main.name} (${r.main.short}). Тема: ${r.main.theme}. Потенциал: ${r.main.potential} Тень: ${r.main.shadow} Что замечать: ${r.main.notice}\nПочему: ${r.why.n} · ${r.why.name}. Итог: ${r.result.n} · ${r.result.name}.\n` + r.directions.map((d) => `— ${d.title}: ${d.n} · ${d.name}. ${d.text}`).join("\n") }; }
-  if (kind === "other" && S.other.res) { const o = S.other.res.text; return { title: "Матрица другого человека (имя не указано)", body: o.sections.map((x) => `${x.title}:\n` + x.items.map((i) => `— ${i.pos}: энергия ${i.n} · ${i.name}. ${i.text}`).join("\n")).join("\n\n") }; }
-  if (kind === "together" && S.tog.res) { const r = S.tog.res.r; return { title: "Совместимость двух матриц", body: r.sections.map((x) => `${x.title}:\n` + x.items.map((i) => `— ${i.lead}. ${i.text}`).join("\n")).join("\n\n") }; }
+  if (kind === "other" && S.other.res) { const o = S.other.res.text; return { title: "Матрица другого человека (имя не указано)", body: o.sections.map((x) => x.kind === "rich" ? `${x.title}: энергия ${x.rich.n} · ${x.rich.name}. ${x.rich.portrait}${x.rich.markers.length ? "\n  Бытовые маркеры: " + x.rich.markers.join(" / ") + "\n  Сигналы тела и эмоций: " + x.rich.body.join(" / ") + "\n  Микро-практика: " + x.rich.micro : ""}` : x.kind === "flows" ? `${x.title}:\n` + x.flows.map((f) => `— энергия ${f.n} · ${f.name}. Что блокирует: ${f.block} Что раскрывает: ${f.open}`).join("\n") : `${x.title}:\n` + x.items.map((i) => `— ${i.pos}: энергия ${i.n} · ${i.name}. ${i.text}`).join("\n")).join("\n\n") }; }
+  if (kind === "together" && S.tog.res) { const r = S.tog.res.r; return { title: "Совместимость двух матриц", body: r.sections.map((x) => `${x.title}:\n` + x.items.map((i) => `— ${i.lead}. ${i.text ?? ""}${i.list ? " " + i.list.join(" | ") : ""}`).join("\n")).join("\n\n") }; }
   if (kind === "guide" && S.guide) { const e = T.en(S.guide); return { title: `Энергия ${e.n} · ${e.name}`, body: `${e.short}. Архетип: ${e.archetype}.\nВ силе: ${e.strength}\nВ тени: ${e.shadow}\nТаланты: ${e.talents}\nОтношения: ${e.relations}\nДеньги: ${e.money}\nРост: ${e.growth}\nБытовой триггер: ${e.trigger}\nПрактика: ${e.practice.join(" / ")}` }; }
   return null;
 }
@@ -148,6 +161,7 @@ function viewMe() {
   </div>`;
 }
 function pointDetail(mx, key) {
+  if (T.richKeys.includes(key)) return `<div class="mx-card mx-point">${richHtml(T.rich(mx, key, new Set()))}<button type="button" class="mx-link" data-mx-guide="${T.value(mx, key)}">Открыть в справочнике</button></div>`;
   const pos = KB.positions[key], n = T.value(mx, key), e = T.en(n), f = pos.fields[0];
   return `<div class="mx-card mx-point"><span class="l-label">${mxEsc(pos.title)}</span>${energyLine({ n, name: e.name, short: e.short })}
     <p class="mx-text">${mxEsc(e[f])}</p><p class="mx-shadow"><b>В тени</b> ${mxEsc(e.shadow)}</p>
@@ -163,10 +177,13 @@ function viewNow() {
 }
 function otherHtml(res, name, birth) {
   const mx = calcMatrix(birth);
+  const sec = (x) => x.kind === "rich" ? `<div class="mx-sec">${richHtml(x.rich)}</div>`
+    : x.kind === "flows" ? `<div class="mx-sec"><span class="l-label">${mxEsc(x.title)}</span>${flowHtml(x.flows)}</div>`
+    : `<div class="mx-sec"><span class="l-label">${mxEsc(x.title)}</span>${x.items.map((i) => `<p class="mx-en"><b>${i.n} · ${mxEsc(i.name)}</b><i>${mxEsc(i.pos)}</i></p><p class="mx-text">${mxEsc(i.text)}</p>`).join("")}</div>`;
   return `<div class="mx-person"><span>${name ? mxEsc(name) + " · " : ""}Матрица · ${fmtBirth(birth)}</span></div>
-    <div class="mx-split"><div class="mx-diag">${diagramSvg(mx, null)}</div><div class="mx-side">
-    <div class="mx-card"><h3>Что можно увидеть</h3><p class="mx-caveat">Это одна из возможных интерпретаций в рамках этой системы, а не оценка человека. Эзотерический язык здесь описывает символы, а не установленные факты.</p>
-    ${res.sections.map((s) => `<div class="mx-sec"><span class="l-label">${mxEsc(s.title)}</span>${s.items.map((i) => `<p class="mx-en"><b>${i.n} · ${mxEsc(i.name)}</b><i>${mxEsc(i.pos)}</i></p><p class="mx-text">${mxEsc(i.text)}</p>`).join("")}</div>`).join("")}</div></div></div>
+    <div class="mx-diag mx-diag-sm">${diagramSvg(mx, null)}</div>
+    <div class="mx-card"><h3>Что можно увидеть</h3><p class="mx-caveat">Это одна из возможных интерпретаций в рамках этой системы, а не оценка человека. Эзотерический язык здесь описывает символы, а не установленные факты. Бытовые примеры и сигналы тела — ориентиры для самонаблюдения, а не диагноз.</p>
+    ${res.sections.map(sec).join("")}</div>
     ${aiButton("other")}<div class="mx-actions"><button type="button" class="btn" data-mx-together>Посмотреть нас вместе</button></div>`;
 }
 function viewOther() {
@@ -175,11 +192,25 @@ function viewOther() {
     ${dateForm("other", { value: S.other.raw, btn: "Посмотреть", extra: `<p class="mx-err" id="mx-err-other">${mxEsc(S.other.err)}</p>` })}
     ${S.other.res ? otherHtml(S.other.res.text, S.other.name, S.other.res.birth) : ""}</div>`;
 }
+const hash = (str) => { let h = 5381; for (const c of str) h = ((h << 5) + h + c.charCodeAt(0)) >>> 0; return h.toString(36); };
+const hwKey = () => hash(`${S.tog.a}|${S.tog.b}`);
+const loadHw = () => { try { return JSON.parse(localStorage.getItem("arcana-mx-hw") || "{}") || {}; } catch { return {}; } };
+const saveHw = (o) => { try { localStorage.setItem("arcana-mx-hw", JSON.stringify(o)); } catch {} };
+function hwItem(i) {
+  const st = (loadHw()[hwKey()] ?? {})[i.hw] ?? {};
+  return `<div class="mx-hw" data-hw="${i.hw}"><span class="l-label">${mxEsc(i.lead)}</span><p class="mx-q-big">${mxEsc(i.text)}</p>
+    <textarea data-mx-hwnote="${i.hw}" rows="2" placeholder="Что мы решили или поняли (остаётся только на этом устройстве)">${mxEsc(st.note ?? "")}</textarea>
+    <button type="button" class="mx-chip${st.done ? " is-on" : ""}" data-mx-hwdone="${i.hw}" aria-pressed="${!!st.done}">${st.done ? "Обсудили ✓" : "Отметить как обсуждённое"}</button></div>`;
+}
+function togetherItem(i) {
+  if (i.hw) return hwItem(i);
+  return `<p class="mx-en"><b>${mxEsc(i.lead)}</b></p>${i.text ? `<p class="mx-text">${mxEsc(i.text)}</p>` : ""}${i.list ? `<ul class="mx-bul">${i.list.map((x) => `<li>${mxEsc(x)}</li>`).join("")}</ul>` : ""}`;
+}
 function togetherHtml(r, a, b) {
   const pts = r.keys.map((k) => `<div><span>${mxEsc(KB.positions[k].title.split(":")[0])}</span><b>${T.value(a, k)} + ${T.value(b, k)} = ${r.pair[k]}</b></div>`).join("");
   const alt = KB.config.spread_suggest.map((s) => `<button type="button" class="mx-chip${s.id === r.spread ? " is-on" : ""}" data-mx-tarot="Отношения" data-mx-spread="${s.id}">${mxEsc(s.label)}</button>`).join("");
   return `<div class="mx-card"><h3>Что можно увидеть о вашей связи</h3><p class="mx-caveat">Здесь нет процента совместимости: он ничего не говорит о живых отношениях. Это набор тем, которые можно обсудить вдвоём. Метод сопоставления матриц у разных авторов отличается; Arcana складывает одноимённые точки двух матриц.</p>
-    ${r.sections.map((s) => `<div class="mx-sec"><span class="l-label">${mxEsc(s.title)}</span>${s.items.map((i) => `<p class="mx-en"><b>${mxEsc(i.lead)}</b></p><p class="mx-text">${mxEsc(i.text)}</p>`).join("")}</div>`).join("")}</div>
+    ${r.sections.map((s) => `<div class="mx-sec"><span class="l-label">${mxEsc(s.title)}</span>${s.items.map(togetherItem).join("")}</div>`).join("")}</div>
     ${aiButton("together")}<details class="mx-method"><summary>Точки пары</summary><div class="mx-pairpts">${pts}</div><p class="mx-small">Каждая точка пары — сумма одноимённых точек двух матриц, сведённая к числу от 1 до 22.</p></details>
     <div class="mx-tarot"><p>Хочешь посмотреть эту связь через Таро? Arcana предложит подходящий расклад.</p><button type="button" class="btn soft" data-mx-tarot="Отношения" data-mx-spread="${r.spread}">Посмотреть эту связь через Таро</button><div class="mx-chips">${alt}</div></div>`;
 }
@@ -266,6 +297,7 @@ function bind(app, sub) {
     let el;
     if ((el = t("[data-mx-calc]"))) return calc(el.dataset.mxCalc);
     if ((el = t("[data-mx-copy]"))) { const kind = el.dataset.mxCopy, st = el.closest(".mx-ai")?.querySelector(".mx-status"); copyText(aiText(kind)).then((ok) => { if (st) st.textContent = ok ? "Скопировано. Теперь вставь в чат ИИ." : "Не получилось скопировать: попробуй ещё раз."; }); return; }
+    if ((el = t("[data-mx-hwdone]"))) { const id = el.dataset.mxHwdone, all = loadHw(), k = hwKey(); all[k] = all[k] ?? {}; all[k][id] = { ...(all[k][id] ?? {}), done: !all[k][id]?.done }; saveHw(all); el.classList.toggle("is-on", all[k][id].done); el.setAttribute("aria-pressed", String(all[k][id].done)); el.textContent = all[k][id].done ? "Обсудили ✓" : "Отметить как обсуждённое"; return; }
     if ((el = t("[data-mx-scope]"))) { S.gscope = el.dataset.mxScope; S.q = ""; rerender(); return; }
     if (t("[data-mx-clear]")) { S.q = ""; rerender(); document.querySelector("[data-mx-search]")?.focus(); return; }
     if ((el = t("[data-mx-ans]"))) { const [n, i, v] = el.dataset.mxAns.split("|"); const a = S.ind[n] ?? []; a[Number(i)] = v; S.ind[n] = a; saveInd(); const box = document.querySelector(`[data-ind="${n}"]`); if (box) { const z = S.zone ? T.zone(calcMatrix(S.birth), S.zone).indicator : S.ask ? T.ask(calcMatrix(S.birth), S.ask).indicator : null; if (z && String(z.n) === n) box.outerHTML = indHtml(z); } return; }
@@ -280,7 +312,7 @@ function bind(app, sub) {
     if (t("[data-mx-lunar]")) { ctx.toLunar(); return; }
     if ((el = t("[data-mx-tarot]"))) { ctx.goTarot({ theme: el.dataset.mxTarot, spreadId: el.dataset.mxSpread || null }); return; }
   };
-  const input = (e) => { const el = e.target; if (el.matches?.("[data-mx-date]")) { const v = fmtMask(el.value); if (v !== el.value) el.value = v; } else if (el.matches?.("[data-mx-search]")) { S.q = el.value; const g = document.getElementById("mx-grid"); const x = document.querySelector("[data-mx-clear]"); if (x) x.hidden = !S.q; if (g) { const mset = new Set(S.birth ? coreEnergies(calcMatrix(S.birth)) : []); const scope = S.q.trim() ? "all" : (S.gscope ?? (S.birth ? "mine" : "all")); const list = scope === "mine" ? [...mset].sort((a, b) => a - b).map((n) => T.en(n)) : T.search(S.q); g.innerHTML = gridCards(list, mset); document.querySelectorAll("[data-mx-scope]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mxScope === scope))); } } };
+  const input = (e) => { const el = e.target; if (el.matches?.("[data-mx-hwnote]")) { const id = el.dataset.mxHwnote, all = loadHw(), k = hwKey(); all[k] = all[k] ?? {}; all[k][id] = { ...(all[k][id] ?? {}), note: el.value }; saveHw(all); return; } if (el.matches?.("[data-mx-date]")) { const v = fmtMask(el.value); if (v !== el.value) el.value = v; } else if (el.matches?.("[data-mx-search]")) { S.q = el.value; const g = document.getElementById("mx-grid"); const x = document.querySelector("[data-mx-clear]"); if (x) x.hidden = !S.q; if (g) { const mset = new Set(S.birth ? coreEnergies(calcMatrix(S.birth)) : []); const scope = S.q.trim() ? "all" : (S.gscope ?? (S.birth ? "mine" : "all")); const list = scope === "mine" ? [...mset].sort((a, b) => a - b).map((n) => T.en(n)) : T.search(S.q); g.innerHTML = gridCards(list, mset); document.querySelectorAll("[data-mx-scope]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mxScope === scope))); } } };
   const key = (e) => { if (e.key === "Enter" && e.target.matches?.("[data-mx-date]")) { e.preventDefault(); const id = e.target.dataset.mxDate; calc(id === "a" || id === "b" ? "pair" : id); } else if ((e.key === "Enter" || e.key === " ") && e.target.closest?.("g[data-mx-point]")) { e.preventDefault(); S.sel = e.target.closest("g[data-mx-point]").dataset.mxPoint; rerender(); } };
   app._mx = { click, input, key }; app.addEventListener("click", click); app.addEventListener("input", input); app.addEventListener("keydown", key);
 }

@@ -99,19 +99,51 @@ export function makeMatrixText(KB) {
     };
   }
 
+  // Глубокая карточка точки: портрет → бытовые маркеры → сигналы тела и эмоций → микро-практика (повторяющаяся энергия сворачивается)
+  function rich(mx, key, seen) {
+    const n = value(mx, key), e = en(n), pos = positions[key], echo = seen.has(n); seen.add(n);
+    return { key, title: pos.title, n, name: e.name, short: e.short, portrait: e.portrait, markers: echo ? [] : e.markers, body: echo ? [] : e.body, micro: echo ? "" : e.micro, echo };
+  }
+  const richKeys = ["A", "B", "D", "personal"];
+  // Блок «заземляет и блокирует канал → триггер раскрытия потока» для денег и отношений
+  function flows(mx, keys, kind, seen) {
+    const out = [];
+    for (const key of keys) { const n = value(mx, key); if (out.some((x) => x.n === n)) continue; const e = en(n); out.push({ key, title: positions[key].title, n, name: e.name, short: e.short, block: e[kind + "_block"], open: e[kind + "_open"] }); }
+    return out;
+  }
   // Матрица другого человека: «что можно увидеть»
   function other(mx) {
-    const s = session(), spec = [
-      ["Характер и основные энергии", [["A", "strength"]]],
-      ["Сильные стороны", [["D", "potential"], ["B", "talents"]]],
-      ["Возможные сложности", [["A", "shadow"], ["T", "difficulties"]]],
-      ["Отношения", [["R", "relations"], ["U", "strength"]]],
-      ["Реализация", [["sky", "potential"], ["earth", "work"]]],
-      ["Деньги", [["O", "money"]]],
-      ["Таланты", [["M", "talents"]]],
+    const seen = new Set(), s = session();
+    const richSec = (title, key) => ({ kind: "rich", title, rich: rich(mx, key, seen) });
+    const sections = [
+      richSec("День рождения: характер и ресурс", "A"), richSec("Месяц рождения: что поддерживает", "B"),
+      richSec("Зона комфорта: внутренняя потребность", "D"), richSec("Предназначение", "personal"),
+      { kind: "flows", title: "Деньги", flows: flows(mx, ["O", "F"], "money", seen) },
+      { kind: "flows", title: "Отношения", flows: flows(mx, ["R", "U"], "rel", seen) },
+      { kind: "plain", title: "Таланты", items: [["M", "talents"]].map(([p, f]) => { const n = value(mx, p), got = pick(s, n, [f]); return { key: p, pos: positions[p].title, n, name: en(n).name, text: got?.text ?? "" }; }) },
     ];
-    const sections = spec.map(([title, items]) => ({ title, items: items.map(([p, f]) => { const n = value(mx, p), got = pick(s, n, [f]); s.seenEnergy.add(n); return { key: p, pos: positions[p].title, n, name: en(n).name, text: got?.text ?? "", echo: false }; }) }));
     return { sections };
+  }
+
+  // «Где различия»: бытовые сцены (деньги, быт, планы) и способ договориться, собранные из зон комфорта двух энергий
+  function comfortItems(na, nb) {
+    const A = en(na), B = en(nb), c1 = A.comfort, c2 = B.comfort;
+    if (na === nb) return [
+      { lead: `Одна и та же зона комфорта: ${A.name}`, text: `Центр у вас совпадает, поэтому потребности друг друга понятны почти без слов: общая потребность — ${c1.need}. Риск не в различиях, а в общих слепых пятнах: рядом друг с другом легко не замечать то, что для обоих привычно. Вопрос для двоих: ${A.shadow_q}` },
+      { lead: "Как договориться", list: ["Раз в месяц проверять, что у вас одинаково удобно, но не обязательно хорошо.", "Добавить одно новое правило, которое меняет привычный сценарий.", c1.ask] },
+    ];
+    const hearA = `${A.name} слышит в идеях партнёра ${A.hears}, а ${B.name} — ${B.hears}`;
+    return [
+      { lead: "Финансы", list: [`${A.name}: спокойнее, когда ${c1.money}.`, `${B.name}: спокойнее, когда ${c2.money}.`, `Стык: ${hearA}. Каждый защищает свою потребность, и спор идёт о смысле, а не о цифрах.`] },
+      { lead: "Быт", list: [`${A.name}: комфорт — ${c1.home}.`, `${B.name}: комфорт — ${c2.home}.`, "Стык: решения, принятые «по умолчанию», могут восприниматься как вторжение в чужой комфорт."] },
+      { lead: "Планирование", list: [`${A.name}: спокойнее, когда ${c1.plan}.`, `${B.name}: спокойнее, когда ${c2.plan}.`, "Стык: одну и ту же поездку или покупку можно планировать как два разных проекта."] },
+      { lead: "Как договориться", list: [
+        `Назвать потребность, а не претензию. Потребность энергии «${A.name}» — ${c1.need}. Потребность энергии «${B.name}» — ${c2.need}.`,
+        `Разделить зоны: «${A.name}» берёт на себя ${c1.offer}; «${B.name}» — ${c2.offer}.`,
+        "Выбрать одно общее правило на месяц (например, сумму, которую каждый тратит без согласования) и в конце месяца вместе посмотреть, как оно работает.",
+      ] },
+      { lead: "Фразы-мосты", list: [c1.ask, c2.ask] },
+    ];
   }
 
   // Мы вместе
@@ -126,25 +158,29 @@ export function makeMatrixText(KB) {
       ...(sharedLine ? [{ lead: "Общее", text: sharedLine }] : []),
     ] });
     sec.push({ id: "strength", items: [{ lead: `Центр пары: ${nm(pair.D)}`, text: `Сумма зон комфорта двух матриц связывается с тем, на чём может держаться союз. Потенциал: ${lc(get(pair.D, "potential"))}` }] });
-    const modeA = en(a.pts.A).mode, modeB = en(b.pts.A).mode;
-    sec.push({ id: "diff", items: [
-      { lead: `Стили: ${nm(a.pts.A)} и ${nm(b.pts.A)}`, text: a.pts.A === b.pts.A ? `Основная энергия характера у вас совпадает (${nm(a.pts.A)}): много общего, и стоит замечать, где вы усиливаете и тень друг друга.` : (insights([a.pts.A, b.pts.A], "relations")[0]?.text ?? interplayLine(a.pts.A, b.pts.A)) },
-      { lead: `Зоны комфорта: ${nm(a.pts.D)} и ${nm(b.pts.D)}`, text: a.pts.D === b.pts.D ? `Зона комфорта одна и та же: вам может быть легко понять потребности друг друга.` : (insights([a.pts.D, b.pts.D], "relations")[0]?.text ?? interplayLine(a.pts.D, b.pts.D)) },
-    ] });
+    sec.push({ id: "diff", items: comfortItems(a.pts.D, b.pts.D) });
     sec.push({ id: "tension", items: [
       { lead: `Сложности в отношениях: ${nm(a.pts.T)}`, text: get(a.pts.T, "difficulties") },
       { lead: `и ${nm(b.pts.T)}`, text: get(b.pts.T, "difficulties") },
     ] });
+    const shown = new Set(), gift = (n) => { const e = en(n), t = shown.has(n) ? e.strength : e.gift; shown.add(n); return t; };
     sec.push({ id: "bring", items: [
-      { lead: `Один приносит: ${nm(a.pts.M)}`, text: get(a.pts.M, "talents") },
-      { lead: `Другой приносит: ${nm(b.pts.M)}`, text: get(b.pts.M, "talents") },
+      { lead: `Суперсила характера у первого: ${nm(a.pts.A)}`, text: gift(a.pts.A) },
+      { lead: `Суперсила характера у второго: ${nm(b.pts.A)}`, text: gift(b.pts.A) },
+      { lead: `Что приходит через повторяющиеся ситуации у первого: ${nm(a.pts.G)}`, text: `Со временем это становится ресурсом. ${gift(a.pts.G)}` },
+      { lead: `Что приходит через повторяющиеся ситуации у второго: ${nm(b.pts.G)}`, text: `Со временем это становится ресурсом. ${gift(b.pts.G)}` },
     ] });
     sec.push({ id: "learn", items: [{ lead: `Общий «хвост»: ${nm(pair.G)}`, text: `Эта тема может быть общим вопросом для размышления. Точка роста: ${lc(get(pair.G, "growth"))}` }] });
     const keepN = pair.B, e = en(keepN);
     sec.push({ id: "keep", items: [
       { lead: `Хранитель пары: ${nm(keepN)}`, text: `Может помочь: ${lc(e.recommendations[0])}` },
-      { lead: "Вопрос для разговора вдвоём", text: e.questions[0] },
     ] });
+    // домашнее задание: вопросы выбираются по двум матрицам и не повторяются
+    const hw = []; const addQ = (n, who) => { const q = en(n).pair_q; if (q && !hw.some((x) => x.text === q)) hw.push({ lead: who, text: q }); };
+    addQ(a.pts.D, `Из зоны комфорта первого (${nm(a.pts.D)})`); addQ(b.pts.D, `Из зоны комфорта второго (${nm(b.pts.D)})`);
+    addQ(pair.D, `Из центра пары (${nm(pair.D)})`); addQ(pair.G, `Из общего «хвоста» (${nm(pair.G)})`); addQ(a.pts.A, `Из характера первого (${nm(a.pts.A)})`);
+    const homework = hw.slice(0, 3).map((x, i) => ({ ...x, hw: `hw${i + 1}` }));
+    sec.push({ id: "homework", items: homework });
     // «притяжение / напряжение»: подсказка по выбору расклада Таро
     const spread = (shared.length >= 2 || [6, 15, 19, 3, 17].includes(pair.D)) ? "rel.attraction" : (shared.length === 0 ? "rel.diagnostics" : "rel.between_us");
     return { pair, shared, sections: sec.map((x) => ({ ...x, ...cfg.together.find((c) => c.id === x.id) })), spread, keys: ["A", "B", "V", "G", "D", "E", "Zh", "Z", "I"] };
@@ -158,5 +194,5 @@ export function makeMatrixText(KB) {
     return energies.filter((e) => [e.name, e.short, e.archetype, ...e.themes, ...e.keywords, e.money.slice(0, 0)].join(" ").toLowerCase().includes(stem) || (/деньг|доход|финанс|зарабат/.test(s) && /деньги|доход/.test(e.money.toLowerCase())) || (/отношен|любов|партн/.test(s) && e.relations.length > 0 && /отношен|близост|партн/.test(e.relations.toLowerCase())));
   }
   const cta = (id) => cfg.cta[id] ?? cfg.cta.default;
-  return { en, value, zone, ask, period, other, together, search, interplayLine, insights, indicatorResult, cta };
+  return { en, value, rich, richKeys, zone, ask, period, other, together, search, interplayLine, insights, indicatorResult, cta };
 }

@@ -75,7 +75,7 @@ let rep2 = 0;
 for (const s of Object.keys(ind)) { const mx = calcMatrix(parseBirth(s, new Date(2030, 0, 1))); for (const z of KB.config.zones) { const v = T.zone(mx, z.id); const tx = v.blocks.map((x) => x.text); if (new Set(tx).size !== tx.length) rep2++; } }
 check(rep2 === 0, "8 зон × 12 дат: повторяющаяся энергия не дублирует текст (берётся другое поле)");
 const o = T.other(b), tg = T.together(a, b);
-check(o.sections.length === 7 && tg.sections.length === 7 && tg.sections.every((x) => x.items.length && x.items.every((i) => i.text)), "«Новый человек» (7 разделов) и «Мы вместе» (7 разделов) заполнены");
+check(o.sections.length === 7 && tg.sections.length === 8 && tg.sections.every((x) => x.items.length && x.items.every((i) => i.text || i.list?.length)), "«Новый человек» (7 разделов) и «Мы вместе» (8 разделов) заполнены");
 check(!/\d+\s?%|процент/.test(JSON.stringify(tg)) && ["rel.attraction", "rel.between_us", "rel.diagnostics"].includes(tg.spread), "«Мы вместе»: без процента совместимости, предложен расклад Таро");
 check(!BANNED.test(JSON.stringify([o, tg, T.period(a, new Date(2026, 9, 5))])), "выводы без приговоров");
 check(T.search("деньги").length >= 3 && T.search("императрица").length === 1 && T.search("").length === 22, "справочник: поиск «деньги» находит энергии, «императрица» — одну");
@@ -93,4 +93,20 @@ check(ir.pct === 100 && ir2.pct === 0 && /ресурсе/.test(ir.msg) && /те�
 check(T.cta("money") === "Узнать подсказку для дохода на сегодня" && /гармонизировать союз/.test(T.cta("relations")) && /духовный аспект/.test(T.cta("purpose")), "контекстные кнопки «Вытянуть карту»");
 const banned2 = /у тебя будет|обречен|токсичн|манипулятор|плохая энергия денег/i;
 check(!banned2.test(JSON.stringify(KB.energies)) && !banned2.test(JSON.stringify(KB.config)), "новые тексты без приговоров");
+// 10. Глубокий слой: портрет, маркеры, сигналы тела, микро-практика; блок → триггер; зоны комфорта; домашнее задание
+const deepNeed = "portrait markers body micro money_block money_open rel_block rel_open comfort gift pair_q hears".split(" ");
+check(KB.energies.every((e) => deepNeed.every((k) => e[k]) && e.markers.length === 3 && e.body.length === 3 && Object.keys(e.comfort).length === 6), "22 энергии: портрет, 3 бытовых маркера, 3 сигнала тела, микро-практика, блок→триггер, зона комфорта, суперсила, вопрос для пары");
+check(!/карм|грех|отработк/i.test(JSON.stringify(KB.energies.map((e) => [e.portrait, e.markers, e.body, e.micro, e.money_block, e.money_open, e.rel_block, e.rel_open, e.comfort, e.gift, e.pair_q]))), "глубокий слой без слов «карма», «грех», «отработка»");
+const aneli = calcMatrix({ d: 13, m: 5, y: 2004 }), me2 = calcMatrix({ d: 29, m: 12, y: 2004 });
+const ao = T.other(aneli), comf = ao.sections.find((x) => x.rich?.key === "D").rich;
+check(aneli.pts.D === 3 && comf.n === 3 && comf.name === "Императрица" && comf.markers.length === 3 && /Один вечер/.test(comf.micro), "13.05.2004: зона комфорта 3 Императрица с маркерами и микро-практикой");
+check(ao.sections.filter((x) => x.kind === "flows").every((x) => x.flows.every((f) => f.block && f.open)), "деньги и отношения: «что блокирует» → «что раскрывает»");
+const pr = T.together(me2, aneli), diff = pr.sections.find((x) => x.id === "diff");
+check(me2.pts.D === 4 && diff.items.map((i) => i.lead).join() === "Финансы,Быт,Планирование,Как договориться,Фразы-мосты" && /Император слышит/.test(JSON.stringify(diff)) && /а Императрица — холод/.test(JSON.stringify(diff)), "4 Император + 3 Императрица: сцены «Финансы / Быт / Планирование», способ договориться и фразы-мосты");
+const hwq = pr.sections.find((x) => x.id === "homework").items;
+check(hwq.length === 3 && new Set(hwq.map((x) => x.text)).size === 3 && hwq.every((x) => x.hw), "домашнее задание: 3 разных вопроса");
+const br = pr.sections.find((x) => x.id === "bring").items;
+check(br.length === 4 && br.every((x) => x.text.length > 40) && new Set(br.map((x) => x.text)).size === 4, "«Что каждый приносит»: 4 суперсилы без повторов");
+const hard = T.together(calcMatrix({ d: 16, m: 4, y: 2000 }), calcMatrix({ d: 13, m: 8, y: 1999 })).sections.find((x) => x.id === "bring").items.map((x) => x.text).join(" ");
+check(/обновлять союз|разрушать иллюзии/.test(hard) && !/проблем/i.test(hard), "Башня и Смерть в «суперсилах» описаны как ресурс");
 process.exit(ok ? 0 : 1);
