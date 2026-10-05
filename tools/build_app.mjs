@@ -17,7 +17,7 @@ fs.writeFileSync(path.join(ROOT, "app/data.json"), json);
 
 // Модули склеиваются в один: убираем import, снимаем export
 const strip = (src) => src.replace(/^import[^;]+;\s*$/gm, "").replace(/^export \* from[^;]+;\s*$/gm, "").replace(/^export\s+(?=(const|let|function|async))/gm, "");
-const js = ["engine/themes.mjs", "engine/lenses.mjs", "engine/compose.mjs", "engine/adapt.mjs", "engine/core.mjs", "engine/parser.mjs", "engine/handoff.mjs", "engine/draw.mjs", "engine/lunar.mjs", "engine/practices.mjs", "engine/fx.mjs", "engine/scene.mjs", "app/app.mjs"]
+const js = ["engine/themes.mjs", "engine/lenses.mjs", "engine/compose.mjs", "engine/adapt.mjs", "engine/core.mjs", "engine/parser.mjs", "engine/handoff.mjs", "engine/draw.mjs", "engine/lunar.mjs", "engine/practices.mjs", "engine/matrix.mjs", "engine/matrix_text.mjs", "engine/fx.mjs", "engine/scene.mjs", "app/matrix_ui.mjs", "app/app.mjs"]
   .map((f) => `// ---- ${f}\n${strip(read(f))}`).join("\n");
 
 // Лёгкие SVG-иллюстрации RWS: id → разметка без XML-обёртки

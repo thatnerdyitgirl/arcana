@@ -5,6 +5,7 @@ import { buildCardIndex, parseCards } from "../engine/parser.mjs";
 import { buildHandoffPrompt } from "../engine/handoff.mjs";
 import { initPetals, createReadSound } from "../engine/fx.mjs";
 import { initScene } from "../engine/scene.mjs";
+import { renderMatrixPage, matrixNoteForReading } from "./matrix_ui.mjs";
 import { readLog, addEntry, clearLog, stats, fmtMinutes, fmtClock, phraseOfDay, practiceById } from "../engine/practices.mjs";
 import { lunarSnapshot, dayShifted, dayOnDate, dayBytes, lunarDay, isWarningDay, warningText, moonLitPath, fmtTime, fmtWhen, fmtLeft, waxLabel, ASTANA } from "../engine/lunar.mjs";
 
@@ -347,6 +348,12 @@ function onLunarClick(e) {
 // ---------- практики ----------
 
 const PR = APP_DATA.practices, ABOUT = APP_DATA.about;
+// раздел «Матрица»: контекст для интерфейса (расчёт и тексты считаются локально)
+const mxCtx = {
+  esc, data: APP_DATA.matrix, app: () => $app, setWorld,
+  goTarot: ({ theme, spreadId }) => { if (THEME_TABS.includes(theme)) state.theme = theme; resetDraw(); state.spreadId = spreadId && spreadById(spreadId) ? spreadId : null; state.error = ""; location.hash = "ask"; },
+  toLunar: () => { state.lunar.open = true; location.hash = "ask"; },
+};
 // подвал на всех экранах: свеча и авторская пометка
 { const q = document.getElementById("candle-q"), by = document.getElementById("candle-by"), ind = document.getElementById("indep");
   if (q && ABOUT.candle) { q.textContent = "«" + ABOUT.candle.text + "»"; by.textContent = "— " + ABOUT.candle.by; } if (ind) ind.textContent = ABOUT.indep; }
@@ -892,6 +899,7 @@ function renderReading() {
       </div>
     </section>
 
+    ${matrixNoteForReading(mxCtx, r.cards)}
     <p class="footnote">Карты — один из взглядов на ситуацию, а не прогноз и не основание для решения. «Что на карте» — описание изображения; «В этой позиции» и «В твоём вопросе» — синтез Arcana на основе источников по колоде ${r.deck === "RWS" ? "Райдера–Уэйта–Смит" : "Манара"}.</p>
     <div class="actions"><button type="button" class="btn ghost" id="again">Новый расклад</button></div>
   </article>`;
@@ -913,10 +921,12 @@ function renderReading() {
 
 let askDebounce = 0;
 function route() {
-  const view = location.hash.replace("#", "") || "ask";
+  const [view, mxSub, mxArg] = (location.hash.replace("#", "") || "ask").split("/");
+  if ($app._mx) { $app.removeEventListener("click", $app._mx.click); $app.removeEventListener("input", $app._mx.input); $app.removeEventListener("keydown", $app._mx.key); $app._mx = null; }
   document.querySelectorAll(".nav a").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + view ? "page" : "false"));
   $app.removeEventListener("click", onAskClick); $app.removeEventListener("click", onPracticesClick);
-  if (view === "practices") renderPractices();
+  if (view === "matrix") renderMatrixPage(mxCtx, mxSub || "me", mxArg || "");
+  else if (view === "practices") renderPractices();
   else if (view === "about") renderAbout();
   else if (view === "spreads") renderSpreads();
   else if (view === "reading") renderReading();

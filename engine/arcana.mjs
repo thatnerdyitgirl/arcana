@@ -27,6 +27,7 @@ export function loadData() {
     lunar: readJson("lunar/lunar-days.json"),
     practices: readJson("practices/practices.json"),
     about: readJson("about/about.json"),
+    matrix: { energies: readJson("matrix/energies.json").energies, positions: readJson("matrix/positions.json").positions, config: readJson("matrix/config.json") },
     cards: {},
   };
   for (const id of allCardIds("MANARA")) data.cards[id] = readJson(cardPath(id));
