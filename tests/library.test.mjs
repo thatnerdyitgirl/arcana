@@ -99,4 +99,26 @@ check(top("Упёрлась в потолок, не вижу роста и за�
 check(top("Меня могут уволить, провал на проекте, кризис на работе")[0] === "work.plan_b", "увольнение → «План Б»");
 check(top("Не понимаю, что хочет от меня начальник")[0] === "work.boss", "начальник → «Босс»");
 check(by["work.boss"].positions[0].grounding && /гипотеза/i.test(by["work.boss"].positions[0].grounding), "«Босс»: ожидания руководителя читаются как гипотеза");
+
+// Каталоги «Решения и перемены», «Саморазвитие», «Психология», «Творчество»: 3 ряда × 3 расклада
+const ALLROWS = JSON.parse(readFileSync(new URL("../knowledge/spreads/triplets.json", import.meta.url), "utf8")).rows;
+const NAMES4 = {
+  "Решения и перемены": ["Вариант А / Вариант Б", "Чего я не учитываю", "Страх и реальность", "Ждать или действовать", "Переезд и смена этапа", "Выход в новое", "Выбор без выбора", "Чужое влияние", "Цена решения"],
+  "Саморазвитие": ["Привычный сценарий", "Внутренний ресурс", "Границы", "Уверенность", "Прокрастинация", "Следующий шаг", "Слепая зона", "Зависть как компас", "Где фокус"],
+  "Психология": ["Персона и Я", "Встреча с тенью", "Проекция", "Что я вытесняю", "Внутренний конфликт", "Желание и защита", "Скрытая выгода", "Мой критик", "Детский сценарий"],
+  "Творчество": ["Новая идея", "Творческий блок", "Авторский голос", "Страх показать работу", "Долгий ящик", "Завершение", "Синдром идеалиста", "Мой зритель", "Творчество и деньги"],
+};
+for (const [theme, names] of Object.entries(NAMES4)) {
+  const rr = ALLROWS[theme], ids = rr.flatMap((r) => r.ids);
+  check(rr.length === 3 && rr.every((r) => r.ids.length === 3) && new Set(ids).size === 9 && ids.every((id) => by[id] && by[id].theme === theme && !by[id].hidden && by[id].positions.length === 3), `«${theme}»: 3 ряда × 3 расклада, по 3 позиции`);
+  check(names.every((n, i) => by[ids[i]].name === n), `«${theme}»: названия и порядок как в ТЗ`);
+  check(ids.every((id) => by[id].ux_tags?.length >= 1 && by[id].ux_tags.length <= 2 && by[id].ux_tags.every((t) => /^[а-яё]+$/i.test(t) && t.length <= 12)), `«${theme}»: у каждого расклада 1–2 коротких тега`);
+  check(ids.every((id) => by[id].name.length <= 26 && by[id].positions.every((p) => p.name.length <= 90)), `«${theme}»: названия и позиции короткие`);
+}
+check(SPREADS.filter((s) => !s.hidden && Object.keys(NAMES4).includes(s.theme)).length === 36, "в четырёх каталогах ровно 36 видимых раскладов");
+check(by["decision.influence"].positions[1].grounding && /гипотеза/i.test(by["decision.influence"].positions[1].grounding), "«Чужое влияние»: ожидания других читаются как гипотеза");
+check(by["psy.secondary_gain"].positions[1].grounding && /специалист/i.test(by["psy.secondary_gain"].positions[1].grounding), "«Скрытая выгода»: без обвинений, с отсылкой к специалисту");
+for (const [id, q] of [["decision.no_choice", "Все варианты плохие, нет хорошего выбора, а решать надо"], ["decision.price", "Стоит ли игра свеч, чем придётся пожертвовать, компромисс"], ["self.envy", "Завидую чужому успеху, это бесит"], ["psy.critic", "Внутренний критик грызёт меня за ошибки, ругаю себя"], ["art.perfectionist", "Перфекционизм, всё время переделываю, не выпускаю работы"], ["art.money", "Хочу зарабатывать творчеством, монетизировать свои работы"]]) check(top(q).includes(id), `новый расклад подбирается: ${id}`);
+// «Отношения» и «Работа»: у карточек тоже есть теги
+check([...rows.flatMap((r) => r.ids), ...wids].every((id) => by[id].ux_tags?.length >= 1), "теги есть и у «Отношений», и у «Работы»");
 process.exit(ok ? 0 : 1);

@@ -1302,3 +1302,6 @@ input[type="time"]:focus { outline: none; border-color: var(--lotus); box-shadow
 /* футер: подписи в одну строку */
 .made { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 24px; }
 @media (max-width: 640px) { .pr-mins button, .pr-custom button { min-height: 44px; } .pr-custom button { width: 44px; height: 44px; } .pr-time { gap: 12px; } }
+
+/* теги раскладов в каталоге */
+.spread-item p.spread-tags { font-size: 0.8125rem; letter-spacing: 0.04em; color: var(--lotus); }

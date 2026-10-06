@@ -836,6 +836,7 @@ function renderSpreads() {
         const card = (s) => `<article class="spread-item">
         <h3>${esc(s.name)}${s.adult ? ' <small class="badge-adult">18+</small>' : ""}</h3>
         <p>${esc(s.when)}</p>
+        ${s.ux_tags?.length ? `<p class="spread-tags">${s.ux_tags.map((t) => "#" + esc(t)).join(" ")}</p>` : ""}
         <ol>${s.positions.map((p) => `<li>${esc(p.name)}</li>`).join("")}</ol>
         <button type="button" class="btn ghost" data-pick="${s.id}">Выбрать</button>
       </article>`;

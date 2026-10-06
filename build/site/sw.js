@@ -1,5 +1,5 @@
-// Arcana Zen service worker (сборка 1791255493368)
-const CACHE = "arcana-1791255493368";
+// Arcana Zen service worker (сборка 1791256542549)
+const CACHE = "arcana-1791256542549";
 const SHELL = ["/", "/manifest.webmanifest", "/assets/icon-192.png", "/assets/icon-512.png", "/assets/favicon.svg", "/apple-touch-icon.png"];
 self.addEventListener("install", (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener("activate", (e) => { e.waitUntil(caches.keys().then((ks) => Promise.all(ks.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())); });
