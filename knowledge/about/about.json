@@ -193,6 +193,15 @@
         {
           "t": "Если у вас появятся вопросы или идеи по работе этого сайта и вы захотите оставить обратную связь, пишите туда."
         }
+      ],
+      [
+        {
+          "t": "Открыть Arcana в Telegram: "
+        },
+        {
+          "a": "@arcanazen_bot",
+          "href": "https://t.me/arcanazen_bot"
+        }
       ]
     ]
   },
@@ -222,5 +231,10 @@
     "t": "Создано Аружан",
     "a": "@ilovethisearth",
     "href": "https://t.me/ilovethisearth"
+  },
+  "tg": {
+    "t": "Открыть в Telegram",
+    "a": "@arcanazen_bot",
+    "href": "https://t.me/arcanazen_bot"
   }
 }

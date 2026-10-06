@@ -1,14 +1,12 @@
 // Карта дня и картинки для сторис: один рисовальщик (canvas) для превью в приложении и для PNG 1080×1920.
-// Три стиля: A «Тушь», B «Рассвет», C «Ночь». Все иллюстрации нарисованы кодом, внешних картинок нет.
+// Два стиля: B «Рассвет», C «Ночь». Все иллюстрации нарисованы кодом, внешних картинок нет.
 // Имена с префиксом dc: все модули собираются в один скоуп.
 
 const DC_STYLES = [
-  { id: "A", label: "Тушь" },
   { id: "B", label: "Рассвет" },
   { id: "C", label: "Ночь" },
 ];
 const DC_INK = {
-  A: { bg: "#f3ede0", text: "#2f3b36" },
   B: { bg: "#ecc9d6", text: "#4a2f45" },
   C: { bg: "#0b1220", text: "#f2ead8" },
 };
@@ -21,8 +19,8 @@ function dcQuoteOfDay(quotes, date = new Date(), shift = 0) {
   return quotes[(((day * 7 + shift) % n) + n) % n];
 }
 
-/** Стиль «Авто»: светлая тема → «Тушь», тёмная → «Ночь». */
-const dcAutoStyle = (dark) => (dark ? "C" : "A");
+/** Стиль «Авто»: светлая тема → «Рассвет», тёмная → «Ночь». */
+const dcAutoStyle = (dark) => (dark ? "C" : "B");
 
 function dcSpaced(ctx, text, cx, y, sp) {
   const chars = [...text];
@@ -44,20 +42,7 @@ function dcWrap(ctx, text, maxW) {
 
 function dcBackdrop(ctx, W, H, style) {
   const s = W / 360, k = (x) => x * s;
-  if (style === "A") {
-    ctx.fillStyle = "#f3ede0"; ctx.fillRect(0, 0, W, H);
-    ctx.strokeStyle = "#2f3b36"; ctx.globalAlpha = 0.85; ctx.lineWidth = k(9); ctx.lineCap = "round";
-    const a0 = (-70 * Math.PI) / 180;
-    ctx.beginPath(); ctx.arc(k(180), k(150), k(74), a0, a0 + (420 / 74)); ctx.stroke();
-    ctx.globalAlpha = 0.85; ctx.fillStyle = "#b9737f"; ctx.beginPath(); ctx.arc(k(256), k(86), k(7), 0, 7); ctx.fill();
-    ctx.globalAlpha = 1;
-    const hill = (y, c, a, amp) => { ctx.globalAlpha = a; ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(0, k(y));
-      ctx.quadraticCurveTo(k(70), k(y - amp), k(130), k(y - amp * 0.3)); ctx.quadraticCurveTo(k(210), k(y + amp * 0.3), k(260), k(y - amp * 0.4));
-      ctx.quadraticCurveTo(k(330), k(y - amp * 0.7), W, k(y - amp * 0.2)); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill(); };
-    const bottom = H / s; // высота в «условных» 360-пикселях
-    hill(bottom - 120, "#9aa89c", 0.35, 70); hill(bottom - 80, "#7d8f82", 0.45, 50); hill(bottom - 40, "#5f7366", 0.55, 36);
-    ctx.globalAlpha = 1;
-  } else if (style === "B") {
+  if (style === "B") {
     const g = ctx.createLinearGradient(W * 0.2, 0, W * 0.8, H);
     g.addColorStop(0, "#f8dccb"); g.addColorStop(0.55, "#ecc9d6"); g.addColorStop(1, "#c7c4e8");
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);

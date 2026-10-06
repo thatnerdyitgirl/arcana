@@ -360,6 +360,7 @@ const mxCtx = {
 // подвал на всех экранах: свеча и авторская пометка
 { const q = document.getElementById("candle-q"), by = document.getElementById("candle-by"), ind = document.getElementById("indep");
   if (q && ABOUT.candle) { q.textContent = "«" + ABOUT.candle.text + "»"; by.textContent = "— " + ABOUT.candle.by; } if (ind) ind.textContent = ABOUT.indep;
+  const tg = document.getElementById("tg"); if (tg && ABOUT.tg) tg.innerHTML = `${esc(ABOUT.tg.t)} · <a class="ext" href="${esc(ABOUT.tg.href)}" target="_blank" rel="noopener noreferrer">${esc(ABOUT.tg.a)}</a>`;
   const made = document.getElementById("made"); if (made && ABOUT.created) made.innerHTML = `${esc(ABOUT.created.t)} · <a class="ext" href="${esc(ABOUT.created.href)}" target="_blank" rel="noopener noreferrer">${esc(ABOUT.created.a)}</a>`; }
 state.pr = { id: null, open: null, min: 10, run: null, done: null, from: null, ac: null };
 let prTimer = 0, prLock = null;
@@ -490,6 +491,7 @@ function practicesHtml() {
     <h1>Несколько минут тишины</h1>
     <p class="prose">Короткие созерцательные практики на каждый день. Без аккаунта, без ИИ, история хранится только на этом устройстве.</p>
     <div class="pr-essay">${ABOUT.practices_intro.p.map((t) => `<p class="prose">${esc(t)}</p>`).join("")}<blockquote class="quote">${esc(ABOUT.practices_intro.quote)}</blockquote></div>
+    ${remHtml("med", "22:22", "Медитация · Arcana", "Ежедневное событие в календаре телефона со ссылкой на практики. Время выбираешь сама.")}
     <div class="pr-phrase"><span class="pr-ph-label">Фраза дня</span><p class="pr-ph-text">${esc(ph.text)}</p><p class="pr-ph-gloss">${esc(ph.gloss)}</p><p class="pr-ph-src">${esc(PR.themes[ph.theme])} · ${esc(ph.source)}</p></div>
     <div class="pr-stats"><div><span>Сегодня</span><b>${esc(fmtMinutes(st.todaySec))}</b></div><div><span>За неделю</span><b>${esc(fmtMinutes(st.weekSec))}</b></div></div>
     <div class="pr-mins" role="group" aria-label="Длительность">${PR.durations.map((m) => `<button type="button" data-pr-min="${m}" aria-pressed="${m === pr.min}">${m} мин</button>`).join("")}</div>
@@ -938,6 +940,7 @@ function renderReading() {
 
 const DAY = { shift: 0, style: "auto" };
 try { DAY.style = localStorage.getItem("arcana-dc-style") || "auto"; } catch {}
+if (!DC_STYLES.some((x) => x.id === DAY.style)) DAY.style = "auto"; // старый выбор «Тушь» больше не существует
 const dcStyleNow = () => (DAY.style === "auto" ? dcAutoStyle(adultMode()) : DAY.style);
 const dayQuote = () => dcQuoteOfDay(APP_DATA.quotes ?? [], new Date(), DAY.shift);
 function dayDraw() {
@@ -964,7 +967,8 @@ function renderDay() {
       <button type="button" class="btn ghost" data-dc-next>Другая цитата</button>
       <span class="status" id="dc-status" aria-live="polite"></span>
     </div>
-    <p class="hint">Картинка 1080×1920: подходит для сторис. Цитаты даны в вольном пересказе, подписан источник. Стиль «Авто» следует за темой сайта.</p>
+    ${remHtml("day", "08:00", "Карта дня · Arcana", "Каждое утро напоминание в календаре телефона со ссылкой на карту дня.")}
+    <p class="hint">Картинка 1080×1920: подходит для сторис. Цитаты даны в вольном пересказе, подписан источник. Стиль «Авто»: «Рассвет» на светлой теме, «Ночь» на тёмной.</p>
   </section>`;
   $app.addEventListener("click", onDayClick);
   dayDraw(); document.fonts?.ready.then(dayDraw);
@@ -1072,6 +1076,34 @@ function bdClose() {
   setTimeout(() => { box.remove(); document.body.style.overflow = ""; try { BD.opener?.focus?.({ preventScroll: true }); } catch {} }, 380);
 }
 document.getElementById("buddha-btn")?.addEventListener("click", bdOpen);
+
+// ---------- напоминания: ежедневное событие в календаре телефона (без сервера) ----------
+
+const remHtml = (kind, time, title, hint) => `<div class="rem" data-rem="${kind}" data-rem-title="${esc(title)}">
+  <span class="label">Напоминание</span>
+  <div class="rem-row"><input type="time" value="${time}" aria-label="Время напоминания" required><button type="button" class="btn soft" data-ics>Добавить в календарь</button></div>
+  <p class="hint">${hint}</p><span class="status" aria-live="polite"></span></div>`;
+const icsEsc = (t) => String(t).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+function icsDownload({ title, time, desc, url, uid }) {
+  const [hh, mm] = time.split(":"), p2 = (n) => String(n).padStart(2, "0"), d = new Date();
+  const day = `${d.getFullYear()}${p2(d.getMonth() + 1)}${p2(d.getDate())}`, stamp = d.toISOString().replace(/[-:]|\.\d+/g, "");
+  const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Arcana Zen//RU", "CALSCALE:GREGORIAN", "BEGIN:VEVENT", `UID:${uid}@arcanazen.pages.dev`, `DTSTAMP:${stamp}`,
+    `DTSTART:${day}T${hh}${mm}00`, "DURATION:PT15M", "RRULE:FREQ=DAILY", `SUMMARY:${icsEsc(title)}`, `DESCRIPTION:${icsEsc(desc)}`, `URL:${url}`,
+    "BEGIN:VALARM", "TRIGGER:PT0S", "ACTION:DISPLAY", `DESCRIPTION:${icsEsc(title)}`, "END:VALARM", "END:VEVENT", "END:VCALENDAR"];
+  const blob = new Blob([lines.join("\r\n") + "\r\n"], { type: "text/calendar;charset=utf-8" });
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "arcana-" + uid + ".ics";
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-ics]"); if (!b) return;
+  const box = b.closest(".rem"), inp = box.querySelector("input[type=time]"), st = box.querySelector(".status");
+  if (!inp.value) { st.textContent = "Выбери время"; return; }
+  const kind = box.dataset.rem, base = "https://arcanazen.pages.dev/";
+  icsDownload(kind === "med"
+    ? { title: box.dataset.remTitle, time: inp.value, desc: "Время для практики: тишина, дыхание, внимание к себе.", url: base + "#practices", uid: "meditation" }
+    : { title: box.dataset.remTitle, time: inp.value, desc: "Открой карту дня и задай себе вопрос на сегодня.", url: base + "#day", uid: "day" });
+  st.textContent = "Файл скачан. Открой его, и событие добавится в календарь с повтором каждый день.";
+});
 
 // ---------- маршрутизация ----------
 

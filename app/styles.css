@@ -1243,3 +1243,11 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
   .bd-rip { display: none; }
 }
 @media (max-width: 640px) { .buddha-btn { width: 40px; height: 40px; } .bd-actions .btn { flex: 1 1 100%; } }
+
+/* ---------- напоминания ---------- */
+.rem { display: grid; gap: 12px; }
+.rem > .label { font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; color: var(--ink-soft); }
+.rem-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+input[type="time"] { font: inherit; font-family: var(--font-read); font-size: 1.1rem; min-height: 48px; padding: 8px 16px; color: var(--ink); background: color-mix(in srgb, var(--paper-raised) 80%, transparent); border: 1px solid var(--line-strong); border-radius: var(--radius-card); }
+input[type="time"]:focus { outline: none; border-color: var(--lotus); box-shadow: 0 0 0 4px var(--lotus-soft); }
+@media (max-width: 640px) { .rem-row .btn { flex: 1 1 100%; } input[type="time"] { width: 100%; } }
