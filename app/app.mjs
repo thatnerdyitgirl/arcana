@@ -360,9 +360,11 @@ const mxCtx = {
 // подвал на всех экранах: свеча и авторская пометка
 { const q = document.getElementById("candle-q"), by = document.getElementById("candle-by"), ind = document.getElementById("indep");
   if (q && ABOUT.candle) { q.textContent = "«" + ABOUT.candle.text + "»"; by.textContent = "— " + ABOUT.candle.by; } if (ind) ind.textContent = ABOUT.indep;
-  const tg = document.getElementById("tg"); if (tg && ABOUT.tg) tg.innerHTML = `${esc(ABOUT.tg.t)} · <a class="ext" href="${esc(ABOUT.tg.href)}" target="_blank" rel="noopener noreferrer">${esc(ABOUT.tg.a)}</a>`;
-  const made = document.getElementById("made"); if (made && ABOUT.created) made.innerHTML = `${esc(ABOUT.created.t)} · <a class="ext" href="${esc(ABOUT.created.href)}" target="_blank" rel="noopener noreferrer">${esc(ABOUT.created.a)}</a>`; }
-state.pr = { id: null, open: null, min: 10, run: null, done: null, from: null, ac: null };
+  const made = document.getElementById("made"), lk = (x) => `<a class="ext" href="${esc(x.href)}" target="_blank" rel="noopener noreferrer">${esc(x.a)}</a>`;
+  if (made) made.innerHTML = [ABOUT.created && `<span>${esc(ABOUT.created.t)} · ${lk(ABOUT.created)}</span>`, ABOUT.tg && `<span>${esc(ABOUT.tg.t)} · ${lk(ABOUT.tg)}</span>`].filter(Boolean).join(""); }
+const PR_MIN_KEY = "arcana-pr-min";
+const prClamp = (v) => Math.max(1, Math.min(180, Math.round(Number(v)) || 10));
+state.pr = { id: null, open: null, min: (() => { try { const v = Number(localStorage.getItem(PR_MIN_KEY)); return v >= 1 && v <= 180 ? v : 10; } catch { return 10; } })(), run: null, done: null, from: null, ac: null };
 let prTimer = 0, prLock = null;
 
 const SFX = typeof ARCANA_SFX !== "undefined" ? ARCANA_SFX : { start: "../assets/wind-chimes.mp3", end: "../assets/singing-bowl.mp3" };
@@ -494,7 +496,14 @@ function practicesHtml() {
     ${remHtml("med", "22:22", "Медитация · Arcana", "Ежедневное событие в календаре телефона со ссылкой на практики. Время выбираешь сама.")}
     <div class="pr-phrase"><span class="pr-ph-label">Фраза дня</span><p class="pr-ph-text">${esc(ph.text)}</p><p class="pr-ph-gloss">${esc(ph.gloss)}</p><p class="pr-ph-src">${esc(PR.themes[ph.theme])} · ${esc(ph.source)}</p></div>
     <div class="pr-stats"><div><span>Сегодня</span><b>${esc(fmtMinutes(st.todaySec))}</b></div><div><span>За неделю</span><b>${esc(fmtMinutes(st.weekSec))}</b></div></div>
-    <div class="pr-mins" role="group" aria-label="Длительность">${PR.durations.map((m) => `<button type="button" data-pr-min="${m}" aria-pressed="${m === pr.min}">${m} мин</button>`).join("")}</div>
+    <div class="pr-time">
+      <div class="pr-mins" role="group" aria-label="Длительность">${PR.durations.map((m) => `<button type="button" data-pr-min="${m}" aria-pressed="${m === pr.min}">${m} мин</button>`).join("")}</div>
+      <div class="pr-custom" role="group" aria-label="Своя длительность">
+        <button type="button" data-pr-step="-1" aria-label="На минуту меньше">−</button>
+        <label class="pr-val"><input type="number" inputmode="numeric" min="1" max="180" step="1" value="${pr.min}" data-pr-custom aria-label="Минут"><span>мин</span></label>
+        <button type="button" data-pr-step="1" aria-label="На минуту больше">+</button>
+      </div>
+    </div>
     ${info ? `<div class="pr-lunar"><span class="l-label">Практика лунного дня · ${sn.day}-е сутки, ${esc(info.symbol)} <em class="l-trad">традиционная рекомендация</em></span><p>${esc(info.spiritual_practice.text)}</p><div class="l-pr-btns">${info.spiritual_practice.practice.map((id) => `<button type="button" class="pr-mini" data-pr-pick="${id}|${info.spiritual_practice.minutes}">${esc(practiceById(PR, id).name)} · ${info.spiritual_practice.minutes} мин</button>`).join("")}</div></div>` : ""}
     <div class="pr-list">${PR.practices.map(card).join("")}</div>
     ${recent ? `<div class="pr-hist"><span class="l-label">Последние практики</span><ul>${recent}</ul><button type="button" class="pr-clear" data-pr-clear>Очистить историю</button></div>` : ""}
@@ -504,7 +513,8 @@ function practicesHtml() {
 function onPracticesClick(e) {
   const pr = state.pr, t = (sel) => e.target.closest(sel);
   let el;
-  if ((el = t("[data-pr-min]"))) { pr.min = Number(el.dataset.prMin); renderPractices(); return; }
+  if ((el = t("[data-pr-min]"))) { prSetMin(Number(el.dataset.prMin)); return; }
+  if ((el = t("[data-pr-step]"))) { prSetMin(pr.min + Number(el.dataset.prStep)); return; }
   if ((el = t("[data-pr-open]"))) { pr.open = pr.open === el.dataset.prOpen ? null : el.dataset.prOpen; renderPractices(); return; }
   if ((el = t("[data-pr-pick]"))) { const [id, m] = el.dataset.prPick.split("|"); pr.open = id; pr.min = Number(m); renderPractices(); document.querySelector(".pr-card.is-open")?.scrollIntoView({ block: "center", behavior: "smooth" }); return; }
   if ((el = t("[data-pr-go]"))) { prStart(el.dataset.prGo, pr.min); return; }
@@ -514,11 +524,21 @@ function onPracticesClick(e) {
   if (t("[data-pr-back]")) { pr.done = null; pr.from = null; location.hash = "ask"; return; }
   if (t("[data-pr-clear]")) { if (confirm("Удалить историю практик на этом устройстве?")) { clearLog(); renderPractices(); } }
 }
+// длительность: быстрые кнопки + ручная настройка, выбор запоминается на устройстве
+function prSetMin(v, fromInput = false) {
+  const m = prClamp(v); state.pr.min = m;
+  try { localStorage.setItem(PR_MIN_KEY, String(m)); } catch {}
+  const inp = document.querySelector("[data-pr-custom]"); if (inp && !fromInput) inp.value = m;
+  document.querySelectorAll("[data-pr-min]").forEach((b) => b.setAttribute("aria-pressed", String(Number(b.dataset.prMin) === m)));
+  document.querySelectorAll("[data-pr-go]").forEach((b) => { b.textContent = `Начать · ${m} мин`; });
+}
 function renderPractices() {
   $app.removeEventListener("click", onPracticesClick);
   setWorld(null, null);
   $app.innerHTML = practicesHtml();
   $app.addEventListener("click", onPracticesClick);
+  const ci = document.querySelector("[data-pr-custom]");
+  if (ci) { ci.addEventListener("input", () => { const v = Number(ci.value); if (v >= 1 && v <= 180) prSetMin(v, true); }); ci.addEventListener("blur", () => prSetMin(ci.value)); }
 }
 
 // ---------- о проекте ----------

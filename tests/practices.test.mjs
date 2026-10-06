@@ -7,8 +7,8 @@ const PR = rd("practices/practices.json"), LU = rd("lunar/lunar-days.json"), AB 
 const mem = () => { const m = new Map(); return { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => m.set(k, v), removeItem: (k) => m.delete(k) }; };
 
 // библиотека практик
-const need = ["breath_watch", "mindfulness", "vipassana", "metta", "breath_count", "body_scan", "walking", "contemplation", "silence", "so_ham"];
-check(need.every((id) => practiceById(PR, id)) && PR.practices.length === 10, "10 практик из задания");
+const need = ["breath_watch", "mindfulness", "vipassana", "metta", "gratitude", "breath_count", "body_scan", "walking", "contemplation", "silence", "so_ham"];
+check(need.every((id) => practiceById(PR, id)) && PR.practices.length === 11, "10 практик из задания и благодарность");
 check(PR.practices.every((p) => p.name && p.summary && p.tradition && p.steps.length >= 3 && p.steps.every((s) => s.length < 190)), "у каждой практики: название, суть, 3+ шага, оговорка о традиции");
 const sh = practiceById(PR, "so_ham");
 check(sh.mantra.text === "SO HAM" && /Я есть/.test(sh.mantra.gloss) && /санскрит/i.test(sh.tradition) && /не является буддийской/i.test(sh.tradition) && !/буддийская мантра\b(?!\.)/i.test(sh.summary), "So Ham: санскритская формула йоги и индийской традиции, не буддийская мантра");
