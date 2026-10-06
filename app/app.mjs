@@ -1082,6 +1082,7 @@ function bdOpen() {
 function bdClose() {
   const box = document.getElementById("bd"); if (!box) return;
   bdSoundStop(); box.classList.remove("is-open");
+  if (location.hash === "#sovet") history.replaceState(null, "", "#ask");
   setTimeout(() => { box.remove(); document.body.style.overflow = ""; try { BD.opener?.focus?.({ preventScroll: true }); } catch {} }, 380);
 }
 document.getElementById("buddha-btn")?.addEventListener("click", bdOpen);
@@ -1128,10 +1129,13 @@ function jrSave(r) {
   if (!jrWrite(list)) return null;
   return id;
 }
+const jrDay = (ts) => new Date(ts).toLocaleDateString("ru-RU", { day: "numeric", month: "long", year: "numeric" });
+const jrTime = (ts) => new Date(ts).toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
+const jrCount = (n) => `${n} ${n % 10 === 1 && n % 100 !== 11 ? "расклад" : [2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100) ? "расклада" : "раскладов"}`;
 function jrHtml() {
   const list = jrRead();
   const entry = (e) => `<article class="pr-card soft-card jr-entry" data-jr="${esc(e.id)}">
-      <span class="l-label">${esc(jrDate(e.ts))} · ${e.deck === "RWS" ? "Райдер–Уэйт" : "Манара"}</span>
+      <span class="l-label">${esc(jrTime(e.ts))} · ${e.deck === "RWS" ? "Райдер–Уэйт" : "Манара"}</span>
       <h3>${esc(e.spreadName)}</h3>
       <p class="prose">${e.names.map(esc).join(" · ")}</p>
       ${e.story ? `<p class="hint">Мой вопрос: ${esc(e.story.length > 160 ? e.story.slice(0, 160) + "…" : e.story)}</p>` : ""}
@@ -1139,13 +1143,15 @@ function jrHtml() {
       <textarea id="jr-note-${esc(e.id)}" class="jr-note" rows="3" data-jr-note="${esc(e.id)}" placeholder="Что отозвалось? Что хочется запомнить?">${esc(e.note)}</textarea>
       <div class="actions"><button type="button" class="btn ghost" data-jr-open="${esc(e.id)}">Открыть расклад</button><button type="button" class="btn ghost" data-jr-del="${esc(e.id)}">Удалить</button><span class="status" aria-live="polite"></span></div>
     </article>`;
+  const days = []; for (const e of list) { const k = jrDay(e.ts), last = days[days.length - 1]; if (last && last.k === k) last.items.push(e); else days.push({ k, items: [e] }); }
+  const day = (d) => `<div class="jr-day"><h2 class="jr-day-h"><span>${esc(d.k)}</span><small>${jrCount(d.items.length)}</small></h2>${d.items.map(entry).join("")}</div>`;
   return `<section class="column journal" aria-labelledby="jr-title">
     <div class="intro">
       <p class="eyebrow">Дневник</p>
       <h1 id="jr-title">Твои расклады</h1>
-      <p class="lede">Здесь лежат расклады, которые ты сохранила, и твои заметки к ним. Всё хранится только на этом устройстве: никуда не отправляется.</p>
+      <p class="lede">Здесь лежат расклады, которые ты сохранила, по дням, и твои заметки к ним. Можно вернуться и вспомнить, что выпадало и что отозвалось. Всё хранится только на этом устройстве: никуда не отправляется.</p>
     </div>
-    ${list.length ? list.map(entry).join("") + `<div class="actions"><button type="button" class="btn ghost" data-jr-clear>Очистить дневник</button></div>`
+    ${list.length ? days.map(day).join("") + `<div class="actions"><button type="button" class="btn ghost" data-jr-clear>Очистить дневник</button></div>`
       : `<div class="pr-card soft-card"><p class="prose">Пока здесь пусто. После расклада нажми «Сохранить в дневник», и он появится тут вместе с датой.</p><div class="actions"><a class="btn soft" href="#ask">Сделать расклад</a></div></div>`}
   </section>`;
 }
@@ -1197,12 +1203,13 @@ let askDebounce = 0;
 function route() {
   const [view, mxSub, mxArg] = (location.hash.replace("#", "") || "ask").split("/");
   if ($app._mx) { $app.removeEventListener("click", $app._mx.click); $app.removeEventListener("input", $app._mx.input); $app.removeEventListener("keydown", $app._mx.key); $app._mx = null; }
-  document.querySelectorAll(".nav a").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + view ? "page" : "false"));
+  document.querySelectorAll(".topbar a[href^=\"#\"]:not(.brand)").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + view ? "page" : "false"));
   $app.removeEventListener("click", onAskClick); $app.removeEventListener("click", onPracticesClick); $app.removeEventListener("click", onDayClick); $app.removeEventListener("click", onJournalClick); $app.removeEventListener("input", onJournalInput);
   if (view === "matrix") renderMatrixPage(mxCtx, mxSub || "me", mxArg || "");
   else if (view === "practices") renderPractices();
   else if (view === "day") renderDay();
   else if (view === "journal") renderJournal();
+  else if (view === "sovet") { renderAsk(); setTimeout(bdOpen, 250); }
   else if (view === "about") renderAbout();
   else if (view === "spreads") renderSpreads();
   else if (view === "reading") renderReading();

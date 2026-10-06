@@ -45,7 +45,9 @@ const blocked = createBot({ store, tg: async () => { const e = new Error("403");
 await blocked.tick(); check(!mem.has(1), "если бот заблокирован, подписка удаляется");
 
 await msg("/utro 07:30", 2); await msg("/stop", 2); check(!mem.has(2), "/stop удаляет все данные");
-calls.length = 0; await msg("/sovet"); check(/совет/.test(calls[0][1].text), "/sovet присылает совет");
+calls.length = 0; await msg("/sovet"); check(/совет/.test(calls[0][1].text) && calls[0][1].reply_markup.inline_keyboard[0][0].web_app.url === "https://x.dev/#sovet" && calls[0][1].reply_markup.inline_keyboard[0][0].text === "Ещё совет", "/sovet: совет и кнопка «Ещё совет» ведёт на вкладку совета");
+calls.length = 0; await msg("/matrix"); check(calls[0][1].reply_markup.inline_keyboard[0][0].web_app.url === "https://x.dev/#matrix" && !/\d{2}\.\d{2}\.\d{4}/.test(JSON.stringify(calls)), "/matrix открывает Матрицу в приложении, даты в чате не просим");
+calls.length = 0; await msg("/pair"); check(calls[0][1].reply_markup.inline_keyboard[0][0].web_app.url === "https://x.dev/#matrix/together", "/pair открывает «Мы вместе»");
 await msg("привет"); check(/utro/.test(last()[1].text), "непонятный текст → подсказка");
 // лимит за один запуск
 for (let c = 100; c < 160; c++) mem.set(c, { chat: c, tz: 300, morning: "08:00", med: null, morning_utc: 180, med_utc: null, last_morning: null, last_med: null });

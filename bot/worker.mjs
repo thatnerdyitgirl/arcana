@@ -47,6 +47,8 @@ const HELP = `Я Arcana Zen. Присылаю карту дня и напоми�
 /med 22:22 — напоминание о медитации
 /karta — карта дня прямо сейчас
 /sovet — совет Будды
+/matrix — матрица судьбы
+/pair — совместимость двух матриц
 /tz +5 — часовой пояс (по умолчанию Астана, +5)
 /status — мои напоминания
 /stop — отключить всё`;
@@ -60,7 +62,7 @@ const MED_LINES = [
 // ---------- бот: зависимости передаются снаружи (в тестах подменяются) ----------
 
 export function createBot({ store, tg, site = SITE_DEFAULT, getQuotes, getBuddha, now = () => Date.now() }) {
-  const app = (path = "") => ({ inline_keyboard: [[{ text: "Открыть Arcana", web_app: { url: site + "/" + path } }]] });
+  const app = (path = "", label = "Открыть Arcana") => ({ inline_keyboard: [[{ text: label, web_app: { url: site + "/" + path } }]] });
   const pad2 = (n) => String(n).padStart(2, "0");
 
   async function sendCard(chat, tzMin, date) {
@@ -98,8 +100,12 @@ export function createBot({ store, tg, site = SITE_DEFAULT, getQuotes, getBuddha
       case "sovet": {
         const b = await getBuddha(); if (!b?.length) return;
         const q = b[Math.floor(Math.random() * b.length)];
-        return say(chat, `«${q.t}»\n\n${q.s}`, { reply_markup: app() });
+        return say(chat, `«${q.t}»\n\n${q.s}`, { reply_markup: app("#sovet", "Ещё совет") });
       }
+      case "matrix":
+        return say(chat, "Матрица судьбы считается прямо на твоём устройстве: дату рождения ты вводишь в приложении, она никуда не отправляется и до меня не доходит.", { reply_markup: app("#matrix", "Открыть Матрицу") });
+      case "pair":
+        return say(chat, "Совместимость двух матриц тоже считается на твоём устройстве. Введи две даты в приложении: это темы для разговора, а не оценка союза.", { reply_markup: app("#matrix/together", "Мы вместе") });
       case "status":
         return say(chat, `Карта дня: ${s.morning ?? "выключена"}\nМедитация: ${s.med ?? "выключена"}\nЧасовой пояс: ${tzLabel(s.tz)}`);
       case "stop": await store.del(chat); return say(chat, "Всё отключила. Если захочешь вернуться, напиши /start.");
@@ -169,7 +175,7 @@ export default {
     if (url.pathname === "/setup" && url.searchParams.get("key") === env.WEBHOOK_SECRET && env.WEBHOOK_SECRET) {
       const tg = makeTg(env.BOT_TOKEN), site = (env.SITE || SITE_DEFAULT).replace(/\/$/, "");
       await tg("setWebhook", { url: url.origin + "/webhook", secret_token: env.WEBHOOK_SECRET, allowed_updates: ["message"] });
-      await tg("setMyCommands", { commands: [["utro", "Карта дня по утрам"], ["med", "Напоминание о медитации"], ["karta", "Карта дня сейчас"], ["sovet", "Совет Будды"], ["tz", "Часовой пояс"], ["status", "Мои напоминания"], ["stop", "Отключить всё"]].map(([command, description]) => ({ command, description })) });
+      await tg("setMyCommands", { commands: [["utro", "Карта дня по утрам"], ["med", "Напоминание о медитации"], ["karta", "Карта дня сейчас"], ["sovet", "Совет Будды"], ["matrix", "Матрица судьбы"], ["pair", "Совместимость"], ["tz", "Часовой пояс"], ["status", "Мои напоминания"], ["stop", "Отключить всё"]].map(([command, description]) => ({ command, description })) });
       await tg("setChatMenuButton", { menu_button: { type: "web_app", text: "Открыть Arcana", web_app: { url: site + "/" } } });
       return new Response("Готово: бот подключён.");
     }

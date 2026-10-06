@@ -1206,7 +1206,7 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 /* ---------- совет Будды: кнопка в шапке и раскрывающийся лотос ---------- */
 .buddha-btn { display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; color: var(--ink-soft); background: transparent; border: 1px solid var(--line-strong); border-radius: 999px; cursor: pointer; transition: color .3s, border-color .3s, transform .3s; }
 .buddha-btn:hover, .buddha-btn:focus-visible { color: var(--lotus); border-color: var(--lotus); transform: translateY(-1px); }
-.bd { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; overflow-y: auto; background: color-mix(in srgb, var(--paper) 97%, transparent); opacity: 0; transition: opacity .38s ease; outline: none; }
+.bd { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; overflow-y: auto; background: var(--paper); opacity: 0; transition: opacity .38s ease; outline: none; }
 .bd.is-open { opacity: 1; }
 .bd-x { position: absolute; top: 12px; right: 12px; width: 48px; height: 48px; font-size: 1.8rem; line-height: 1; color: var(--ink-soft); background: transparent; border: 0; cursor: pointer; border-radius: 999px; }
 .bd-x:hover, .bd-x:focus-visible { color: var(--lotus); }
@@ -1262,3 +1262,22 @@ input[type="time"]:focus { outline: none; border-color: var(--lotus); box-shadow
 .wl-steps b { font-weight: 500; color: var(--ink); }
 .wl-steps span { grid-column: 2; font-size: var(--step--1); color: var(--ink-soft); }
 @media (max-width: 640px) { .wl-steps { gap: 16px; } .jr-entry { gap: 12px; } .journal { gap: var(--m-24); } .jr-entry .actions .btn, #wl .actions .btn, #about-howto .actions .btn { flex: 1 1 100%; } }
+
+/* ---------- шапка: бренд крупнее, иконки справа, ссылки отдельной строкой ---------- */
+.topbar { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: var(--space-3); row-gap: var(--space-2); }
+.topbar .nav { grid-column: 1 / -1; }
+.nav .theme-switch { margin-left: auto; }
+.top-icons { display: flex; align-items: center; gap: 12px; }
+.enso { width: 3.2rem; height: 3.2rem; }
+.wordmark { font-size: var(--step-3); }
+.wordmark small { margin-top: 0.5rem; font-size: 0.75rem; }
+.buddha-btn { width: 40px; height: 40px; text-decoration: none; }
+.buddha-btn svg { width: 22px; height: 22px; }
+.buddha-btn[aria-current="page"] { color: var(--lotus); border-color: var(--lotus); }
+@media (max-width: 640px) { .enso { width: 2.8rem; height: 2.8rem; } .wordmark { font-size: var(--step-2); } .wordmark small { font-size: 0.625rem; letter-spacing: 0.14em; white-space: nowrap; } .buddha-btn { width: 44px; height: 44px; } .top-icons { gap: 10px; } }
+
+/* дневник: расклады по дням */
+.jr-day { display: grid; gap: var(--space-3); }
+.jr-day-h { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); margin: 0; padding-bottom: var(--space-1); border-bottom: 1px solid var(--line); font-family: var(--font-display); font-weight: 400; font-size: var(--step-1); line-height: 1.25; }
+.jr-day-h small { font-family: var(--font-ui); font-size: var(--step--1); color: var(--ink-soft); }
+@media (max-width: 640px) { .journal { gap: var(--m-32); } .jr-day { gap: var(--m-16); } }
