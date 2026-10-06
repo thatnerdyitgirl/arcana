@@ -54,6 +54,12 @@ for (const f of ["og-arcana.jpg", "favicon.svg", "favicon-32.png", "apple-touch-
 for (const [from, to] of [["favicon.ico", "favicon.ico"], ["apple-touch-icon.png", "apple-touch-icon.png"]]) if (fs.existsSync(path.join(ROOT, "assets", from))) fs.copyFileSync(path.join(ROOT, "assets", from), path.join(site, to));
 fs.writeFileSync(path.join(site, "robots.txt"), `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}sitemap.xml\n`);
 fs.writeFileSync(path.join(site, "sitemap.xml"), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${SITE_URL}</loc></url></urlset>\n`);
+// Для Telegram-бота: картинки карты дня и списки цитат (публичные тексты сайта)
+const cardsDir = path.join(ROOT, "assets/cards");
+if (fs.existsSync(cardsDir)) { fs.mkdirSync(path.join(site, "cards"), { recursive: true }); for (const f of fs.readdirSync(cardsDir)) if (f.endsWith(".jpg")) fs.copyFileSync(path.join(cardsDir, f), path.join(site, "cards", f)); }
+for (const [src, dst] of [["knowledge/quotes/daily.json", "day-quotes.json"], ["knowledge/quotes/buddha.json", "buddha.json"]]) {
+  const q = JSON.parse(fs.readFileSync(path.join(ROOT, src), "utf8")).quotes; fs.writeFileSync(path.join(site, dst), JSON.stringify({ quotes: q }));
+}
 // PWA: установка на главный экран + офлайн. Версия кэша = время сборки, чтобы обновления доходили сами.
 fs.writeFileSync(path.join(site, "manifest.webmanifest"), JSON.stringify({
   name: "Arcana Zen", short_name: "Arcana", description: "Рефлексивное таро, лунный календарь и практики с таймером.", lang: "ru",
