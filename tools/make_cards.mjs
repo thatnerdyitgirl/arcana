@@ -1,4 +1,4 @@
-// Рисует картинки «карты дня» для Telegram-бота: assets/cards/NN.jpg (720×1280, стиль «Рассвет»).
+// Рисует картинки «карты дня» для Telegram-бота: assets/cards/NN.jpg (1024×1280 (4:5), стиль «Рассвет»).
 // Запуск (нужен Google Chrome, интернет для шрифтов): node tools/make_cards.mjs
 // Цитаты берутся из knowledge/quotes/daily.json; номер файла = индекс цитаты.
 import fs from "node:fs";
@@ -15,13 +15,14 @@ fs.mkdirSync(out, { recursive: true });
 const lib = fs.readFileSync(path.join(ROOT, "app/daycard.mjs"), "utf8");
 
 quotes.forEach((q, i) => {
+  if (process.env.ONLY && Number(process.env.ONLY) !== i) return;
   const html = `<!doctype html><meta charset="utf-8"><link href="https://fonts.googleapis.com/css2?family=Forum&family=Golos+Text:wght@400;500&display=swap" rel="stylesheet">
-<body style="margin:0"><canvas id="c" width="720" height="1280" style="display:block"></canvas><script>${lib}
+<body style="margin:0"><canvas id="c" width="1024" height="1280" style="display:block"></canvas><script>${lib}
 Promise.all([document.fonts.load('27px "Forum"'), document.fonts.load('11px "Golos Text"')]).then(() => dcDrawQuote(document.getElementById("c"), ${JSON.stringify(STYLE)}, ${JSON.stringify(q)}));</script>`;
   const f = path.join(tmp, "c.html"), png = path.join(tmp, `${i}.png`), n = String(i).padStart(2, "0");
   fs.writeFileSync(f, html);
-  execFileSync(CHROME, ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--window-size=720,1280", "--virtual-time-budget=6000", `--screenshot=${png}`, "file://" + f], { stdio: "ignore" });
-  execFileSync("sips", ["-s", "format", "jpeg", "-s", "formatOptions", "86", png, "--out", path.join(out, `${n}.jpg`)], { stdio: "ignore" });
+  execFileSync(CHROME, ["--headless=new", "--disable-gpu", "--hide-scrollbars", "--window-size=1024,1280", "--virtual-time-budget=6000", `--screenshot=${png}`, "file://" + f], { stdio: "ignore" });
+  execFileSync("sips", ["-s", "format", "jpeg", "-s", "formatOptions", "95", png, "--out", path.join(out, `${n}.jpg`)], { stdio: "ignore" });
   process.stdout.write(`${n} `);
 });
 fs.rmSync(tmp, { recursive: true, force: true });

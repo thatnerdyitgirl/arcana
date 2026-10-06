@@ -5241,12 +5241,13 @@ function dcWrap(ctx, text, maxW) {
 
 function dcBackdrop(ctx, W, H, style) {
   const s = W / 360, k = (x) => x * s;
+  const tall = H / W > 1.5, art = tall ? 1 : 0.72, up = tall ? 0 : -40;   // для 4:5 иллюстрация меньше и выше
   if (style === "A") {
     ctx.fillStyle = "#f3ede0"; ctx.fillRect(0, 0, W, H);
     ctx.strokeStyle = "#2f3b36"; ctx.globalAlpha = 0.85; ctx.lineWidth = k(9); ctx.lineCap = "round";
     const a0 = (-70 * Math.PI) / 180;
-    ctx.beginPath(); ctx.arc(k(180), k(150), k(74), a0, a0 + (420 / 74)); ctx.stroke();
-    ctx.globalAlpha = 0.85; ctx.fillStyle = "#b9737f"; ctx.beginPath(); ctx.arc(k(256), k(86), k(7), 0, 7); ctx.fill();
+    ctx.beginPath(); ctx.arc(k(180), k(150 + up), k(74 * art), a0, a0 + (420 / 74)); ctx.stroke();
+    ctx.globalAlpha = 0.85; ctx.fillStyle = "#b9737f"; ctx.beginPath(); ctx.arc(k(180 + 76 * art), k(86 + up * 1.1 + (tall ? 0 : 18)), k(7), 0, 7); ctx.fill();
     ctx.globalAlpha = 1;
     const hill = (y, c, a, amp) => { ctx.globalAlpha = a; ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(0, k(y));
       ctx.quadraticCurveTo(k(70), k(y - amp), k(130), k(y - amp * 0.3)); ctx.quadraticCurveTo(k(210), k(y + amp * 0.3), k(260), k(y - amp * 0.4));
@@ -5258,11 +5259,11 @@ function dcBackdrop(ctx, W, H, style) {
     const g = ctx.createLinearGradient(W * 0.2, 0, W * 0.8, H);
     g.addColorStop(0, "#f8dccb"); g.addColorStop(0.55, "#ecc9d6"); g.addColorStop(1, "#c7c4e8");
     ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = "#fff"; ctx.globalAlpha = 0.28; ctx.beginPath(); ctx.arc(k(180), k(190), k(110), 0, 7); ctx.fill();
-    ctx.globalAlpha = 0.4; ctx.beginPath(); ctx.arc(k(180), k(190), k(74), 0, 7); ctx.fill();
+    ctx.fillStyle = "#fff"; ctx.globalAlpha = 0.28; ctx.beginPath(); ctx.arc(k(180), k(190 + up), k(110 * art), 0, 7); ctx.fill();
+    ctx.globalAlpha = 0.4; ctx.beginPath(); ctx.arc(k(180), k(190 + up), k(74 * art), 0, 7); ctx.fill();
     ctx.globalAlpha = 0.25; ctx.strokeStyle = "#4a2f45"; ctx.lineWidth = Math.max(1, k(1));
     const bottom = H / s;
-    for (const [x1, x2, y] of [[40, 320, bottom - 170], [80, 280, bottom - 156], [130, 230, bottom - 142]]) { ctx.beginPath(); ctx.moveTo(k(x1), k(y)); ctx.lineTo(k(x2), k(y)); ctx.stroke(); }
+    if (tall) for (const [x1, x2, y] of [[40, 320, bottom - 170], [80, 280, bottom - 156], [130, 230, bottom - 142]]) { ctx.beginPath(); ctx.moveTo(k(x1), k(y)); ctx.lineTo(k(x2), k(y)); ctx.stroke(); }
     ctx.fillStyle = "#fff"; ctx.globalAlpha = 0.25; ctx.beginPath(); ctx.moveTo(0, k(bottom - 80));
     ctx.quadraticCurveTo(k(90), k(bottom - 120), k(180), k(bottom - 92)); ctx.quadraticCurveTo(k(270), k(bottom - 64), W, k(bottom - 100)); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.fill();
     ctx.globalAlpha = 1;
@@ -5278,8 +5279,9 @@ function dcBackdrop(ctx, W, H, style) {
     }
     ctx.globalAlpha = 1;
     // месяц: круг луны минус сдвинутый круг (чётное-нечётное внутри clip)
-    ctx.save(); ctx.beginPath(); ctx.arc(k(180), k(160), k(48), 0, 7); ctx.clip();
-    ctx.fillStyle = "#f2ead8"; ctx.beginPath(); ctx.arc(k(180), k(160), k(48), 0, 7); ctx.moveTo(k(198 + 46), k(148)); ctx.arc(k(198), k(148), k(46), 0, 7);
+    const my = 160 + up * 0.8, mr = 48 * (tall ? 1 : 0.85);
+    ctx.save(); ctx.beginPath(); ctx.arc(k(180), k(my), k(mr), 0, 7); ctx.clip();
+    ctx.fillStyle = "#f2ead8"; ctx.beginPath(); ctx.arc(k(180), k(my), k(mr), 0, 7); ctx.moveTo(k(180 + 18 * (mr / 48) + 46 * (mr / 48)), k(my - 12 * (mr / 48))); ctx.arc(k(180 + 18 * (mr / 48)), k(my - 12 * (mr / 48)), k(46 * (mr / 48)), 0, 7);
     ctx.fill("evenodd"); ctx.restore();
     ctx.fillStyle = "#070b15"; ctx.globalAlpha = 0.7; ctx.beginPath(); ctx.moveTo(0, k(bottom - 50));
     ctx.quadraticCurveTo(k(100), k(bottom - 80), k(190), k(bottom - 55)); ctx.quadraticCurveTo(k(280), k(bottom - 30), W, k(bottom - 65)); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.fill();
@@ -5302,10 +5304,11 @@ function dcDrawQuote(canvas, style, quote) {
   const W = canvas.width, H = canvas.height, ctx = canvas.getContext("2d");
   const { s, c } = dcFrame(ctx, W, H, style, "Карта дня");
   const maxW = W - 72 * s;
-  let size = 27 * s, lines;
-  for (; size > 15 * s; size -= s) { ctx.font = dcFont(size); lines = dcWrap(ctx, quote.t, maxW); if (lines.length <= 7) break; }
+  const tall = H / W > 1.5;
+  let size = (tall ? 27 : 21) * s, lines;
+  for (; size > 15 * s; size -= s) { ctx.font = dcFont(size); lines = dcWrap(ctx, quote.t, maxW); if (lines.length <= (tall ? 7 : 5)) break; }
   const lh = size * 1.3, blockH = lines.length * lh + 22 * s + 14 * s;
-  let y = Math.max(H * 0.5 - blockH / 2, H * 0.38);
+  let y = Math.max(H * (tall ? 0.5 : 0.6) - blockH / 2, H * (tall ? 0.38 : 0.5));
   ctx.fillStyle = c; ctx.font = dcFont(size); ctx.textAlign = "center";
   for (const l of lines) { y += lh; ctx.fillText(l, W / 2, y); }
   ctx.globalAlpha = 0.75; ctx.font = dcFont(12 * s, "ui"); y += 26 * s;
