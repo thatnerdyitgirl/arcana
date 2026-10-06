@@ -1251,3 +1251,14 @@ textarea.story { padding: 1.4rem 1.7rem 1.6rem; font-size: calc(var(--step-1) - 
 input[type="time"] { font: inherit; font-family: var(--font-read); font-size: 1.1rem; min-height: 48px; padding: 8px 16px; color: var(--ink); background: color-mix(in srgb, var(--paper-raised) 80%, transparent); border: 1px solid var(--line-strong); border-radius: var(--radius-card); }
 input[type="time"]:focus { outline: none; border-color: var(--lotus); box-shadow: 0 0 0 4px var(--lotus-soft); }
 @media (max-width: 640px) { .rem-row .btn { flex: 1 1 100%; } input[type="time"] { width: 100%; } }
+
+/* ---------- дневник раскладов и приветствие: те же карточки, что у практик ---------- */
+.soft-card { padding: var(--card-pad); display: grid; gap: var(--space-2); }
+.jr-entry h3 { font-size: var(--step-2); line-height: 1.25; }
+.jr-note { min-height: 5.5rem; }
+.wl-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); counter-reset: wl; }
+.wl-steps li { display: grid; grid-template-columns: 1.6rem 1fr; column-gap: 0.75rem; align-items: baseline; counter-increment: wl; line-height: 1.5; }
+.wl-steps li::before { content: counter(wl); grid-row: 1 / 3; font-family: var(--font-display); font-size: var(--step-1); color: var(--lotus); line-height: 1.2; }
+.wl-steps b { font-weight: 500; color: var(--ink); }
+.wl-steps span { grid-column: 2; font-size: var(--step--1); color: var(--ink-soft); }
+@media (max-width: 640px) { .wl-steps { gap: 16px; } .jr-entry { gap: 12px; } .journal { gap: var(--m-24); } .jr-entry .actions .btn, #wl .actions .btn, #about-howto .actions .btn { flex: 1 1 100%; } }

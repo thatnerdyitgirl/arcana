@@ -535,7 +535,9 @@ function renderAbout() {
   setWorld(null, null);
   $app.innerHTML = `<section class="about">
     <header class="about-top"><p class="eyebrow">О проекте</p><h1>${esc(A.title)}</h1><p class="about-lead">${esc(A.lead)}</p></header>
-    ${block("what")}${block("science")}${block("decks")}
+    ${block("what")}
+    <div class="about-sec" id="about-howto">${head(A.howto)}${wlStepsHtml()}<div class="actions"><button type="button" class="btn ghost" data-wl-again>Показать приветствие снова</button></div></div>
+    ${block("science")}${block("decks")}
     ${block("read", `<ol class="about-flow">${A.flow.map((x) => `<li>${esc(x)}</li>`).join("")}</ol><p class="prose">${esc(A.flow_note)}</p>`)}
     ${block("moon")}${block("privacy")}
     <div class="about-sec">${head(sec("sources"))}
@@ -668,6 +670,7 @@ function pickFan(btn) {
 function renderAsk() {
   $app.innerHTML = `
   <section class="column" aria-labelledby="ask-title">
+    ${wlHtml()}
     <div id="lunar-box">${lunarHtml()}</div>
     <div class="ask-main"${LUNAR && lunarSnap() && isWarningDay(LUNAR, lunarSnap().day) && state.lunar.postponed ? " hidden" : ""}>
     <div class="intro">
@@ -914,7 +917,7 @@ function renderReading() {
 
     ${matrixNoteForReading(mxCtx, r.cards)}
     <p class="footnote">Карты — один из взглядов на ситуацию, а не прогноз и не основание для решения. «Что на карте» — описание изображения; «В этой позиции» и «В твоём вопросе» — синтез Arcana на основе источников по колоде ${r.deck === "RWS" ? "Райдера–Уэйта–Смит" : "Манара"}.</p>
-    <div class="actions"><button type="button" class="btn ghost" id="again">Новый расклад</button></div>
+    <div class="actions"><button type="button" class="btn ghost" id="jr-save">${r._saved ? "Сохранено в дневнике" : "Сохранить в дневник"}</button><button type="button" class="btn ghost" id="again">Новый расклад</button><span class="status" id="jr-status" aria-live="polite"></span></div>
   </article>`;
 
   document.getElementById("mk-prompt").addEventListener("click", () => {
@@ -931,6 +934,12 @@ function renderReading() {
     const st = document.getElementById("dc-status"), style = dcStyleNow();
     const data = { title: r.spread.name, deck: DECKS[r.deck].label, rows: sc.cards.map((d) => ({ pos: d.pos, card: d.name + (d.state === "перевёрнута" ? " · перев." : "") })) };
     dcSave((cv) => dcDrawSpread(cv, style, data), "arcana-rasklad").then((x) => { if (st) st.textContent = x === "saved" ? "Картинка сохранена" : x === "shared" ? "Готово" : x === "error" ? "Не получилось сохранить" : ""; });
+  });
+  const jb = document.getElementById("jr-save"); if (r._saved) jb.disabled = true;
+  jb.addEventListener("click", () => {
+    const id = jrSave(r), st = document.getElementById("jr-status");
+    if (!id) { st.textContent = "Не получилось сохранить: память браузера недоступна."; return; }
+    r._saved = id; jb.textContent = "Сохранено в дневнике"; jb.disabled = true; st.innerHTML = 'Готово. Заметку можно добавить в <a href="#journal">дневнике</a>.';
   });
   document.getElementById("again").addEventListener("click", () => { state.cardsText = ""; state.result = null; location.hash = "ask"; });
 }
@@ -1105,6 +1114,83 @@ document.addEventListener("click", (e) => {
   st.textContent = "Файл скачан. Открой его, и событие добавится в календарь с повтором каждый день.";
 });
 
+// ---------- дневник раскладов: хранится только на этом устройстве ----------
+
+const JR_KEY = "arcana-journal", WL_KEY = "arcana-welcomed";
+const JR = { saveTimer: 0 };
+function jrRead() { try { const v = JSON.parse(localStorage.getItem(JR_KEY) || "[]"); return Array.isArray(v) ? v : []; } catch { return []; } }
+function jrWrite(list) { try { localStorage.setItem(JR_KEY, JSON.stringify(list.slice(0, 300))); return true; } catch { return false; } }
+const jrDate = (ts) => new Date(ts).toLocaleString("ru-RU", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
+function jrSave(r) {
+  const list = jrRead(), id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  list.unshift({ id, ts: Date.now(), deck: r.deck, spreadId: r.spread.id, spreadName: r.spread.name, story: r.question || "",
+    cards: r.cards.map((c) => ({ id: c.id, reversed: !!c.reversed })), names: r.screen.cards.map((c) => c.name + (c.state === "перевёрнута" ? " · перев." : "")), note: "" });
+  if (!jrWrite(list)) return null;
+  return id;
+}
+function jrHtml() {
+  const list = jrRead();
+  const entry = (e) => `<article class="pr-card soft-card jr-entry" data-jr="${esc(e.id)}">
+      <span class="l-label">${esc(jrDate(e.ts))} · ${e.deck === "RWS" ? "Райдер–Уэйт" : "Манара"}</span>
+      <h3>${esc(e.spreadName)}</h3>
+      <p class="prose">${e.names.map(esc).join(" · ")}</p>
+      ${e.story ? `<p class="hint">Мой вопрос: ${esc(e.story.length > 160 ? e.story.slice(0, 160) + "…" : e.story)}</p>` : ""}
+      <label class="l-label" for="jr-note-${esc(e.id)}">Моя заметка</label>
+      <textarea id="jr-note-${esc(e.id)}" class="jr-note" rows="3" data-jr-note="${esc(e.id)}" placeholder="Что отозвалось? Что хочется запомнить?">${esc(e.note)}</textarea>
+      <div class="actions"><button type="button" class="btn ghost" data-jr-open="${esc(e.id)}">Открыть расклад</button><button type="button" class="btn ghost" data-jr-del="${esc(e.id)}">Удалить</button><span class="status" aria-live="polite"></span></div>
+    </article>`;
+  return `<section class="column journal" aria-labelledby="jr-title">
+    <div class="intro">
+      <p class="eyebrow">Дневник</p>
+      <h1 id="jr-title">Твои расклады</h1>
+      <p class="lede">Здесь лежат расклады, которые ты сохранила, и твои заметки к ним. Всё хранится только на этом устройстве: никуда не отправляется.</p>
+    </div>
+    ${list.length ? list.map(entry).join("") + `<div class="actions"><button type="button" class="btn ghost" data-jr-clear>Очистить дневник</button></div>`
+      : `<div class="pr-card soft-card"><p class="prose">Пока здесь пусто. После расклада нажми «Сохранить в дневник», и он появится тут вместе с датой.</p><div class="actions"><a class="btn soft" href="#ask">Сделать расклад</a></div></div>`}
+  </section>`;
+}
+function renderJournal() {
+  setWorld(null, null);
+  $app.innerHTML = jrHtml();
+  $app.addEventListener("click", onJournalClick); $app.addEventListener("input", onJournalInput);
+}
+function onJournalInput(e) {
+  const ta = e.target.closest("[data-jr-note]"); if (!ta) return;
+  clearTimeout(JR.saveTimer);
+  JR.saveTimer = setTimeout(() => {
+    const list = jrRead(), it = list.find((x) => x.id === ta.dataset.jrNote); if (!it) return;
+    it.note = ta.value; const ok = jrWrite(list), st = ta.closest(".jr-entry")?.querySelector(".status");
+    if (st) st.textContent = ok ? "Заметка сохранена" : "Не получилось сохранить: память браузера недоступна";
+  }, 500);
+}
+function onJournalClick(e) {
+  const t = (sel) => e.target.closest(sel); let el;
+  if ((el = t("[data-jr-open]"))) {
+    const it = jrRead().find((x) => x.id === el.dataset.jrOpen), st = el.closest(".jr-entry").querySelector(".status");
+    try { state.result = reading({ spreadId: it.spreadId, question: it.story || undefined, cards: it.cards }); state.result._saved = it.id; state.view = "both"; location.hash = "reading"; }
+    catch { if (st) st.textContent = "Этот расклад больше нельзя открыть, но заметка сохранилась."; }
+    return;
+  }
+  if ((el = t("[data-jr-del]"))) { if (confirm("Удалить эту запись из дневника?")) { jrWrite(jrRead().filter((x) => x.id !== el.dataset.jrDel)); renderJournal(); } return; }
+  if (t("[data-jr-clear]")) { if (confirm("Удалить весь дневник с этого устройства?")) { jrWrite([]); renderJournal(); } }
+}
+
+// ---------- «Для самых новых»: приветствие при первом входе ----------
+
+const wlSeen = () => { try { return localStorage.getItem(WL_KEY) === "1"; } catch { return true; } };
+const wlStepsHtml = () => `<ol class="wl-steps">${ABOUT.howto.steps.map((s) => `<li><b>${esc(s.h)}</b><span>${esc(s.t)}</span></li>`).join("")}</ol>`;
+const wlHtml = () => (wlSeen() || !ABOUT.howto ? "" : `<section class="pr-card soft-card" id="wl" aria-labelledby="wl-title">
+    <span class="l-label">Добро пожаловать</span>
+    <h2 id="wl-title">${esc(ABOUT.howto.sub)}</h2>
+    ${wlStepsHtml()}
+    <div class="actions"><button type="button" class="btn soft" data-wl-ok>Понятно, начнём</button></div>
+  </section>`);
+function wlDone() { try { localStorage.setItem(WL_KEY, "1"); } catch {} document.getElementById("wl")?.remove(); }
+document.addEventListener("click", (e) => {
+  if (e.target.closest("[data-wl-ok]")) return wlDone();
+  if (e.target.closest("[data-wl-again]")) { try { localStorage.removeItem(WL_KEY); } catch {} location.hash = "ask"; if (location.hash === "#ask") renderAsk(); }
+});
+
 // ---------- маршрутизация ----------
 
 let askDebounce = 0;
@@ -1112,10 +1198,11 @@ function route() {
   const [view, mxSub, mxArg] = (location.hash.replace("#", "") || "ask").split("/");
   if ($app._mx) { $app.removeEventListener("click", $app._mx.click); $app.removeEventListener("input", $app._mx.input); $app.removeEventListener("keydown", $app._mx.key); $app._mx = null; }
   document.querySelectorAll(".nav a").forEach((a) => a.setAttribute("aria-current", a.getAttribute("href") === "#" + view ? "page" : "false"));
-  $app.removeEventListener("click", onAskClick); $app.removeEventListener("click", onPracticesClick); $app.removeEventListener("click", onDayClick);
+  $app.removeEventListener("click", onAskClick); $app.removeEventListener("click", onPracticesClick); $app.removeEventListener("click", onDayClick); $app.removeEventListener("click", onJournalClick); $app.removeEventListener("input", onJournalInput);
   if (view === "matrix") renderMatrixPage(mxCtx, mxSub || "me", mxArg || "");
   else if (view === "practices") renderPractices();
   else if (view === "day") renderDay();
+  else if (view === "journal") renderJournal();
   else if (view === "about") renderAbout();
   else if (view === "spreads") renderSpreads();
   else if (view === "reading") renderReading();
