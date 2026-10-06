@@ -80,3 +80,6 @@ self.addEventListener("fetch", (e) => {
 });
 `);
 console.log("build/site готова:", fs.readdirSync(site).join(", "));
+// Проверка: собранный скрипт обязан компилироваться (иначе сайт покажет пустую страницу)
+import { execFileSync as __chk } from "node:child_process";
+__chk(process.execPath, [path.join(ROOT, "tools/check_bundle.mjs")], { stdio: "inherit" });

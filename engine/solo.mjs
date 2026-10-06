@@ -23,7 +23,6 @@ export const soloClean = (t) => sentences(t).filter((s) => !SOLO_FORBID.test(s))
 export const soloOk = (t) => !SOLO_FORBID.test(String(t ?? ""));
 
 const pick = (arr, h) => arr[Math.abs(h) % arr.length];
-const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 const dot = (s) => (/[.!?…]$/.test(s) ? s : s + ".");
 
 // Состояние импульса по стихии карты
