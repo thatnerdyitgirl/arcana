@@ -1306,9 +1306,8 @@ input[type="time"]:focus { outline: none; border-color: var(--lotus); box-shadow
 @media (max-width: 640px) { .wl-steps { gap: 16px; } .jr-entry { gap: 12px; } .journal { gap: var(--m-24); } .jr-entry .actions .btn, #wl .actions .btn, #about-howto .actions .btn { flex: 1 1 100%; } }
 
 /* ---------- шапка: бренд крупнее, иконки справа, ссылки отдельной строкой ---------- */
-.topbar { display: grid; grid-template-columns: 1fr auto; align-items: center; column-gap: var(--space-3); row-gap: var(--space-2); }
-.topbar .nav { grid-column: 1 / -1; }
-.nav .theme-switch { margin-left: auto; }
+.topbar { display: grid; grid-template-columns: 1fr; row-gap: var(--space-2); }
+.nav .top-icons { margin-left: auto; }
 .top-icons { display: flex; align-items: center; gap: 12px; }
 .enso { width: 3.2rem; height: 3.2rem; }
 .wordmark { font-size: var(--step-3); }
@@ -1327,11 +1326,13 @@ input[type="time"]:focus { outline: none; border-color: var(--lotus); box-shadow
 /* ---------- длительность практики: быстрые кнопки + ручная настройка (стекло) ---------- */
 .pr-time { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
 .pr-mins button { min-height: 40px; }
-.pr-custom { display: inline-flex; align-items: center; gap: 2px; padding: 2px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.55);
+.pr-mins, .pr-custom { display: inline-flex; align-items: center; gap: 2px; padding: 2px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.55);
   background: linear-gradient(145deg, color-mix(in srgb, #fff 55%, transparent), color-mix(in srgb, var(--paper-raised) 38%, transparent));
   -webkit-backdrop-filter: blur(20px) saturate(1.5); backdrop-filter: blur(20px) saturate(1.5);
   box-shadow: 0 8px 22px -14px rgba(40, 50, 60, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.7); }
-:root[data-theme="dark"] .pr-custom { border-color: rgba(255, 255, 255, 0.12); background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)); box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+:root[data-theme="dark"] .pr-mins, :root[data-theme="dark"] .pr-custom { border-color: rgba(255, 255, 255, 0.12); background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)); box-shadow: 0 10px 24px -14px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+.pr-mins button { padding: 0 16px; }
+.pr-mins button[aria-pressed="true"] { background: color-mix(in srgb, var(--lotus) 16%, var(--paper-raised)); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--lotus) 45%, transparent); }
 .pr-custom:focus-within { box-shadow: 0 0 0 3px var(--lotus-soft), inset 0 1px 0 rgba(255, 255, 255, 0.7); }
 .pr-custom button { width: 40px; height: 40px; padding: 0; font: inherit; font-size: 1.4rem; line-height: 1; color: var(--ink); background: transparent; border: 0; border-radius: 50%; cursor: pointer; transition: background .25s; }
 .pr-custom button:hover, .pr-custom button:focus-visible { background: var(--lotus-soft); outline: none; }
@@ -1594,10 +1595,6 @@ input[type="time"]:focus { outline: none; border-color: var(--lotus); box-shadow
       <svg class="enso" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="100 13" transform="rotate(-70 24 24)"/></svg>
       <span class="wordmark">Arcana<small>рефлексивное таро</small></span>
     </a>
-    <div class="top-icons">
-      <button type="button" class="buddha-btn" id="buddha-btn" aria-label="Совет Будды" title="Совет Будды"><svg viewBox="0 0 32 32" aria-hidden="true" width="20" height="20"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M16 5c3 3 4 7 0 12-4-5-3-9 0-12z"/><path d="M16 17c-1-5-5-7-10-6 0 5 4 8 10 6z"/><path d="M16 17c1-5 5-7 10-6 0 5-4 8-10 6z"/><path d="M5 24c4 2 8 2 11 0 3 2 7 2 11 0"/></g></svg></button>
-      <a class="buddha-btn" href="#journal" id="journal-btn" aria-label="Дневник" title="Дневник"><svg viewBox="0 0 32 32" aria-hidden="true" width="20" height="20"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M16 25.500C12.500 23.300 8 22.700 4.500 23.500V12.500C8 11.700 12.500 12.300 16 14.500z"/><path d="M16 25.500C19.500 23.300 24 22.700 27.500 23.500V12.500C24 11.700 19.500 12.300 16 14.500z"/><path d="M16 4.500C17.600 6 17.600 8.400 16 10C14.400 8.400 14.400 6 16 4.500z"/></g></svg></a>
-    </div>
     <nav class="nav" aria-label="Разделы">
       <a href="#ask">Расклад</a>
       <a href="#spreads">Все расклады</a>
@@ -1605,7 +1602,11 @@ input[type="time"]:focus { outline: none; border-color: var(--lotus); box-shadow
       <a href="#day">Карта дня</a>
       <a href="#practices">Практики</a>
       <a href="#about">О проекте</a>
-      <button type="button" class="theme-switch" id="theme-switch" aria-pressed="false">Ночная тушь</button>
+      <div class="top-icons">
+      <button type="button" class="buddha-btn" id="buddha-btn" aria-label="Совет Будды" title="Совет Будды"><svg viewBox="0 0 32 32" aria-hidden="true" width="20" height="20"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M16 5c3 3 4 7 0 12-4-5-3-9 0-12z"/><path d="M16 17c-1-5-5-7-10-6 0 5 4 8 10 6z"/><path d="M16 17c1-5 5-7 10-6 0 5-4 8-10 6z"/><path d="M5 24c4 2 8 2 11 0 3 2 7 2 11 0"/></g></svg></button>
+      <a class="buddha-btn" href="#journal" id="journal-btn" aria-label="Дневник" title="Дневник"><svg viewBox="0 0 32 32" aria-hidden="true" width="20" height="20"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M16 25.500C12.500 23.300 8 22.700 4.500 23.500V12.500C8 11.700 12.500 12.300 16 14.500z"/><path d="M16 25.500C19.500 23.300 24 22.700 27.500 23.500V12.500C24 11.700 19.500 12.300 16 14.500z"/><path d="M16 4.500C17.600 6 17.600 8.400 16 10C14.400 8.400 14.400 6 16 4.500z"/></g></svg></a>
+        <button type="button" class="theme-switch" id="theme-switch" aria-pressed="false">Ночная тушь</button>
+      </div>
     </nav>
   </header>
   <main id="app"></main>
