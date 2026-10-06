@@ -3,6 +3,7 @@
 // Все выводы помечаются слоем: VISUAL_FACT / SOURCE / TRADITION / ARCANA_SYNTHESIS / CALCULATION.
 
 import { THEMES, themesOf, cardText, valenceOf, questionLean } from "./themes.mjs";
+import { soloOverlay } from "./solo.mjs";
 import { LENS_BY_THEME, LENS_NOTE, LENS_QUESTION, applyLens } from "./lenses.mjs";
 import { cmpFlow, buildScreen, cmpLayer, cmpLayerKey } from "./compose.mjs";
 import { scanSubject, adaptCard, situationFrame, romanticFilter, cardFacets } from "./adapt.mjs";
@@ -783,6 +784,7 @@ function cardSource(c) {
 }
 
 function applyCategoryLens(r) {
+  if (r.spread.solo) { r.lens = null; return; }
   // Линза категории остаётся только для «Отношений» (глаголы действия → мысленные при векторе «прошлое»).
   // Бизнес и саморазвитие Манары читаются через THEMATIC_LAYERS карты, а не через механическую замену «эротика → термин».
   r.lens = r.deck === "MANARA" && LENS_BY_THEME[r.spread.theme] === "rel" ? "rel" : null;
@@ -870,5 +872,6 @@ export function reading({ spreadId, spread: inlineSpread, question, topic, cards
     doNow: clean(textOf(c.card.ARCANA_SYNTHESIS?.small_actions)) || null,
   }));
   r.screen = buildScreen(r);       // единый реестр: ни одна фраза на экране не повторяется
+  soloOverlay(r, { cardSource, loadCard });   // соло-расклады: без «фантомного партнёра»
   return r;
 }

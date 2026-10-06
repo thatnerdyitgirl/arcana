@@ -41,7 +41,7 @@ const STATE_MARKERS = {
 // Если в тексте нет явного субъекта, берём типичного для расклада
 const SPREAD_SUBJECT = {
   "rel.new_person": "new_person", "rel.true_face": "new_person", "rel.why_this_person": "new_person", "rel.attraction": "crush",
-  "rel.second_act": "ex", "rel.unfinished": "ex", "rel.stop_crane": "partner", "rel.vector": "partner", "work.boss": "boss", "work.impostor": "self", "work.ceiling": "self", "work.plan_b": "self", "rel.why_solo": "self", "rel.magnet": "self", "rel.threshold": "self", "rel.in_love": "self", "rel.hard_contact": "other", "rel.friend_crisis": "friend", "work.new_env": "team", "work.pressure": "team", "work.burnout": "self", "work.partner": "business_partner", "work.team_climate": "team", "rel.conflict": "other",
+  "rel.second_act": "ex", "rel.unfinished": "ex", "rel.stop_crane": "partner", "rel.vector": "partner", "work.boss": "boss", "work.impostor": "self", "work.ceiling": "self", "work.plan_b": "self", "rel.why_solo": "self", "adult.alchemy": "self", "adult.body_block": "self", "rel.magnet": "self", "rel.threshold": "self", "rel.in_love": "self", "rel.hard_contact": "other", "rel.friend_crisis": "friend", "work.new_env": "team", "work.pressure": "team", "work.burnout": "self", "work.partner": "business_partner", "work.team_climate": "team", "rel.conflict": "other",
 };
 
 const SUBJECT_LABEL = { self: "внутренний процесс", new_person: "новый человек", partner: "текущий партнёр", ex: "бывший партнёр", future_partner: "возможный будущий партнёр", crush: "человек, который притягивает",

@@ -779,7 +779,8 @@
         "adult.power"
       ],
       "adult": true,
-      "layer": "self_development"
+      "layer": "self_development",
+      "solo": "alchemy"
     },
     {
       "id": "adult.fantasy",
@@ -2405,7 +2406,8 @@
         "adult.body_block"
       ],
       "adult": true,
-      "layer": "self_development"
+      "layer": "self_development",
+      "solo": true
     },
     {
       "id": "work.impostor",
@@ -2647,7 +2649,8 @@
       "action_from": 3,
       "replaces": [
         "rel.why_solo"
-      ]
+      ],
+      "solo": true
     },
     {
       "id": "rel.magnet",
@@ -2744,7 +2747,8 @@
       "action_from": 3,
       "replaces": [
         "rel.threshold"
-      ]
+      ],
+      "solo": true
     },
     {
       "id": "rel.in_love",

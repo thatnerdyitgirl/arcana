@@ -938,10 +938,10 @@ function renderReading() {
 
 // ---------- карта дня ----------
 
-const DAY = { shift: 0, style: "auto" };
-try { DAY.style = localStorage.getItem("arcana-dc-style") || "auto"; } catch {}
-if (!DC_STYLES.some((x) => x.id === DAY.style)) DAY.style = "auto"; // старый выбор «Тушь» больше не существует
-const dcStyleNow = () => (DAY.style === "auto" ? dcAutoStyle(adultMode()) : DAY.style);
+const DAY = { shift: 0, style: null };      // null: стиль следует за темой сайта, пока человек не выбрал свой
+try { DAY.style = localStorage.getItem("arcana-dc-style"); } catch {}
+if (!DC_STYLES.some((x) => x.id === DAY.style)) DAY.style = null;
+const dcStyleNow = () => DAY.style ?? dcAutoStyle(adultMode());
 const dayQuote = () => dcQuoteOfDay(APP_DATA.quotes ?? [], new Date(), DAY.shift);
 function dayDraw() {
   const cv = document.getElementById("dc-canvas"); if (!cv) return;
@@ -959,7 +959,7 @@ function renderDay() {
     <div class="field">
       <span class="label">Стиль картинки</span>
       <div class="toggle dc-styles" role="group" aria-label="Стиль картинки">
-        ${[{ id: "auto", label: "Авто" }, ...DC_STYLES].map((x) => `<button type="button" data-dc-style="${x.id}" aria-pressed="${DAY.style === x.id}">${x.label}</button>`).join("")}
+        ${DC_STYLES.map((x) => `<button type="button" data-dc-style="${x.id}" aria-pressed="${dcStyleNow() === x.id}">${x.label}</button>`).join("")}
       </div>
     </div>
     <div class="actions dc-actions">
@@ -968,7 +968,7 @@ function renderDay() {
       <span class="status" id="dc-status" aria-live="polite"></span>
     </div>
     ${remHtml("day", "08:00", "Карта дня · Arcana", "Каждое утро напоминание в календаре телефона со ссылкой на карту дня.")}
-    <p class="hint">Картинка 1080×1920: подходит для сторис. Цитаты даны в вольном пересказе, подписан источник. Стиль «Авто»: «Рассвет» на светлой теме, «Ночь» на тёмной.</p>
+    <p class="hint">Картинка 1080×1920: подходит для сторис. Цитаты даны в вольном пересказе, подписан источник. Пока стиль не выбран, он подстраивается под тему сайта.</p>
   </section>`;
   $app.addEventListener("click", onDayClick);
   dayDraw(); document.fonts?.ready.then(dayDraw);
@@ -978,7 +978,7 @@ function onDayClick(e) {
   let el;
   if ((el = t("[data-dc-style]"))) {
     DAY.style = el.dataset.dcStyle; try { localStorage.setItem("arcana-dc-style", DAY.style); } catch {}
-    document.querySelectorAll("[data-dc-style]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dcStyle === DAY.style)));
+    document.querySelectorAll("[data-dc-style]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.dcStyle === dcStyleNow())));
     dayDraw(); return;
   }
   if (t("[data-dc-next]")) { DAY.shift += 1; dayDraw(); const cv = document.getElementById("dc-canvas"); cv?.setAttribute("aria-label", "Карта дня: " + dayQuote().t); return; }
