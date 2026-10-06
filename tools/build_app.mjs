@@ -1,3 +1,5 @@
+import { createRequire as __cr } from "node:module";
+const require_astronomy = () => __cr(import.meta.url)("../vendor/astronomy.browser.min.js");
 // Сборка: app/data.json (для разработки) и build/arcana.html (один файл, без бэкенда).
 // Запуск: node tools/build_app.mjs
 import fs from "node:fs";
@@ -59,6 +61,15 @@ const cardsDir = path.join(ROOT, "assets/cards");
 if (fs.existsSync(cardsDir)) { fs.mkdirSync(path.join(site, "cards"), { recursive: true }); for (const f of fs.readdirSync(cardsDir)) if (f.endsWith(".jpg")) fs.copyFileSync(path.join(cardsDir, f), path.join(site, "cards", f)); }
 for (const [src, dst] of [["knowledge/quotes/daily.json", "day-quotes.json"], ["knowledge/quotes/buddha.json", "buddha.json"]]) {
   const q = JSON.parse(fs.readFileSync(path.join(ROOT, src), "utf8")).quotes; fs.writeFileSync(path.join(site, dst), JSON.stringify({ quotes: q }));
+}
+// Для бота: новолуния и полнолуния на ~3 года вперёд и короткие тексты энергий Матрицы (публичные данные сайта)
+{
+  const A = require_astronomy();
+  const events = []; let mq = A.SearchMoonQuarter(A.MakeTime(new Date(Date.now() - 40 * 86400000)));
+  while (mq.time.date.getTime() < Date.now() + 1100 * 86400000) { if (mq.quarter === 0 || mq.quarter === 2) events.push({ t: mq.time.date.getTime(), type: mq.quarter === 0 ? "new" : "full" }); mq = A.NextMoonQuarter(mq); }
+  fs.writeFileSync(path.join(site, "moon-events.json"), JSON.stringify({ events }));
+  const energies = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, "knowledge/matrix/energies.json"), "utf8")).energies.map((e) => [e.n, { name: e.name, short: e.short, pair_q: e.pair_q }]));
+  fs.writeFileSync(path.join(site, "matrix-lite.json"), JSON.stringify({ energies }));
 }
 // PWA: установка на главный экран + офлайн. Версия кэша = время сборки, чтобы обновления доходили сами.
 fs.writeFileSync(path.join(site, "manifest.webmanifest"), JSON.stringify({
